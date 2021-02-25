@@ -1,24 +1,24 @@
 # vkaudioposter_Console
 ![](https://img.shields.io/github/commit-activity/m/rhiskey/vkaudioposter_Console)
-Программа для генерации музыкальных постов в различных жанрах для ВКонтакте. 
-Несколько фотостоков на выбор, более 100 музыкальных жанров.
+A program for generating music posts in various genres for VKontakte.
+Several photo stocks to choose from, over 100 musical genres.
 
-1. Обязательно скопировать .env в Debug и Release 
+1. Be sure to copy `.env` to Debug and Release
 
-2. Запустить RabbitMQ `docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management`
+2. Run RabbitMQ `docker run -it --rm --name rabbitmq -p 5672: 5672 -p 15672: 15672 rabbitmq: 3-management`
 
-3. Исключить из основного проекта папку `tests`
+3. Exclude the `tests` folder from the main project
 
-4. Проверить хосты в MYSQL, есть ли возможность подключаться с IP 
-5. Проверить .env файл: RABBIT_HOST адрес и DB_HOST
+4. Check hosts in MYSQL if it is possible to connect from IP
+5. Check `.env` file: RABBIT_HOST address and DB_HOST
 
-6. `docker build --tag hvm-csharp .`
-7. `docker run -d -i --restart on-failure --network hvm hvm-csharp`
+6.` docker build --tag hvm-csharp .`
+7.` docker run -d -i --restart on-failure --network hvm hvm-csharp`
 
-8. Учесть адрес TorProxy и RabbitMQ при создании контейнеров 
-9. You should run your container in Interactive mode (with the -i option), but please note that the background processes will be closed immediately when you run the container, so make sure your script is run in the foreground or it simply won't work.
-10. vkaudioposter-ef собирать как библиотеку классов, указать профиль Folder автономная сборка .netCore Linux_x64
-11. В .csproj текущего проекта 
+8. Consider the TorProxy and RabbitMQ address when creating containers
+9. You should run your container in Interactive mode (with the -i option), but please note that the background processes will be closed immediately when you run the container, so make sure your script is run in the foreground or it simply won ' t work.
+10. `vkaudioposter-ef` build as class library, specify Folder profile offline build .netCore Linux_x64
+11. In the `.csproj` of the current project
 
 ```
   <PropertyGroup>
