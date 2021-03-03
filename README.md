@@ -42,27 +42,7 @@ Several photo stocks to choose from, over provided musical genres (or Spotify pl
 12) `RABBIT_HOST` - your RabbitMQ server (to send to frontend) (IN DEVELOPMENT)
 13) `REDIS_HOST=localhost` `REDIS_PORT=6479` `REDIS_PASSWORD=pass` - currently not used (fill randomly or pass like that)
 
-## How to run and deploy:
-1. Be sure to copy `.env` to Debug and Release
-2. Run RabbitMQ `docker run -it --rm --name rabbitmq -p 5672: 5672 -p 15672: 15672 rabbitmq: 3-management`
-3. Exclude the `tests` folder from the main project
-4. Check hosts in MYSQL if it is possible to connect from IP
-5. Check `.env` file: RABBIT_HOST address and DB_HOST
-6. ` docker build --tag hvm-csharp .`
-7. ` docker run -d -i --restart on-failure --network hvm hvm-csharp`
-8. Consider the TorProxy and RabbitMQ address when creating containers
-9. You should run your container in Interactive mode (with the -i option), but please note that the background processes will be closed immediately when you run the container, so make sure your script is run in the foreground or it simply won ' t work.
-10. `vkaudioposter-ef` build as class library, specify Folder profile offline build .netCore Linux_x64
-11. In the `.csproj` of the current project
-```
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
-    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
-```
-12. `docker build . -f Dockerfile.debian-x64`
+***
 
 ## ENV File or Docker ENV
 .env:
