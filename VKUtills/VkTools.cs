@@ -31,7 +31,7 @@ namespace vkaudioposter_Console.VKUtills
                 OwnerId = Program.ownid,
                 //Offset
             });
-            var wallTotal = postponedCount.TotalCount;
+            var wallTotal = postponedCount.TotalCount;    
             return wallTotal;
         }
 

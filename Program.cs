@@ -889,11 +889,8 @@ namespace vkaudioposter_Console
 
                                     continue;
                                 }
-                                finally
-                                {
-                                    Rabbit.NewPostedTrack(current_track, styletoDB.PlaylistName, publication_date);
-                                }
-
+         
+                                Rabbit.NewPostedTrack(current_track, styletoDB.PlaylistName, publication_date);
                                 SearchingList.Add(new Track(url2, FullId));
 
                                 //Добавить треки в Quue очередь или класс при публикации заливать, очищать при нажатии отмена
