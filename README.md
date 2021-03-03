@@ -17,9 +17,11 @@
 
 
 A program for generating music posts in various genres for VKontakte.
-Several photo stocks to choose from, over 100 musical genres.
+Several photo stocks to choose from, over provided musical genres (or Spotify playlists).
 
-# Readme:
+![preview](https://s4.gifyu.com/images/XQ4wGcetf7.gif)
+
+## Readme:
 1. Be sure to copy `.env` to Debug and Release
 2. Run RabbitMQ `docker run -it --rm --name rabbitmq -p 5672: 5672 -p 15672: 15672 rabbitmq: 3-management`
 3. Exclude the `tests` folder from the main project
