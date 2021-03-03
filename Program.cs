@@ -42,7 +42,7 @@ namespace vkaudioposter_Console
 
         //ПолучаетсяВ приложении своем
         //Приложение группы доступ к группе, получается в самом приложении в ручную Standalone приложение		
-        public static string accesstoken; //добавить фото и музыку вложения на стену
+        //s static string accesstoken; //добавить фото и музыку вложения на стену
         //логи в личку
         public static string kateMobileToken;
 
@@ -66,7 +66,7 @@ namespace vkaudioposter_Console
         public static string Token; //kateMobileToken; //Загрузка фото + публикация треков (сделать через свое приложение)
         public static ulong? ownerid3; //для сохранения фото на стене
         public static ulong? groupid3;//для  сохранения фото на стене
-        public static long groupid = (long)31640582; //для загрузки на сервер
+        public static long groupid; //для загрузки на сервер
                                                      //public static string pusherAppId;
                                                      //public static string pusherAppKey;
 
@@ -147,7 +147,7 @@ namespace vkaudioposter_Console
             DB_USER = DotNetEnv.Env.GetString("DB_USER");
             DB_PASS = DotNetEnv.Env.GetString("DB_PASS");
             DB_NAME = DotNetEnv.Env.GetString("DB_NAME");
-            accesstoken = DotNetEnv.Env.GetString("ACCESS_TOKEN");
+            //accesstoken = DotNetEnv.Env.GetString("ACCESS_TOKEN");
             kateMobileToken = DotNetEnv.Env.GetString("KATE_MOBILE_TOKEN");
             Token = DotNetEnv.Env.GetString("TOKEN");
             string searchApiUrlPrefix = "&key=";
