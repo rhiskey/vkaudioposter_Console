@@ -21,10 +21,10 @@ Several photo stocks to choose from, over provided musical genres (or Spotify pl
 
 [![XQ4wGcetf7.md.gif](https://s4.gifyu.com/images/XQ4wGcetf7.md.gif)](https://gifyu.com/image/ZZNO)
 
-## How To make it work? You need to create:
-1) MySQL Database, a user with `SUPER` global priviliegis: `DB_USER=user` `DB_PASS=pass` `DB_NAME=database` and COPY to `EF_USER=user` `EF_PASSWORD=pass` `EF_DATABASE=database` (debugging) in the `.env` file (or pass docker env)
+## How To make it work? You'll need to create:
+1) A MySQL Database, a user with `SUPER` global priviliegis: `DB_USER=user` `DB_PASS=pass` `DB_NAME=database` and COPY to `EF_USER=user` `EF_PASSWORD=pass` `EF_DATABASE=database` (debugging) in the `.env` file (or pass docker env see below)
 
-2) Fill tables with data `Playlists` - contains Spotify Playlist Uri (see screenshot) and its name.
+2) Seed tables with data" `Playlists` - contains Spotify Playlist Uri (see screenshots) and its name.
  `console_Photostocks` - contains URLs, such as https://www.deviantart.com/topic/* (replace * with any topic name)
 [![16d1981c7ca862232.png](https://s4.gifyu.com/images/16d1981c7ca862232.png)](https://gifyu.com/image/ZZtZ)
 [![2e324a62384c06473.png](https://s4.gifyu.com/images/2e324a62384c06473.png)](https://gifyu.com/image/ZZtV)
