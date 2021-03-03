@@ -20,7 +20,6 @@ A program for generating music posts in various genres for VKontakte.
 Several photo stocks to choose from, over provided musical genres (or Spotify playlists).
 
 [![XQ4wGcetf7.md.gif](https://s4.gifyu.com/images/XQ4wGcetf7.md.gif)](https://gifyu.com/image/ZZNO)
-[![XQ4wGcetf7.gif](https://s4.gifyu.com/images/XQ4wGcetf7.gif)](https://gifyu.com/image/ZZNO)
 
 ## Readme:
 1. Be sure to copy `.env` to Debug and Release
