@@ -19,7 +19,7 @@
 A program for generating music posts in various genres for VKontakte.
 Several photo stocks to choose from, over provided musical genres (or Spotify playlists).
 
-![preview](https://s4.gifyu.com/images/XQ4wGcetf7.gif)
+[![XQ4wGcetf7.gif](https://s4.gifyu.com/images/XQ4wGcetf7.gif)](https://gifyu.com/image/ZZNO)
 
 ## Readme:
 1. Be sure to copy `.env` to Debug and Release
@@ -43,7 +43,7 @@ Several photo stocks to choose from, over provided musical genres (or Spotify pl
 ```
 12. `docker build . -f Dockerfile.debian-x64`
 
-# ENV File or Docker ENV
+## ENV File or Docker ENV
 .env:
 ```
 HOURS_PERIOD=2
