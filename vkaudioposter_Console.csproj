@@ -10,10 +10,13 @@
   <ItemGroup>
     <Compile Remove="tests\**" />
     <Compile Remove="Tools\Unused\**" />
+    <Compile Remove="vkaudioposter-ef\**" />
     <EmbeddedResource Remove="tests\**" />
     <EmbeddedResource Remove="Tools\Unused\**" />
+    <EmbeddedResource Remove="vkaudioposter-ef\**" />
     <None Remove="tests\**" />
     <None Remove="Tools\Unused\**" />
+    <None Remove="vkaudioposter-ef\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,8 +24,6 @@
     <Compile Remove="Classes\WallPost.cs" />
     <Compile Remove="Tools\Notifications.cs" />
     <Compile Remove="Tools\StyleFileClass.cs" />
-    <Compile Remove="vkaudioposter-ef\vkaudioposter-ef\Migrations\20210215232641_InitialCreate.cs" />
-    <Compile Remove="vkaudioposter-ef\vkaudioposter-ef\Migrations\20210215232641_InitialCreate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,7 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetEnv" Version="2.1.0" />
+    <PackageReference Include="DotNetEnv" Version="2.1.1" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.30" />
     <PackageReference Include="HttpToSocks5Proxy" Version="1.4.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />

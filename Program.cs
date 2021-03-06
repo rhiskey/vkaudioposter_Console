@@ -64,6 +64,7 @@ namespace vkaudioposter_Console
         //Авторизация для публикаций https://vkhost.github.io - сообщество + приложение
         //Получается https://oauth.vk.com/authorize?client_id=7361627&scope=notify,photos,friends,audio,video,notes,pages,docs,status,questions,offers,wall,groups,notifications,stats,ads,offline&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token                                                                                                               
         public static string Token; //kateMobileToken; //Загрузка фото + публикация треков (сделать через свое приложение)
+        public static string accesstoken; //add tracks to attachments
         public static ulong? ownerid3; //для сохранения фото на стене
         public static ulong? groupid3;//для  сохранения фото на стене
         public static long groupid; //для загрузки на сервер
@@ -147,7 +148,7 @@ namespace vkaudioposter_Console
             DB_USER = DotNetEnv.Env.GetString("DB_USER");
             DB_PASS = DotNetEnv.Env.GetString("DB_PASS");
             DB_NAME = DotNetEnv.Env.GetString("DB_NAME");
-            //accesstoken = DotNetEnv.Env.GetString("ACCESS_TOKEN");
+            accesstoken = DotNetEnv.Env.GetString("ACCESS_TOKEN");
             kateMobileToken = DotNetEnv.Env.GetString("KATE_MOBILE_TOKEN");
             Token = DotNetEnv.Env.GetString("TOKEN");
             string searchApiUrlPrefix = "&key=";
