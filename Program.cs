@@ -1071,7 +1071,7 @@ namespace vkaudioposter_Console
                 switch (photostock)
                 {
                     case var someVal when new Regex(@"https://www.deviantart.com/topic/(\w*)", RegexOptions.IgnoreCase).IsMatch(someVal):
-                        nodContainer = "//*[@id=\"root\"]/div[1]/div/div/article/div/div/div[2]";//Контейнер с картинками на странице (последний grid)
+                        nodContainer = "//*[@id=\"root\"]/div[1]/div/div/article/div/div[2]/div";//Контейнер с картинками на странице (последний grid)
                         try
                         {
                             url = PhotoParser.DevianPageParser(doc, nodContainer, i);

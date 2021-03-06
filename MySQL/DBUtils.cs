@@ -37,7 +37,7 @@ namespace vkaudioposter.MySQL
             List<vkaudioposter_ef.parser.Playlist> playlists;
             List<FormattedPlaylist> formattedList = new List<FormattedPlaylist>();
 
-            using (var context = new vkaudioposter_ef.AppContext(efHost, efUser, efPass, efDB))
+            using (var context = new vkaudioposter_ef.AppContext())
             {
                 playlists = context.Playlists.ToList();
                 foreach (var elem in playlists)
@@ -60,7 +60,7 @@ namespace vkaudioposter.MySQL
 
         public static void UpdatePublicationDateOfTracks(List<string> tracknames, FormattedPlaylist formattedPlaylist, DateTime publish_date)
         {
-            using var context = new vkaudioposter_ef.AppContext(efHost, efUser, efPass, efDB);
+            using var context = new vkaudioposter_ef.AppContext();
 
             // Creates the database if not exists
             context.Database.EnsureCreated();
@@ -85,9 +85,10 @@ namespace vkaudioposter.MySQL
 
         }
 
+        // TODO: pass ownerId, mediaID
         public static void InsertFoundTrackInDB(string trackname, FormattedPlaylist formattedPlaylist, DateTime publish_date, bool? isFirstTime)
         {
-            using var context = new vkaudioposter_ef.AppContext(efHost, efUser, efPass, efDB);
+            using var context = new vkaudioposter_ef.AppContext();
             if (isFirstTime == true)
                 context.Database.EnsureDeleted();
 
@@ -100,7 +101,9 @@ namespace vkaudioposter.MySQL
                 Trackname = trackname,
                 Date = publish_date,
                 //Playlist = formattedPlaylist,
-                PlaylistId = formattedPlaylist.Id
+                PlaylistId = formattedPlaylist.Id,
+                //OwnerId = 1111,
+                //MediaId = 1111
             };
 
             context.PostedTracks.Add(pt1);
@@ -111,7 +114,7 @@ namespace vkaudioposter.MySQL
 
         public static void InsertUnfoundTrackInDB(string trackname, FormattedPlaylist formattedPlaylist, bool? isFirstTime)
         {
-            using var context = new vkaudioposter_ef.AppContext(efHost, efUser, efPass, efDB);
+            using var context = new vkaudioposter_ef.AppContext();
             if (isFirstTime == true)
                 context.Database.EnsureDeleted();
 
@@ -133,7 +136,7 @@ namespace vkaudioposter.MySQL
         {
             List<string> unfoundTracksNames = new List<string>();
 
-            using (var context = new vkaudioposter_ef.AppContext(efHost, efUser, efPass, efDB))
+            using (var context = new vkaudioposter_ef.AppContext())
             {
                 unfoundTracksNames = (from track in context.UnfoundTracks
                                      where track.Playlist == playlist
@@ -147,7 +150,7 @@ namespace vkaudioposter.MySQL
         {
             List<string> postedTracksNames = new List<string>();
       
-            using (var context = new vkaudioposter_ef.AppContext(efHost, efUser, efPass, efDB))
+            using (var context = new vkaudioposter_ef.AppContext())
             {
                 postedTracksNames = (from track in context.PostedTracks
                                     where track.Playlist == playlist
@@ -161,7 +164,7 @@ namespace vkaudioposter.MySQL
         {
             List<vkaudioposter_ef.parser.ConsolePhotostock> photostocks;
             List<string> urls = new List<string>();
-            using (var context = new vkaudioposter_ef.AppContext(efHost, efUser, efPass, efDB))
+            using (var context = new vkaudioposter_ef.AppContext())
             {
                 photostocks = context.Photostocks.ToList();
                 foreach (var stock in photostocks)
@@ -306,7 +309,7 @@ namespace vkaudioposter.MySQL
                 }
             }
             else
-                using (var context = new vkaudioposter_ef.AppContext(efHost, efUser, efPass, efDB))
+                using (var context = new vkaudioposter_ef.AppContext())
             {
                 try
                 {
