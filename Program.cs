@@ -213,20 +213,20 @@ namespace vkaudioposter_Console
 
         private static void Main(string[] args)
         {
-            Thread rabbitReciever = new Thread(new ThreadStart(Rabbit.CommandsReciever))
+            new Thread(() =>
             {
-                IsBackground = false
-            };
-            rabbitReciever.Start();
-
-            //SendTestTrackMessages();
+                Thread.CurrentThread.IsBackground = false;
+            }).Start();
 
             try
             {
-                new Thread(() =>
+                Thread rabbitReciever = new Thread(new ThreadStart(Rabbit.CommandsReciever))
                 {
-                    Thread.CurrentThread.IsBackground = false;
-                }).Start();
+                    IsBackground = false
+                };
+                rabbitReciever.Start();
+
+                //SendTestTrackMessages();
             }
             catch (Exception ex)
             {
@@ -234,19 +234,18 @@ namespace vkaudioposter_Console
             }
             finally
             {
+                LoadConfigsFromEnv();
+                // Create Database with schema 
+                vkaudioposter_ef.Program.LoadConfig();
+
+                ///If First Time
+                //vkaudioposter_ef.CreateInitialSchema.CreateSchema(true);
+                //vkaudioposter_ef.Program.InsertData(true);
+                //vkaudioposter_ef.Program.CreateStoredProceduresViewsAndFunctions(true); //recreate onChange
+
+                if (startOnce == true)
+                    StatusChecker.ApiStart();
             }
-
-
-            LoadConfigsFromEnv();
-            // Create Database with schema 
-            vkaudioposter_ef.Program.LoadConfig();
-            vkaudioposter_ef.Program.InsertData(false);
-            vkaudioposter_ef.Program.CreateStoredProceduresViewsAndFunctions(false); //recreate onChange
-            
-
-            if (startOnce == true)
-                StatusChecker.ApiStart();
-
         }
 
         #region Appcycle
