@@ -240,8 +240,9 @@ namespace vkaudioposter_Console
             LoadConfigsFromEnv();
             // Create Database with schema 
             vkaudioposter_ef.Program.LoadConfig();
+            vkaudioposter_ef.Program.InsertData(false);
             vkaudioposter_ef.Program.CreateStoredProceduresViewsAndFunctions(false); //recreate onChange
-
+            
 
             if (startOnce == true)
                 StatusChecker.ApiStart();
