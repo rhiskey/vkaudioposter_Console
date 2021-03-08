@@ -80,9 +80,4 @@ AWS_USER=
 
 ### AWS
 Publish folder profile linux64
-```
-docker build --tag vovanja/vkaudioposter:1.0.X .
-docker tag vovanja/vkaudioposter:1.0.x 282540466944.dkr.ecr.eu-central-1.amazonaws.com/vkaudioposter:latest
-docker push 282540466944.dkr.ecr.eu-central-1.amazonaws.com/vkaudioposter:1.0.x
-```
-``
+![Wiki](https://github.com/rhiskey/vkaudioposter_Console/wiki/Deploy-to-AWS)
