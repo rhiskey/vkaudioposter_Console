@@ -21,6 +21,8 @@ Several photo stocks to choose from, over provided musical genres (or Spotify pl
 
 [![XQ4wGcetf7.md.gif](https://s4.gifyu.com/images/XQ4wGcetf7.md.gif)](https://gifyu.com/image/ZZNO)
 
+[![.NET](https://github.com/rhiskey/vkaudioposter_Console/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/rhiskey/vkaudioposter_Console/actions/workflows/dotnet.yml)
+
 ## [How To make it work?](https://github.com/rhiskey/vkaudioposter_Console/wiki)
 
 ## ENV File or Docker ENV
