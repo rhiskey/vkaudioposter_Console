@@ -238,10 +238,10 @@ namespace vkaudioposter_Console
                 // Create Database with schema 
                 vkaudioposter_ef.Program.LoadConfig();
 
-                ///If First Time
-                //vkaudioposter_ef.CreateInitialSchema.CreateSchema(true);
-                //vkaudioposter_ef.Program.InsertData(true);
-                //vkaudioposter_ef.Program.CreateStoredProceduresViewsAndFunctions(true); //recreate onChange
+                ///If want to delete -> pass TRUE             
+                vkaudioposter_ef.CreateInitialSchema.CreateSchema(false);
+                vkaudioposter_ef.Program.InsertData(false);
+                vkaudioposter_ef.Program.CreateStoredProceduresViewsAndFunctions(false);
 
                 if (startOnce == true)
                     StatusChecker.ApiStart();
