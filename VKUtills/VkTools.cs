@@ -38,9 +38,7 @@ namespace vkaudioposter_Console.VKUtills
         public static List<MediaAttachment> AddPhotoToAttachFromUrl(string photofilename, List<MediaAttachment> attachments, string postMessage, List<string> trackNames)
         {
             string filename2 = Path.GetFullPath(photofilename);
-            var sendTuple = SendOnServer(filename2, postMessage, trackNames);
-
-            IReadOnlyCollection<Photo> photolist = sendTuple; //отправляем на сервак, получаем ответ с картинкой
+            var photolist = SendOnServer(filename2, postMessage, trackNames);  //отправляем на сервак, получаем ответ с картинкой
             attachments.AddRange(photolist);
 
             return attachments;

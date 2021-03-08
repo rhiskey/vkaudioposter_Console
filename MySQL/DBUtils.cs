@@ -85,8 +85,7 @@ namespace vkaudioposter.MySQL
 
         }
 
-        // TODO: pass ownerId, mediaID
-        public static void InsertFoundTrackInDB(string trackname, FormattedPlaylist formattedPlaylist, DateTime publish_date, bool? isFirstTime)
+        public static void InsertFoundTrackInDB(string trackname, FormattedPlaylist formattedPlaylist, DateTime publish_date, bool? isFirstTime, int ownerId = 0, int mediaId = 0)
         {
             using var context = new vkaudioposter_ef.AppContext();
             if (isFirstTime == true)
@@ -102,8 +101,8 @@ namespace vkaudioposter.MySQL
                 Date = publish_date,
                 //Playlist = formattedPlaylist,
                 PlaylistId = formattedPlaylist.Id,
-                //OwnerId = 1111,
-                //MediaId = 1111
+                OwnerId = ownerId,
+                MediaId = mediaId
             };
 
             context.PostedTracks.Add(pt1);

@@ -865,14 +865,17 @@ namespace vkaudioposter_Console
                         if (json != null)
                         {
                             string strWithoutSpaces = url2.Replace("%20", " "); //Запрос поиска Имя+трек+микс
-                            string FullId = StringWorkers.GetFullIdFromString(strWithoutSpaces, json);//нашли в запросе ID первой песни 
+                            string FullId = StringWorkers.GetFullIdFromString(strWithoutSpaces, json);//нашли в запросе ID первой песни -111111111_222222222
 
                             if (FullId != "0") //если нашли трек в поиске
                             {
+                                var mediaOwnId = StringWorkers.GetOwnIdAndMediaIdFromFullId(FullId);
+                                int ownId = mediaOwnId.Item1;
+                                int mediaId = mediaOwnId.Item2;
                                 //Попытаться трек в БД записать
                                 try
                                 {
-                                    DBUtils.InsertFoundTrackInDB(current_track, styletoDB, publication_date, false);
+                                    DBUtils.InsertFoundTrackInDB(current_track, styletoDB, publication_date, false, ownId, mediaId);
                                 }
                                 catch (Exception ex) //Если любая ошибка, перейти к след.треку!
                                 {
@@ -988,7 +991,7 @@ namespace vkaudioposter_Console
                         //Попытаться трек в БД записать
                         try
                         {
-                            DBUtils.InsertFoundTrackInDB(fullTrackName, styletoDB, publication_date, false);
+                            DBUtils.InsertFoundTrackInDB(fullTrackName, styletoDB, publication_date, false, (int)ownID, (int)mediaID);
                         }
                         catch (Exception ex) //Если любая ошибка, перейти к след.треку!
                         {
