@@ -26,7 +26,7 @@ jobs:
         # Set the --remote flag
         #remote:    
     - name: Restore dependencies
-      run: dotnet restore
+      run: sudo dotnet restore
     - name: Build
       run: sudo dotnet build --no-restore
     - name: Test
