@@ -5,10 +5,6 @@ VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vkaudioposter_Console", "vkaudioposter_Console.csproj", "{71F952C9-EDBB-4354-B72E-F0995BFC354E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoStockTester", "tests\PhotoStockTester\PhotoStockTester\PhotoStockTester.csproj", "{5F42F713-5684-4280-A8E9-BD419A1FE0CF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostPonedTest", "tests\PostPonedTest\PostPonedTest.csproj", "{8F0C5C85-A530-4894-A6AF-BBF13D9EAFD3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vkaudioposter-ef", "vkaudioposter-ef\vkaudioposter-ef\vkaudioposter-ef.csproj", "{B14F2FF8-ED49-4969-BA56-CC75D27BC941}"
 EndProject
 Global
@@ -21,14 +17,6 @@ Global
 		{71F952C9-EDBB-4354-B72E-F0995BFC354E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71F952C9-EDBB-4354-B72E-F0995BFC354E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71F952C9-EDBB-4354-B72E-F0995BFC354E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5F42F713-5684-4280-A8E9-BD419A1FE0CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F42F713-5684-4280-A8E9-BD419A1FE0CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5F42F713-5684-4280-A8E9-BD419A1FE0CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F42F713-5684-4280-A8E9-BD419A1FE0CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8F0C5C85-A530-4894-A6AF-BBF13D9EAFD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F0C5C85-A530-4894-A6AF-BBF13D9EAFD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8F0C5C85-A530-4894-A6AF-BBF13D9EAFD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8F0C5C85-A530-4894-A6AF-BBF13D9EAFD3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B14F2FF8-ED49-4969-BA56-CC75D27BC941}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B14F2FF8-ED49-4969-BA56-CC75D27BC941}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B14F2FF8-ED49-4969-BA56-CC75D27BC941}.Release|Any CPU.ActiveCfg = Release|Any CPU
