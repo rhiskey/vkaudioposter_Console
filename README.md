@@ -73,11 +73,16 @@ REDIS_PASSWORD=pass
 EF_USER=user
 EF_PASSWORD=pass
 EF_DATABASE=db
+AWS_RDS_ENDPOINT=
+AWS_RDS_PASSWORD=
+AWS_USER=
 ```
 
 ### AWS
 Publish folder profile linux64
-`docker build --tag vovanja/vkaudioposter:1.0.X .`
-`docker tag vovanja/vkaudioposter:1.0.x 282540466944.dkr.ecr.eu-central-1.amazonaws.com/vkaudioposter:latest`
-`docker push 282540466944.dkr.ecr.eu-central-1.amazonaws.com/vkaudioposter:1.0.x`
+```
+docker build --tag vovanja/vkaudioposter:1.0.X .
+docker tag vovanja/vkaudioposter:1.0.x 282540466944.dkr.ecr.eu-central-1.amazonaws.com/vkaudioposter:latest
+docker push 282540466944.dkr.ecr.eu-central-1.amazonaws.com/vkaudioposter:1.0.x
+```
 ``
