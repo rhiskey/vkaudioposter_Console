@@ -8,12 +8,10 @@
 ![](https://img.shields.io/github/issues-closed-raw/rhiskey/vkaudioposter_Console)
 ![](https://img.shields.io/github/license/rhiskey/vkaudioposter_Console)
 ![tag](https://img.shields.io/github/v/tag/rhiskey/vkaudioposter_Console)
-![release](https://img.shields.io/github/v/release/rhiskey/vkaudioposter_Console)
 ![contrib](https://img.shields.io/github/contributors/rhiskey/vkaudioposter_Console)
 ![lastcommit](https://img.shields.io/github/last-commit/rhiskey/vkaudioposter_Console)
 ![lang](https://img.shields.io/github/languages/count/rhiskey/vkaudioposter_Console)
 ![](https://img.shields.io/github/commit-activity/m/rhiskey/vkaudioposter_Console)
-![checks](https://img.shields.io/github/checks-status/rhiskey/vkaudioposter_Console/main)
 
 
 A program for generating music posts in various genres for VKontakte.
