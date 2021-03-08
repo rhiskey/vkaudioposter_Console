@@ -56,6 +56,3 @@ AWS_RDS_ENDPOINT=
 AWS_RDS_PASSWORD=
 AWS_USER=
 ```
-
-### [AWS](https://github.com/rhiskey/vkaudioposter_Console/wiki/Deploy-to-AWS)
-Publish folder profile linux64
