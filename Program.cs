@@ -224,7 +224,7 @@ namespace vkaudioposter_Console
                 {
                     IsBackground = false
                 };
-                rabbitReciever.Start();
+                //rabbitReciever.Start();
 
                 //SendTestTrackMessages();
             }
@@ -334,7 +334,7 @@ namespace vkaudioposter_Console
         {
             try
             {
-                Rabbit.NewLog("Start Parser");
+                //Rabbit.NewLog("Start Parser");
 
                 string trackstop = "tracks";
                 if (switcher == "fresh")
@@ -357,7 +357,7 @@ namespace vkaudioposter_Console
                     var wallTotal = VkTools.CheckPostponedAndGetCount();
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($"Отложенных {wallTotal} постов");
-                    Rabbit.NewLog($"Отложенных {wallTotal} постов");
+                    //Rabbit.NewLog($"Отложенных {wallTotal} постов");
 
                     // TODO: Остановка
                     if (threadstopflag == true || wallTotal == 150)
@@ -365,7 +365,7 @@ namespace vkaudioposter_Console
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
                         Logging.ErrorLogging($"Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
-                        Rabbit.NewLog($"Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
+                        //Rabbit.NewLog($"Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
                         break;
                     }
 
@@ -387,7 +387,7 @@ namespace vkaudioposter_Console
                         Console.WriteLine(exc);
                     }
 
-                    Rabbit.NewLog($"Search Tracks in VK: {style.PlaylistName}");
+                    //Rabbit.NewLog($"Search Tracks in VK: {style.PlaylistName}");
                     SearchTracksVk(style);
                     do
                     {
@@ -424,7 +424,7 @@ namespace vkaudioposter_Console
                             //Меняем фотку
                             postcounter++;
 
-                            Rabbit.NewLog("Photo Parser started");
+                            //Rabbit.NewLog("Photo Parser started");
                             photourl = PhotoParserAuto(photostock_new, postcounter, style.PlaylistName, stockPage);
 
                             if (photourl == null)
@@ -461,7 +461,7 @@ namespace vkaudioposter_Console
                         }
                         finally
                         {
-                            Rabbit.NewLog("Download Photo");
+                            //Rabbit.NewLog("Download Photo");
                             try
                             {
                                 bool isImageExist = ImageWorkers.DownloadImage(photourl, photofilename);
@@ -500,7 +500,7 @@ namespace vkaudioposter_Console
                         Console.WriteLine("Добавили треки в список вложений");
 
                         Console.WriteLine("Размещаем пост на стену");
-                        Rabbit.NewLog("Размещаем пост на стену");
+                        //Rabbit.NewLog("Размещаем пост на стену");
 
                         if (photo_exist == true) //если вообще скачалась фотка
                         {
@@ -526,7 +526,7 @@ namespace vkaudioposter_Console
                 }
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Процесс завершен!");
-                Rabbit.NewLog("Процесс завершен!");
+                //Rabbit.NewLog("Процесс завершен!");
                 postcounter = 1;
             }
             catch (ThreadAbortException exc)
@@ -891,7 +891,7 @@ namespace vkaudioposter_Console
                                     continue;
                                 }
          
-                                Rabbit.NewPostedTrack(current_track, styletoDB.PlaylistName, publication_date);
+                                //Rabbit.NewPostedTrack(current_track, styletoDB.PlaylistName, publication_date);
                                 SearchingList.Add(new Track(url2, FullId));
 
                                 //Добавить треки в Quue очередь или класс при публикации заливать, очищать при нажатии отмена
@@ -1454,7 +1454,7 @@ namespace vkaudioposter_Console
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Пост опубликован! {MessageToAttach}");
-                    Rabbit.NewLog($"Пост опубликован! {MessageToAttach}");
+                    //Rabbit.NewLog($"Пост опубликован! {MessageToAttach}");
 
                     ClearAll();
                     posted = true;
@@ -1548,7 +1548,7 @@ namespace vkaudioposter_Console
 
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Пост, увеличила дату {LastDatePosted}, опубликован! {MessageToAttach}");
-                        Rabbit.NewLog($"Пост, увеличила дату {LastDatePosted}, опубликован! {MessageToAttach}");
+                        //Rabbit.NewLog($"Пост, увеличила дату {LastDatePosted}, опубликован! {MessageToAttach}");
 
                         ClearAll();
                         posted = true;
@@ -1618,10 +1618,9 @@ namespace vkaudioposter_Console
             //for (int i = 0; i < 50; i++)
             //{
             while (true)
-            {
-                //Random rand = new Random(DateTime.Now.Second);
-                Rabbit.NewPostedTrack(Rabbit.RandomString(10), Rabbit.RandomString(5), DateTime.Now);
-                //Rabbit.NewPostedTrack("TRFN", "BASS", DateTime.Now);
+            {                
+                //Rabbit.NewPostedTrack(Rabbit.RandomString(10), Rabbit.RandomString(5), DateTime.Now);
+
                 Thread.Sleep(2000);
             }
             //}
