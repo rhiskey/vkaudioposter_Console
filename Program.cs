@@ -34,8 +34,7 @@ namespace vkaudioposter_Console
     class Program
     {
         #region StaticVars
-        //TODO: read from .env
-
+        private static bool firstRun; //create DB, initial seed
         //ПолучаетсяВ приложении своем
         //Приложение группы доступ к группе, получается в самом приложении в ручную Standalone приложение		
 
@@ -89,7 +88,7 @@ namespace vkaudioposter_Console
         public static List<Chart> ChartList = new List<Chart>();
         #endregion
 
-
+       
         private string MessageToAttach;
         private bool posted = false; //опубликован?
         private bool tracks_attached = false;
@@ -171,6 +170,7 @@ namespace vkaudioposter_Console
             //efDB = DotNetEnv.Env.GetString("EF_DATABASE");
             //efUser = DotNetEnv.Env.GetString("EF_USER");
             //efPass = DotNetEnv.Env.GetString("EF_PASSWORD");
+            firstRun = DotNetEnv.Env.GetBool("FIRST_RUN");
         }
 
         private void OnLoad()
@@ -224,13 +224,16 @@ namespace vkaudioposter_Console
             {
                 LoadConfigsFromEnv();
                 // Create Database with schema 
-                //vkaudioposter_ef.Program.LoadConfig();
 
-                ///If want to delete -> pass TRUE             
-                //vkaudioposter_ef.CreateInitialSchema.CreateSchema(false);
-                //vkaudioposter_ef.Program.InsertData(false);
-                //vkaudioposter_ef.Program.CreateStoredProceduresViewsAndFunctions(false);
+                if (firstRun == true)
+                {
+                    vkaudioposter_ef.Program.LoadConfig();
 
+                    ///If want to delete -> pass TRUE             
+                    vkaudioposter_ef.CreateInitialSchema.CreateSchema(true);
+                    vkaudioposter_ef.Program.InsertData(true);
+                    vkaudioposter_ef.Program.CreateStoredProceduresViewsAndFunctions(true);
+                }
                 if (startOnce == true)
                     StatusChecker.ApiStart();
             }
