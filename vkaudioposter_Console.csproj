@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Compile Remove="API\ApiCommands.cs" />
+    <Compile Remove="API\Redis.cs" />
     <Compile Remove="Classes\WallPost.cs" />
     <Compile Remove="Tools\Notifications.cs" />
     <Compile Remove="Tools\StyleFileClass.cs" />
