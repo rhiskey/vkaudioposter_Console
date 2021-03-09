@@ -101,7 +101,7 @@ namespace vkaudioposter_Console
         public static List<Chart> ChartList = new List<Chart>();
         #endregion
 
-        #region DynamicVars
+
         private string MessageToAttach;
         private bool posted = false; //опубликован?
         private bool tracks_attached = false;
@@ -132,7 +132,7 @@ namespace vkaudioposter_Console
 
         Queue<Photostock_class> photostockQueue = new Queue<Photostock_class>();
         Queue<WallPostParams> wallPostQueue = new Queue<WallPostParams>();
-        #endregion
+
 
         #region Config
         /// <summary>
@@ -357,7 +357,6 @@ namespace vkaudioposter_Console
                     var wallTotal = VkTools.CheckPostponedAndGetCount();
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($"Отложенных {wallTotal} постов");
-
                     //Rabbit.NewLog($"Отложенных {wallTotal} постов");
 
                     // TODO: Остановка
@@ -866,14 +865,17 @@ namespace vkaudioposter_Console
                         if (json != null)
                         {
                             string strWithoutSpaces = url2.Replace("%20", " "); //Запрос поиска Имя+трек+микс
-                            string FullId = StringWorkers.GetFullIdFromString(strWithoutSpaces, json);//нашли в запросе ID первой песни 
+                            string FullId = StringWorkers.GetFullIdFromString(strWithoutSpaces, json);//нашли в запросе ID первой песни -111111111_222222222
 
                             if (FullId != "0") //если нашли трек в поиске
                             {
+                                var mediaOwnId = StringWorkers.GetOwnIdAndMediaIdFromFullId(FullId);
+                                int ownId = mediaOwnId.Item1;
+                                int mediaId = mediaOwnId.Item2;
                                 //Попытаться трек в БД записать
                                 try
                                 {
-                                    DBUtils.InsertFoundTrackInDB(current_track, styletoDB, publication_date, false);
+                                    DBUtils.InsertFoundTrackInDB(current_track, styletoDB, publication_date, false, ownId, mediaId);
                                 }
                                 catch (Exception ex) //Если любая ошибка, перейти к след.треку!
                                 {
@@ -892,7 +894,7 @@ namespace vkaudioposter_Console
                                     continue;
                                 }
          
-                               // Rabbit.NewPostedTrack(current_track, styletoDB.PlaylistName, publication_date);
+                                //Rabbit.NewPostedTrack(current_track, styletoDB.PlaylistName, publication_date);
                                 SearchingList.Add(new Track(url2, FullId));
 
                                 //Добавить треки в Quue очередь или класс при публикации заливать, очищать при нажатии отмена
@@ -989,7 +991,7 @@ namespace vkaudioposter_Console
                         //Попытаться трек в БД записать
                         try
                         {
-                            DBUtils.InsertFoundTrackInDB(fullTrackName, styletoDB, publication_date, false);
+                            DBUtils.InsertFoundTrackInDB(fullTrackName, styletoDB, publication_date, false, (int)ownID, (int)mediaID);
                         }
                         catch (Exception ex) //Если любая ошибка, перейти к след.треку!
                         {
@@ -1619,8 +1621,9 @@ namespace vkaudioposter_Console
             //for (int i = 0; i < 50; i++)
             //{
             while (true)
-            {
-                Rabbit.NewPostedTrack(Rabbit.RandomString(10), Rabbit.RandomString(5), DateTime.Now);
+            {                
+                //Rabbit.NewPostedTrack(Rabbit.RandomString(10), Rabbit.RandomString(5), DateTime.Now);
+
                 Thread.Sleep(2000);
             }
             //}

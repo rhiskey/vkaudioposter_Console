@@ -105,6 +105,27 @@ namespace vkaudioposter_Console.Tools
             return subs2;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fullId"></param>
+        /// <returns>ownerId and mediaId</returns>
+        public static (int, int) GetOwnIdAndMediaIdFromFullId(string fullId)
+        {
+            int ownId = 0, mediaId = 0;
+            int lowSpaceIndex = fullId.IndexOf('_');
+            if (Int32.TryParse(fullId.Substring(0, lowSpaceIndex), out int ownIdParsed))
+            {
+                ownId = ownIdParsed;
+                Int32.TryParse(fullId.Remove(0, lowSpaceIndex + 1), out int mediaIdParsed);
+                mediaId = mediaIdParsed;
+                //Console.WriteLine(ownIdParsed);
+            }
+            else
+            {
+                Console.WriteLine($"Int32.TryParse could not parse '{fullId.Substring(0, lowSpaceIndex)}' to an int.");
+            }
+            return (ownId, mediaId);
+        }
     }
 }
