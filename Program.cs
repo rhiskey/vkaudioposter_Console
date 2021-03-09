@@ -68,7 +68,7 @@ namespace vkaudioposter_Console
         //Spotify
         public static string clientId;
         public static string clientSecret;
-        public static Random random = new Random();
+        public static Random random = new();
 
         private static readonly int searchCoolDown = 700; //ms для поиска по apiяws
         
@@ -80,12 +80,12 @@ namespace vkaudioposter_Console
         private static DateTime publication_date; //для wall.post
         private static string photofilename = "tempimage.jpg"; //скачанное фото
         private static readonly int trackscount = 100; //100
-        private static DateTime LastDatePosted = new DateTime();
+        private static DateTime LastDatePosted;
         private static string userAccessToken; //Скачать музыку если не apiяws
         private static bool apiWS = true; //Использовать при поиске APIЯWS или VK API (бесплатно)
 
         private static List<FormattedPlaylist> allPlaylists;
-        public static List<Chart> ChartList = new List<Chart>();
+        public static List<Chart> ChartList = new();
         #endregion
 
        
@@ -104,21 +104,21 @@ namespace vkaudioposter_Console
         private const int max_photo = 10; //Макс фоток в контейнере (для девиан = 24) Defalt:10
         private const int stockMaxPages = 5; //Макс число страниц для парсинга 
 
-        public List<string> SelectedGenre = new List<string>();
-        public List<string> PhotoStock = new List<string>();
+        public List<string> SelectedGenre = new();
+        public List<string> PhotoStock = new();
 
-        private List<Track> SearchingList = new List<Track>(); //Список найденных треков
+        private List<Track> SearchingList = new(); //Список найденных треков
 
-        private List<Track> SelectedTrackList = new List<Track>();
-        private List<MediaAttachment> attachments = new List<MediaAttachment>();
+        private List<Track> SelectedTrackList = new();
+        private List<MediaAttachment> attachments = new();
         //For COnsole
-        private List<string> CB_PhotoStock = new List<string>();
+        private List<string> CB_PhotoStock = new();
         //private List<string> LSTBOX_Genres = new List<string>();
 
-        private List<string> LstBox_AddedTracks = new List<string>();
+        private List<string> LstBox_AddedTracks = new();
 
-        Queue<Photostock_class> photostockQueue = new Queue<Photostock_class>();
-        Queue<WallPostParams> wallPostQueue = new Queue<WallPostParams>();
+        Queue<Photostock_class> photostockQueue = new();
+        Queue<WallPostParams> wallPostQueue = new();
 
 
         #region Config
@@ -201,6 +201,11 @@ namespace vkaudioposter_Console
 
         private static void Main(string[] args)
         {
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = false;
@@ -208,7 +213,7 @@ namespace vkaudioposter_Console
 
             try
             {
-                Thread rabbitReciever = new Thread(new ThreadStart(Rabbit.CommandsReciever))
+                Thread rabbitReciever = new(new ThreadStart(Rabbit.CommandsReciever))
                 {
                     IsBackground = false
                 };
@@ -248,7 +253,7 @@ namespace vkaudioposter_Console
 
             public static void ApiStart()
             {
-                Program P = new Program();
+                Program P = new();
 
                 P.OnLoad();
 
@@ -261,7 +266,7 @@ namespace vkaudioposter_Console
 
                 if (P.wallPostQueue.Count != 0) //Если в очереди есть посты
                 {
-                    VkApi api = new VkApi();
+                    VkApi api = new();
 
                     api.Authorize(new ApiAuthParams
                     {
@@ -467,7 +472,7 @@ namespace vkaudioposter_Console
                                 Logging.ErrorLogging(ex);
                                 Logging.ReadError();
                                 // Если не смогли скачать основную и заглушку
-                                using WebClient webClient = new WebClient();
+                                using WebClient webClient = new();
                                 //Качаем заглушку 3 - pink girl
                                 webClient.DownloadFile(@"https://sun9-68.userapi.com/impg/alHziWJBnm2jUWkW4F0CNnsC1nTmpjrE38Xlmg/0AE3-4o5K6M.jpg?size=1200x1414&quality=96&proxy=1&sign=7b63d1207aa5e2de667afd982d14937c&type=album", photofilename);
                                 //webClient.DownloadFile("https://sun9-71.userapi.com/c638422/v638422659/24dde/CrNKNnDTC1M.jpg", photofilename);
@@ -683,7 +688,7 @@ namespace vkaudioposter_Console
 
                     string Url = "https://www.beatport.com/genre/" + style_search + trackstop; // +"?per-page=150"; 
 
-                    HtmlWeb web = new HtmlWeb();
+                    HtmlWeb web = new();
                     HtmlAgilityPack.HtmlDocument doc = web.Load(Url);
 
                     int sw = 2;
@@ -756,7 +761,7 @@ namespace vkaudioposter_Console
         /// <param name="styletoDB"></param>
         public void MakeUrlFromLines(List<Chart> tracksToFind, FormattedPlaylist styletoDB)
         {
-            VkApi api = new VkApi();
+            VkApi api = new();
 
             if (apiWS == false)
                 try
@@ -815,7 +820,7 @@ namespace vkaudioposter_Console
                 //Приводим название к видукак В БД
                 string current_track = K.Replace("\'", "\"");
 
-                List<string> fmtUnfoundTracks = new List<string>();
+                List<string> fmtUnfoundTracks = new();
                 foreach (var uT in unfoundTracks)
                 {
                     var newT = uT.Replace("%20", "");
@@ -824,7 +829,7 @@ namespace vkaudioposter_Console
 
                 //unfoundTracks = unfoundTracks.Replace("%20", "");
 
-                List<string> fmtPostedTracks = new List<string>();
+                List<string> fmtPostedTracks = new();
                 foreach (var pT in postedTracks)
                 {
                     var newT = pT.Replace("%20", "");
@@ -880,7 +885,7 @@ namespace vkaudioposter_Console
                                     {
                                         DBUtils.InsertUnfoundTrackInDB(current_track, styletoDB, false);
                                     }
-                                    catch (Exception ex2) { Console.ForegroundColor = ConsoleColor.DarkRed; Console.WriteLine("Dublicate in UnfoundTracks...skip"); continue; }
+                                    catch (Exception ex2) { Console.ForegroundColor = ConsoleColor.DarkRed; Console.WriteLine($"Dublicate in UnfoundTracks...skip"); continue; }
 
                                     continue;
                                 }
@@ -898,7 +903,7 @@ namespace vkaudioposter_Console
                                 {
                                     DBUtils.InsertUnfoundTrackInDB(current_track, styletoDB, false);
                                 }
-                                catch (Exception e) { Console.ForegroundColor = ConsoleColor.DarkGray; Console.WriteLine("Dublicate in UnfoundTracks...skip");/* Logging.ErrorLogging(e); */ continue; };
+                                catch (Exception e) { Console.ForegroundColor = ConsoleColor.DarkGray; Console.WriteLine($"Dublicate in UnfoundTracks...skip");/* Logging.ErrorLogging(e); */ continue; };
                             }
                             //если не нашли не добавляем в массив
                             //если счетчик достиг 9 треков, остановить поиск!
@@ -1052,7 +1057,7 @@ namespace vkaudioposter_Console
                 //скачиваем страницу
                 try
                 {
-                    HtmlWeb web = new HtmlWeb();
+                    HtmlWeb web = new();
                     doc = web.Load(photostock);
                 }
                 catch (Exception ex)
@@ -1360,6 +1365,8 @@ namespace vkaudioposter_Console
         /// </summary>
         /// <param name="attachments"></param>
         /// <param name="fmtPlaylist"></param>
+
+#nullable enable
         public void PosterOnWall(List<MediaAttachment> attachments, FormattedPlaylist? fmtPlaylist)
         {
             DateTime localDate = DateTime.Now;
@@ -1369,7 +1376,7 @@ namespace vkaudioposter_Console
             MessageToAttach = postMessage;
 
             Console.WriteLine("Авторизация для поста");
-            VkApi api = new VkApi();
+            VkApi api = new();
             //Авторизация
             api.Authorize(new ApiAuthParams
             {

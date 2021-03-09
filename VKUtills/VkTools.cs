@@ -17,7 +17,7 @@ namespace vkaudioposter_Console.VKUtills
     {
         public static ulong CheckPostponedAndGetCount()
         {
-            VkApi api = new VkApi();
+            VkApi api = new();
             api.Authorize(new ApiAuthParams
             {
                 AccessToken = Program.Token
@@ -46,7 +46,7 @@ namespace vkaudioposter_Console.VKUtills
 
         public static (List<MediaAttachment>, int) AddPhotoToAttachFromPC(string imagefile, List<MediaAttachment> attachments, string styleFilename, string postMessage)
         {
-            var sendTuple = SendOnServer(imagefile, postMessage);
+            var sendTuple = SendOnServerOld(imagefile, postMessage);
 
             attachments.AddRange(sendTuple);
             //bool isStyleAdded = sendTuple.Item2; 
@@ -56,9 +56,9 @@ namespace vkaudioposter_Console.VKUtills
         }
 
         //Загрузка фото на стену и добавление во вложенные
-        public static IReadOnlyCollection<Photo> SendOnServer(string photoFilename, string postMessage)
+        public static IReadOnlyCollection<Photo> SendOnServerOld(string photoFilename, string postMessage)
         {
-            VkApi api = new VkApi();
+            VkApi api = new();
 
             //Авторизация
             api.Authorize(new ApiAuthParams
@@ -70,14 +70,14 @@ namespace vkaudioposter_Console.VKUtills
             Console.WriteLine("Авторизировались для загрузки фото на стену");
             UploadServerInfo getWallUploadServer = api.Photo.GetWallUploadServer(Program.groupid);
             string uploadurl = getWallUploadServer.UploadUrl;
-            long? userid = getWallUploadServer.UserId;
-            long? albumid = getWallUploadServer.AlbumId;
+            //long? userid = getWallUploadServer.UserId;
+            //long? albumid = getWallUploadServer.AlbumId;
             string responseImg = null;
             IReadOnlyCollection<Photo> photolist = null;
             // Загрузить фотографию.
             try
             {
-                WebClient wc = new WebClient();
+                WebClient wc = new();
                 //string responseImg = null;
                 //if (downloaded == false)
                 //{
@@ -115,7 +115,7 @@ namespace vkaudioposter_Console.VKUtills
 
         public static IReadOnlyCollection<Photo> SendOnServer(string photoFilename, string postMessage, List<string> trackNamesList)
         {
-            VkApi api = new VkApi();
+            VkApi api = new();
 
             api.Authorize(new ApiAuthParams
             {
@@ -125,17 +125,17 @@ namespace vkaudioposter_Console.VKUtills
             Console.WriteLine("Авторизировались для загрузки фото на стену");
             UploadServerInfo getWallUploadServer = api.Photo.GetWallUploadServer(Program.groupid);
             string uploadurl = getWallUploadServer.UploadUrl;
-            long? userid = getWallUploadServer.UserId;
-            long? albumid = getWallUploadServer.AlbumId;
+            //long? userid = getWallUploadServer.UserId;
+            //long? albumid = getWallUploadServer.AlbumId;
             string responseImg = null;
             IReadOnlyCollection<Photo> photolist = null;
 
             try
             {
-                WebClient wc = new WebClient();
+                WebClient wc = new();
 
                 responseImg = Encoding.ASCII.GetString(wc.UploadFile(uploadurl, photoFilename));
-                Thread.Sleep(200);
+                //Thread.Sleep(200);
                 responseImg.GetHashCode();
 
                 var msg = postMessage;
@@ -177,7 +177,7 @@ namespace vkaudioposter_Console.VKUtills
 
 
         //Отложенная запись  выбор даты-Конвертация
-        public DateTime DatePick(string onlydate, string curTimeLong)
+        public static DateTime DatePick(string onlydate, string curTimeLong)
         {
 
             // 06.03.2014 14:10:00
@@ -201,7 +201,7 @@ namespace vkaudioposter_Console.VKUtills
                 }
             }
 
-            DateTime data_time = new DateTime(year, month, day, hour, min, 0);
+            DateTime data_time = new(year, month, day, hour, min, 0);
             return data_time;
         }
 
@@ -251,18 +251,18 @@ namespace vkaudioposter_Console.VKUtills
 
         }
 
-        public DateTime GetLastPostponedPostDate()
+        public static DateTime GetLastPostponedPostDate()
         {
             DateTime dt = DateTime.Now;
 
-            VkApi api = new VkApi();
+            VkApi api = new();
             api.Authorize(new ApiAuthParams
             {
                 AccessToken = Program.Token
             });
 
             //api.Wall.GetById();
-            WallGetParams wallGetParams = new WallGetParams();
+            WallGetParams wallGetParams = new();
             wallGetParams.Filter = new VkNet.Enums.SafetyEnums.WallFilter();
             
 
@@ -439,7 +439,7 @@ namespace vkaudioposter_Console.VKUtills
         }
         public int CheckPostponed()
         {
-            VkApi api = new VkApi();
+            VkApi api = new();
             //Авторизация
             api.Authorize(new ApiAuthParams
             {

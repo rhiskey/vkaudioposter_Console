@@ -296,10 +296,10 @@ namespace vkaudioposter.MySQL
             if (checkLastPostedInVK)
             {
                 // Get last date from postponed wall post
-                VkTools vkTools = new VkTools();
+                //VkTools vkTools = new();
                 try
                 {
-                    publication_date = vkTools.GetLastPostponedPostDate();
+                    publication_date = VkTools.GetLastPostponedPostDate();
                 }
                 catch (Exception ex)
                 {

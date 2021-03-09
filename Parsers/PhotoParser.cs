@@ -15,7 +15,7 @@ namespace vkaudioposter_Console.Parsers
             try
             {
                 var nodes = doc.DocumentNode.SelectNodes(container); //Контейнер с картинками на странице
-                List<string> urlList = new List<string>(nodes.Count); //Список ссылок на полные страницы фоток
+                List<string> urlList = new(nodes.Count); //Список ссылок на полные страницы фоток
 
                 if (nodes != null)
                 {
@@ -32,7 +32,7 @@ namespace vkaudioposter_Console.Parsers
 
                 url = urlList[postcounter - 1];
 
-                HtmlWeb web_img = new HtmlWeb();
+                HtmlWeb web_img = new();
                 doc = web_img.Load(url);
 
                 url = doc.DocumentNode.SelectNodes("//*[@id=\"root\"]/main/div/div[1]/div[1]/div/div[2]/div[1]/div/img")[0].Attributes[3].Value; //Ссылка на 1 фото new
@@ -46,9 +46,9 @@ namespace vkaudioposter_Console.Parsers
         {
             //Вход /html/body/div[5]/div
 
-            string url = null;
+            string url;
             var nodes = doc.DocumentNode.SelectNodes(container); //Контейнер с картинками на странице
-            List<string> urlList = new List<string>(nodes.Count); //Список ссылок на полные страницы фоток
+            List<string> urlList = new(nodes.Count); //Список ссылок на полные страницы фоток
 
             if (nodes != null)
             {
@@ -66,7 +66,7 @@ namespace vkaudioposter_Console.Parsers
 
             url = urlList[postcounter - 1];
 
-            HtmlWeb web_img = new HtmlWeb();
+            HtmlWeb web_img = new();
             doc = web_img.Load(url);
 
             url = doc.DocumentNode.SelectNodes("/html/body/div[4]/div/div[1]/article/div/div[1]/picture/a/img")[0].Attributes[3].Value; //Ссылка на 1 фото
@@ -77,9 +77,9 @@ namespace vkaudioposter_Console.Parsers
 
         public static string PixabayParser(HtmlAgilityPack.HtmlDocument doc, string container, int postcounter)
         {
-            string url = null;
+            string url;
             var nodes = doc.DocumentNode.SelectNodes(container); //Контейнер с картинками на странице
-            List<string> urlList = new List<string>(nodes.Count); //Список ссылок на полные страницы фоток
+            List<string> urlList = new(nodes.Count); //Список ссылок на полные страницы фоток
 
             if (nodes != null)
             {
@@ -98,7 +98,7 @@ namespace vkaudioposter_Console.Parsers
 
             url = urlList[postcounter - 1];
 
-            HtmlWeb web_img = new HtmlWeb();
+            HtmlWeb web_img = new();
             doc = web_img.Load(url);
 
             url = doc.DocumentNode.SelectNodes("//*[@id=\"media_container\"]/img")[0].Attributes[2].Value; //Ссылка на 1 фото
