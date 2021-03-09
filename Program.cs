@@ -35,14 +35,10 @@ namespace vkaudioposter_Console
     {
         #region StaticVars
         //TODO: read from .env
-        public static string DB_HOST; //local
-        public static string DB_NAME;
-        public static string DB_USER;
-        public static string DB_PASS;
 
         //ПолучаетсяВ приложении своем
         //Приложение группы доступ к группе, получается в самом приложении в ручную Standalone приложение		
-        //s static string accesstoken; //добавить фото и музыку вложения на стену
+
         //логи в личку
         public static string kateMobileToken;
 
@@ -53,18 +49,10 @@ namespace vkaudioposter_Console
         public static bool threadstopflag = false;
         public static bool saveLogs = true;
 
-        public static string redisHost;
-        public static int redisPort;
-        public static string redisPassword;
-
-        public static string efUser;
-        public static string efPass;
-        public static string efDB;
-
         //Авторизация для публикаций https://vkhost.github.io - сообщество + приложение
         //Получается https://oauth.vk.com/authorize?client_id=7361627&scope=notify,photos,friends,audio,video,notes,pages,docs,status,questions,offers,wall,groups,notifications,stats,ads,offline&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token                                                                                                               
         public static string Token; //kateMobileToken; //Загрузка фото + публикация треков (сделать через свое приложение)
-        public static string accesstoken; //add tracks to attachments
+        public static string accesstoken; //add tracks to attachments =добавить фото и музыку вложения на стену. Приложение группы доступ к группе, получается в самом приложении в ручную Standalone приложение	
         public static ulong? ownerid3; //для сохранения фото на стене
         public static ulong? groupid3;//для  сохранения фото на стене
         public static long groupid; //для загрузки на сервер
@@ -144,10 +132,10 @@ namespace vkaudioposter_Console
 
             hoursperiod = DotNetEnv.Env.GetInt("HOURS_PERIOD");
             minutesperiod = DotNetEnv.Env.GetInt("MINUTES_PERIOD");
-            DB_HOST = DotNetEnv.Env.GetString("DB_HOST");
-            DB_USER = DotNetEnv.Env.GetString("DB_USER");
-            DB_PASS = DotNetEnv.Env.GetString("DB_PASS");
-            DB_NAME = DotNetEnv.Env.GetString("DB_NAME");
+            //DB_HOST = DotNetEnv.Env.GetString("DB_HOST");
+            //DB_USER = DotNetEnv.Env.GetString("DB_USER");
+            //DB_PASS = DotNetEnv.Env.GetString("DB_PASS");
+            //DB_NAME = DotNetEnv.Env.GetString("DB_NAME");
             accesstoken = DotNetEnv.Env.GetString("ACCESS_TOKEN");
             kateMobileToken = DotNetEnv.Env.GetString("KATE_MOBILE_TOKEN");
             Token = DotNetEnv.Env.GetString("TOKEN");
@@ -172,17 +160,17 @@ namespace vkaudioposter_Console
 
             startOnce = DotNetEnv.Env.GetBool("START_ONCE");
 
-            torHost = DotNetEnv.Env.GetString("TOR_HOST");
-            torPort = DotNetEnv.Env.GetInt("TOR_PORT");
+            //torHost = DotNetEnv.Env.GetString("TOR_HOST");
+            //torPort = DotNetEnv.Env.GetInt("TOR_PORT");
             saveLogs = DotNetEnv.Env.GetBool("SAVE_LOGS");
 
-            redisHost = DotNetEnv.Env.GetString("REDIS_HOST");
-            redisPort = DotNetEnv.Env.GetInt("REDIS_PORT");
-            redisPassword = DotNetEnv.Env.GetString("REDIS_PASSWORD");
+            //redisHost = DotNetEnv.Env.GetString("REDIS_HOST");
+            //redisPort = DotNetEnv.Env.GetInt("REDIS_PORT");
+            //redisPassword = DotNetEnv.Env.GetString("REDIS_PASSWORD");
 
-            efDB = DotNetEnv.Env.GetString("EF_DATABASE");
-            efUser = DotNetEnv.Env.GetString("EF_USER");
-            efPass = DotNetEnv.Env.GetString("EF_PASSWORD");
+            //efDB = DotNetEnv.Env.GetString("EF_DATABASE");
+            //efUser = DotNetEnv.Env.GetString("EF_USER");
+            //efPass = DotNetEnv.Env.GetString("EF_PASSWORD");
         }
 
         private void OnLoad()
@@ -236,7 +224,7 @@ namespace vkaudioposter_Console
             {
                 LoadConfigsFromEnv();
                 // Create Database with schema 
-                vkaudioposter_ef.Program.LoadConfig();
+                //vkaudioposter_ef.Program.LoadConfig();
 
                 ///If want to delete -> pass TRUE             
                 //vkaudioposter_ef.CreateInitialSchema.CreateSchema(false);
@@ -1482,7 +1470,7 @@ namespace vkaudioposter_Console
                     //Добавление в БД
                     try
                     {
-                        DBUtils.AddPostInDB(attachments, ownid, MessageToAttach, publication_date);
+                        //DBUtils.AddPostInDB(attachments, ownid, MessageToAttach, publication_date);
                     }
                     catch (Exception dbEX) { Console.WriteLine(dbEX.Message); Logging.ErrorLogging(dbEX); }
 

@@ -23,36 +23,3 @@ Several photo stocks to choose from, over provided musical genres (or Spotify pl
 
 ## [How To make it work?](https://github.com/rhiskey/vkaudioposter_Console/wiki)
 
-## ENV File or Docker ENV
-.env:
-```
-HOURS_PERIOD=2
-MINUTES_PERIOD=20
-DB_HOST=localhost
-RABBIT_HOST=localhost
-TOR_HOST=localhost
-TOR_PORT=9150
-DB_USER=user
-DB_PASS=pass
-DB_NAME=database
-KATE_MOBILE_TOKEN=vk
-TOKEN=vk
-URL=apiws
-OWNER_ID=1111111
-GROUP_ID=1111111
-CLIENT_ID=1111111
-CLIENT_SECRET=11111111
-ADMIN_ID=OWNER_ID
-AUTO_START=false
-START_ONCE=true
-SAVE_LOGS=true
-REDIS_HOST=localhost
-REDIS_PORT=6479
-REDIS_PASSWORD=pass
-EF_USER=user
-EF_PASSWORD=pass
-EF_DATABASE=db
-AWS_RDS_ENDPOINT=
-AWS_RDS_PASSWORD=
-AWS_USER=
-```
