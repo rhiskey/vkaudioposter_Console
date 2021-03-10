@@ -48,7 +48,10 @@ namespace vkaudioposter_Console.Parsers
                             artists = obj.Track.Artists;
 
                         trackname = obj.Track.Name.ToString();
-
+                        //TODO: (update spotiapi)
+                        //string prevURL = obj.Track.PreviewUrl;
+                        //var id = obj.Track.Id;
+         
                         if (artists != null)
                         {
 
@@ -57,7 +60,7 @@ namespace vkaudioposter_Console.Parsers
                                 fullartists += artist.Name.ToString() + " ";
                             }
 
-                            Program.ChartList.Add(new Chart(trackname, fullartists));
+                            Program.ChartList.Add(new Chart(trackname, fullartists));  
                         }
                         else continue;
 

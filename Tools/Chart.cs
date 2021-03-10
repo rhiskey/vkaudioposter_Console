@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -83,5 +84,15 @@ namespace vkaudioposter
         {
             return Trackname + " " + Author;
         }
+    }
+
+
+    //interface IEnumerable <T>
+    //{
+
+    //}
+    sealed class SpotyTracks : List<Chart>
+    {
+        
     }
 }

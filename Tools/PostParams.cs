@@ -26,7 +26,7 @@ namespace vkaudioposter
             return Atts.GetEnumerator();
         }
 
-        public void Add(IEnumerable <MediaAttachment> attachments)
+        public void Add(System.Collections.Generic.IEnumerable <MediaAttachment> attachments)
         {
             Atts.AddRange(attachments);
         }
