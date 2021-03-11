@@ -85,7 +85,7 @@ namespace vkaudioposter_Console
         private static bool apiWS = true; //Использовать при поиске APIЯWS или VK API (бесплатно)
 
         private static List<FormattedPlaylist> allPlaylists;
-        public static List<Chart> ChartList = new();
+        public static List<Chart> ChartList = new List<Chart>();
         #endregion
 
        
@@ -806,7 +806,7 @@ namespace vkaudioposter_Console
 
 
             //для каждой строки с названием
-            foreach (var trackobj in tracksToFind.ToList())
+            foreach (var trackobj in tracksToFind)
             {
                 string K = trackobj.GetTrackAndAuthors();
                 Console.ForegroundColor = ConsoleColor.Gray;
@@ -822,7 +822,7 @@ namespace vkaudioposter_Console
                 string current_track = K.Replace("\'", "\"");
 
                 List<string> fmtUnfoundTracks = new();
-                foreach (var uT in unfoundTracks.ToList())
+                foreach (var uT in unfoundTracks)
                 {
                     var newT = uT.Replace("%20", "");
                     fmtUnfoundTracks.Add(newT);
@@ -831,7 +831,7 @@ namespace vkaudioposter_Console
                 //unfoundTracks = unfoundTracks.Replace("%20", "");
 
                 List<string> fmtPostedTracks = new();
-                foreach (var pT in postedTracks.ToList())
+                foreach (var pT in postedTracks)
                 {
                     var newT = pT.Replace("%20", "");
                     fmtPostedTracks.Add(newT);
