@@ -346,8 +346,9 @@ namespace vkaudioposter_Console
                 bool photo_exist = false;
 
 
-                foreach (var style in playlists)
-               {
+                foreach (var style in playlists.ToList()) // if want  change list (remove elements)
+                {
+                    
                     photo_exist = false;
 
                     var wallTotal = VkTools.CheckPostponedAndGetCount();
@@ -805,7 +806,7 @@ namespace vkaudioposter_Console
 
 
             //для каждой строки с названием
-            foreach (var trackobj in tracksToFind)
+            foreach (var trackobj in tracksToFind.ToList())
             {
                 string K = trackobj.GetTrackAndAuthors();
                 Console.ForegroundColor = ConsoleColor.Gray;
@@ -821,7 +822,7 @@ namespace vkaudioposter_Console
                 string current_track = K.Replace("\'", "\"");
 
                 List<string> fmtUnfoundTracks = new();
-                foreach (var uT in unfoundTracks)
+                foreach (var uT in unfoundTracks.ToList())
                 {
                     var newT = uT.Replace("%20", "");
                     fmtUnfoundTracks.Add(newT);
@@ -830,7 +831,7 @@ namespace vkaudioposter_Console
                 //unfoundTracks = unfoundTracks.Replace("%20", "");
 
                 List<string> fmtPostedTracks = new();
-                foreach (var pT in postedTracks)
+                foreach (var pT in postedTracks.ToList())
                 {
                     var newT = pT.Replace("%20", "");
                     fmtPostedTracks.Add(newT);
