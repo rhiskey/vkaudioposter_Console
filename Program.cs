@@ -229,7 +229,7 @@ namespace vkaudioposter_Console
             {
                 LoadConfigsFromEnv();
                 // Create Database with schema 
-
+                //vkaudioposter_ef.Program.InsertRoles();
                 if (firstRun == true)
                 {
                     vkaudioposter_ef.Program.LoadConfig();
