@@ -159,8 +159,8 @@ namespace vkaudioposter_Console
 
             startOnce = DotNetEnv.Env.GetBool("START_ONCE");
 
-            //torHost = DotNetEnv.Env.GetString("TOR_HOST");
-            //torPort = DotNetEnv.Env.GetInt("TOR_PORT");
+            torHost = DotNetEnv.Env.GetString("TOR_HOST");
+            torPort = DotNetEnv.Env.GetInt("TOR_PORT");
             saveLogs = DotNetEnv.Env.GetBool("SAVE_LOGS");
 
             //redisHost = DotNetEnv.Env.GetString("REDIS_HOST");
