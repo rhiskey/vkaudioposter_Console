@@ -9,6 +9,7 @@ using vkaudioposter_ef.parser;
 using System.Linq;
 using vkaudioposter_Console.Classes;
 using vkaudioposter_Console.VKUtills;
+using vkaudioposter_ef.Model;
 
 namespace vkaudioposter.MySQL
 {
@@ -39,7 +40,7 @@ namespace vkaudioposter.MySQL
 
             using (var context = new vkaudioposter_ef.AppContext())
             {
-                playlists = context.Playlists.ToList();
+                playlists = context.Playlists.Where(p => p.Status == 1).ToList();
                 foreach (var elem in playlists)
                 {
                     //Get only ID 
@@ -165,14 +166,31 @@ namespace vkaudioposter.MySQL
             List<string> urls = new List<string>();
             using (var context = new vkaudioposter_ef.AppContext())
             {
-                photostocks = context.Photostocks.ToList();
+                photostocks = context.Photostocks.Where(p => p.Status == 1).ToList();
                 foreach (var stock in photostocks)
                     urls.Add(stock.Url);
             }
             return urls;
         }
 
+        public static ParserXpath GetPhotostockNodContainer(string photostockName)
+        {
+            ParserXpath xPath = new ParserXpath();
 
+            using (var context = new vkaudioposter_ef.AppContext())
+            {
+
+                var xPathId = (from stock in context.Photostocks
+                         where stock.Url == photostockName
+                         select stock.ParserXpathId).FirstOrDefault();
+
+                xPath = (from xp in context.ParserXpaths
+                         where xp.Id == xPathId
+                         select xp).FirstOrDefault();
+            }
+
+            return xPath;
+        }
         //// IN - Parameters of attachments and POST ownId, message, publDate
         //public static void AddPostInDB(List<MediaAttachment> mediaAttachments, long? ownerId, string message, DateTime publishDate)
         //{
@@ -263,25 +281,25 @@ namespace vkaudioposter.MySQL
         //    }
         //}
 
- //       // Получение из базы отложенных постов - формирование списка постов + вложений
- //       private List<WallPostParams> GetPostponedPromDB()
- //       {
- //           List<WallPostParams> postponedPostList = new List<WallPostParams>();
- //           //TODO
- //// SELECT * From vw_countposts()
+        //       // Получение из базы отложенных постов - формирование списка постов + вложений
+        //       private List<WallPostParams> GetPostponedPromDB()
+        //       {
+        //           List<WallPostParams> postponedPostList = new List<WallPostParams>();
+        //           //TODO
+        //// SELECT * From vw_countposts()
 
- //           // TODO Получить список постов из БД, получить список вложений, сопоставить в классе
+        //           // TODO Получить список постов из БД, получить список вложений, сопоставить в классе
 
- //           //for (int i = 0; i<= ppCount; i++)
- //           //{
- //           //    postponedPostList[i].Attachments = ; //TODO SELECT * FROM vw_attachments => where 
- //           //    postponedPostList[i].Message = ;
- //           //    postponedPostList[i].OwnerId = ;
- //           //    postponedPostList[i].PublishDate = ;
- //           //}
+        //           //for (int i = 0; i<= ppCount; i++)
+        //           //{
+        //           //    postponedPostList[i].Attachments = ; //TODO SELECT * FROM vw_attachments => where 
+        //           //    postponedPostList[i].Message = ;
+        //           //    postponedPostList[i].OwnerId = ;
+        //           //    postponedPostList[i].PublishDate = ;
+        //           //}
 
- //           return postponedPostList;
- //       }
+        //           return postponedPostList;
+        //       }
 
         /// <summary>
         /// 

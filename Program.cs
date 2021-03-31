@@ -28,6 +28,8 @@ using System.Data;
 using vkaudioposter_Console.Tools;
 using vkaudioposter_Console.API;
 using vkaudioposter_Console.Classes;
+using vkaudioposter_ef.Model;
+using Track = vkaudioposter.Track;
 
 namespace vkaudioposter_Console
 {
@@ -886,7 +888,7 @@ namespace vkaudioposter_Console
                                     {
                                         DBUtils.InsertUnfoundTrackInDB(current_track, styletoDB, false);
                                     }
-                                    catch (Exception ex2) { Console.ForegroundColor = ConsoleColor.DarkRed; Console.WriteLine($"Dublicate in UnfoundTracks...skip"); continue; }
+                                    catch (Exception ex2) { Console.ForegroundColor = ConsoleColor.DarkRed; /*Console.WriteLine($"Dublicate in UnfoundTracks...skip");*/ continue; }
 
                                     continue;
                                 }
@@ -904,7 +906,7 @@ namespace vkaudioposter_Console
                                 {
                                     DBUtils.InsertUnfoundTrackInDB(current_track, styletoDB, false);
                                 }
-                                catch (Exception e) { Console.ForegroundColor = ConsoleColor.DarkGray; Console.WriteLine($"Dublicate in UnfoundTracks...skip");/* Logging.ErrorLogging(e); */ continue; };
+                                catch (Exception e) { Console.ForegroundColor = ConsoleColor.DarkGray; /*Console.WriteLine($"Dublicate in UnfoundTracks...skip");*/ /* Logging.ErrorLogging(e); */ continue; };
                             }
                             //если не нашли не добавляем в массив
                             //если счетчик достиг 9 треков, остановить поиск!
@@ -1071,10 +1073,11 @@ namespace vkaudioposter_Console
                 switch (photostock)
                 {
                     case var someVal when new Regex(@"https://www.deviantart.com/topic/(\w*)", RegexOptions.IgnoreCase).IsMatch(someVal):
-                        nodContainer = "//*[@id=\"root\"]/div[1]/div/div/article/div/div[2]/div";//Контейнер с картинками на странице (последний grid)
+                        ParserXpath pXp = DBUtils.GetPhotostockNodContainer(photostock);
+                        nodContainer = pXp.Xpath;//Контейнер с картинками на странице (последний grid)
                         try
                         {
-                            url = PhotoParser.DevianPageParser(doc, nodContainer, i);
+                            url = PhotoParser.DevianPageParser(doc, nodContainer, i, pXp);
                         }
                         catch (System.NullReferenceException ex)
                         {
