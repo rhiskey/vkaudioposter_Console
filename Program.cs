@@ -37,6 +37,8 @@ namespace vkaudioposter_Console
     {
         #region StaticVars
         private static bool firstRun; //create DB, initial seed
+        public static bool useProxy; //To download images
+        public static bool debug; //logs from EF
         //ПолучаетсяВ приложении своем
         //Приложение группы доступ к группе, получается в самом приложении в ручную Standalone приложение		
 
@@ -131,6 +133,7 @@ namespace vkaudioposter_Console
         {
             DotNetEnv.Env.Load();
 
+            debug = DotNetEnv.Env.GetBool("DEBUG");
             hoursperiod = DotNetEnv.Env.GetInt("HOURS_PERIOD");
             minutesperiod = DotNetEnv.Env.GetInt("MINUTES_PERIOD");
             //DB_HOST = DotNetEnv.Env.GetString("DB_HOST");
@@ -173,6 +176,7 @@ namespace vkaudioposter_Console
             //efUser = DotNetEnv.Env.GetString("EF_USER");
             //efPass = DotNetEnv.Env.GetString("EF_PASSWORD");
             firstRun = DotNetEnv.Env.GetBool("FIRST_RUN");
+            useProxy = DotNetEnv.Env.GetBool("USE_PROXY");
         }
 
         private void OnLoad()
@@ -1549,6 +1553,7 @@ namespace vkaudioposter_Console
                         });
 
                         LastDatePosted = publication_date;
+                        
                         DBUtils.UpdatePublicationDateOfTracks(LstBox_AddedTracks, fmtPlaylist, LastDatePosted);
 
                         Console.ForegroundColor = ConsoleColor.Green;

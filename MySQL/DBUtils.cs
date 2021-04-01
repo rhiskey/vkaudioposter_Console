@@ -10,6 +10,7 @@ using System.Linq;
 using vkaudioposter_Console.Classes;
 using vkaudioposter_Console.VKUtills;
 using vkaudioposter_ef.Model;
+using vkaudioposter_Console;
 
 namespace vkaudioposter.MySQL
 {
@@ -78,6 +79,8 @@ namespace vkaudioposter.MySQL
                     postedTrackInDate.PlaylistId = postedTrackInDate.PlaylistId;
                     postedTrackInDate.Trackname = postedTrackInDate.Trackname;
                     postedTrackInDate.Date = publish_date;
+                    postedTrackInDate.MediaId = postedTrackInDate.MediaId;
+                    postedTrackInDate.OwnerId = postedTrackInDate.OwnerId;
                     context.SaveChanges();
                     //context.Update(postedTrackInDate);
                     //context.PostedTracks.UpdateRange();
@@ -88,48 +91,104 @@ namespace vkaudioposter.MySQL
 
         public static void InsertFoundTrackInDB(string trackname, FormattedPlaylist formattedPlaylist, DateTime publish_date, bool? isFirstTime, int ownerId = 0, int mediaId = 0)
         {
-            using var context = new vkaudioposter_ef.AppContext();
-            if (isFirstTime == true)
-                context.Database.EnsureDeleted();
-
-            // Creates the database if not exists
-            context.Database.EnsureCreated();
-
-
-            var pt1 = new PostedTrack
+            if (Program.debug == false)
             {
-                Trackname = trackname,
-                Date = publish_date,
-                //Playlist = formattedPlaylist,
-                PlaylistId = formattedPlaylist.Id,
-                OwnerId = ownerId,
-                MediaId = mediaId
-            };
+                try
+                {
+                    using var context = new vkaudioposter_ef.AppContext();
+                    if (isFirstTime == true)
+                        context.Database.EnsureDeleted();
 
-            context.PostedTracks.Add(pt1);
+                    // Creates the database if not exists
+                    context.Database.EnsureCreated();
 
-            context.SaveChanges();
+
+                    var pt1 = new PostedTrack
+                    {
+                        Trackname = trackname,
+                        Date = publish_date,
+                        //Playlist = formattedPlaylist,
+                        PlaylistId = formattedPlaylist.Id,
+                        OwnerId = ownerId,
+                        MediaId = mediaId
+                    };
+
+                    context.PostedTracks.Add(pt1);
+
+                    context.SaveChanges();
+                }
+                catch (Exception ex) { }
+            }
+            else
+            {
+                using var context = new vkaudioposter_ef.AppContext();
+                if (isFirstTime == true)
+                    context.Database.EnsureDeleted();
+
+                // Creates the database if not exists
+                context.Database.EnsureCreated();
+
+
+                var pt1 = new PostedTrack
+                {
+                    Trackname = trackname,
+                    Date = publish_date,
+                    //Playlist = formattedPlaylist,
+                    PlaylistId = formattedPlaylist.Id,
+                    OwnerId = ownerId,
+                    MediaId = mediaId
+                };
+
+                context.PostedTracks.Add(pt1);
+
+                context.SaveChanges();
+            }
+        
         }
-
 
         public static void InsertUnfoundTrackInDB(string trackname, FormattedPlaylist formattedPlaylist, bool? isFirstTime)
         {
-            using var context = new vkaudioposter_ef.AppContext();
-            if (isFirstTime == true)
-                context.Database.EnsureDeleted();
-
-            // Creates the database if not exists
-            context.Database.EnsureCreated();
-
-            var pt1 = new UnfoundTrack
+            if (Program.debug == false)
             {
-                Trackname = trackname,
-                PlaylistId = formattedPlaylist.Id
-            };
+                try
+                {
+                    using var context = new vkaudioposter_ef.AppContext();
+                    if (isFirstTime == true)
+                        context.Database.EnsureDeleted();
 
-            context.UnfoundTracks.Add(pt1);
+                    // Creates the database if not exists
+                    context.Database.EnsureCreated();
 
-            context.SaveChanges();
+                    var pt1 = new UnfoundTrack
+                    {
+                        Trackname = trackname,
+                        PlaylistId = formattedPlaylist.Id
+                    };
+
+                    context.UnfoundTracks.Add(pt1);
+
+                    context.SaveChanges();
+                } catch (Exception ex) { }
+            }
+            else
+            {
+                using var context = new vkaudioposter_ef.AppContext();
+                if (isFirstTime == true)
+                    context.Database.EnsureDeleted();
+
+                // Creates the database if not exists
+                context.Database.EnsureCreated();
+
+                var pt1 = new UnfoundTrack
+                {
+                    Trackname = trackname,
+                    PlaylistId = formattedPlaylist.Id
+                };
+
+                context.UnfoundTracks.Add(pt1);
+
+                context.SaveChanges();
+            }
         }
 
         public static List<string> GetUnfoundTracksFromDB(FormattedPlaylist playlist)

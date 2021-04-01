@@ -36,9 +36,13 @@ namespace vkaudioposter_Console.Parsers
                 HtmlWeb web_img = new();
                 doc = web_img.Load(url);
 
-                if (pxp != null)               
-                     url = doc.DocumentNode.SelectNodes(pxp.XpathInner)[0].Attributes[3].Value; //Ссылка на 1 фото new
-                else url = doc.DocumentNode.SelectNodes("//*[@id=\"root\"]/main/div/div[1]/div[1]/div/div[2]/div[1]/div/img")[0].Attributes[3].Value; //Ссылка на 1 фото new
+                //if (pxp != null)
+                //{
+                //    string inner = pxp.XpathInner;
+                //    url = doc.DocumentNode.SelectNodes(pxp.XpathInner)[0].Attributes[3].Value; //One photo direct link
+                //}
+                //else 
+                url = doc.DocumentNode.SelectNodes("//*[@id=\"root\"]/main/div/div[1]/div[1]/div/div[2]/div[1]/div/img")[0].Attributes[3].Value; //Ссылка на 1 фото new
             }
             catch (Exception ex) { Logging.ErrorLogging(ex); Logging.ReadError(); }
             return url;

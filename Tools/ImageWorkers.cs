@@ -38,7 +38,8 @@ namespace vkaudioposter_Console.Tools
                 try
                 {
                     ///VPN
-                    webClient.Proxy = proxy;
+                    if(Program.useProxy == true)
+                        webClient.Proxy = proxy;
                     webClient.DownloadFile(photourl, photofilename);
                     webClient.Dispose();
                     downloaded = true;
