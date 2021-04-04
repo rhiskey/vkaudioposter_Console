@@ -30,6 +30,7 @@ using vkaudioposter_Console.API;
 using vkaudioposter_Console.Classes;
 using vkaudioposter_ef.Model;
 using Track = vkaudioposter.Track;
+using vkaudioposter_Console.DateStructures;
 
 namespace vkaudioposter_Console
 {
@@ -207,6 +208,25 @@ namespace vkaudioposter_Console
 
         private static void Main(string[] args)
         {
+            CircularDoublyLinkedList<string> circularList = new CircularDoublyLinkedList<string>();
+            circularList.Add("Tom");
+            circularList.Add("Bob");
+            circularList.Add("Alice");
+            circularList.Add("Sam");
+
+            foreach (var item in circularList)
+            {
+                Console.WriteLine(item);
+            }
+
+            circularList.Remove("Bob");
+            Console.WriteLine("\n После удаления: \n");
+            foreach (var item in circularList)
+            {
+                Console.WriteLine(item);
+            }
+
+
             if (args is null)
             {
                 throw new ArgumentNullException(nameof(args));
@@ -1460,7 +1480,7 @@ namespace vkaudioposter_Console
                     LastDatePosted = publication_date;
 
                     DBUtils.UpdatePublicationDateOfTracks(LstBox_AddedTracks, fmtPlaylist, LastDatePosted);
-
+    
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Пост опубликован! {MessageToAttach}");
                     //Rabbit.NewLog($"Пост опубликован! {MessageToAttach}");
@@ -1553,7 +1573,7 @@ namespace vkaudioposter_Console
                         });
 
                         LastDatePosted = publication_date;
-                        
+
                         DBUtils.UpdatePublicationDateOfTracks(LstBox_AddedTracks, fmtPlaylist, LastDatePosted);
 
                         Console.ForegroundColor = ConsoleColor.Green;

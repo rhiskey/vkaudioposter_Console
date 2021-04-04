@@ -62,30 +62,33 @@ namespace vkaudioposter.MySQL
 
         public static void UpdatePublicationDateOfTracks(List<string> tracknames, FormattedPlaylist formattedPlaylist, DateTime publish_date)
         {
-            using var context = new vkaudioposter_ef.AppContext();
-
-            // Creates the database if not exists
-            context.Database.EnsureCreated();
-
-            foreach(var name in tracknames)
+            try
             {
-                var postedTrackInDate = (from track in context.PostedTracks
-                                          where track.PlaylistId == formattedPlaylist.Id
-                                          where track.Trackname == name
-                                          select track).First();
-                if (postedTrackInDate != null)
+                using var context = new vkaudioposter_ef.AppContext();
+
+                // Creates the database if not exists
+                context.Database.EnsureCreated();
+
+                foreach (var name in tracknames)
                 {
-                    postedTrackInDate.Id = postedTrackInDate.Id;
-                    postedTrackInDate.PlaylistId = postedTrackInDate.PlaylistId;
-                    postedTrackInDate.Trackname = postedTrackInDate.Trackname;
-                    postedTrackInDate.Date = publish_date;
-                    postedTrackInDate.MediaId = postedTrackInDate.MediaId;
-                    postedTrackInDate.OwnerId = postedTrackInDate.OwnerId;
-                    context.SaveChanges();
-                    //context.Update(postedTrackInDate);
-                    //context.PostedTracks.UpdateRange();
+                    var postedTrackInDate = (from track in context.PostedTracks
+                                             where track.PlaylistId == formattedPlaylist.Id
+                                             where track.Trackname == name
+                                             select track).First();
+                    if (postedTrackInDate != null)
+                    {
+                        postedTrackInDate.Id = postedTrackInDate.Id;
+                        postedTrackInDate.PlaylistId = postedTrackInDate.PlaylistId;
+                        postedTrackInDate.Trackname = postedTrackInDate.Trackname;
+                        postedTrackInDate.Date = publish_date;
+                        postedTrackInDate.MediaId = postedTrackInDate.MediaId;
+                        postedTrackInDate.OwnerId = postedTrackInDate.OwnerId;
+                        context.SaveChanges();
+                        //context.Update(postedTrackInDate);
+                        //context.PostedTracks.UpdateRange();
+                    }
                 }
-            }
+            }catch (Exception ex) { Console.WriteLine(ex); }
 
         }
 
