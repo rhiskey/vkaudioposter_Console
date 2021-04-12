@@ -507,11 +507,11 @@ namespace vkaudioposter_Console
 
                                 // Generate image
                                 ImageWorkers iw = new ImageWorkers();
-                                var font = new System.Drawing.Font("Tahoma", 36);
+                                var font = new System.Drawing.Font("DejaVuSans", 36);
                                 var tColor = System.Drawing.Color.SteelBlue;
                                 var bColor = System.Drawing.Color.Black;
                                 var brushColor = System.Drawing.Brushes.White;
-                                var styleOnBG = iw.DrawTextOnImage("background-image.png", "Chill House Deep Trance Hot Super", font, brushColor);
+                                var styleOnBG = iw.DrawTextOnImage("background-image.png", style.PlaylistName, font, brushColor);
                                 styleOnBG.Save(photofilename, System.Drawing.Imaging.ImageFormat.Jpeg);
 
                                 //webClient.DownloadFile(@"https://sun9-68.userapi.com/impg/alHziWJBnm2jUWkW4F0CNnsC1nTmpjrE38Xlmg/0AE3-4o5K6M.jpg?size=1200x1414&quality=96&proxy=1&sign=7b63d1207aa5e2de667afd982d14937c&type=album", photofilename);
