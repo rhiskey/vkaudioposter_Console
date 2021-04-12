@@ -39,7 +39,7 @@ namespace vkaudioposter_Console.Tools
                 try
                 {
                     ///VPN
-                    if(Program.useProxy == true)
+                    if (Program.useProxy == true)
                         webClient.Proxy = proxy;
                     webClient.DownloadFile(photourl, photofilename);
                     webClient.Dispose();
@@ -75,23 +75,23 @@ namespace vkaudioposter_Console.Tools
             return downloaded;
         }
 
-       
+
         public static string AddWatermark(string photofilename)
         {
             string watermarked = "watermarked_image.jpg";
 
-        //    using (Image image = Image.FromFile(photofilename))
-        //    using (Image watermarkImage = Image.FromFile("icon_hvm_300x300_50opc.png"))
-        //    using (Graphics imageGraphics = Graphics.FromImage(image))
-        //    using (TextureBrush watermarkBrush = new TextureBrush(watermarkImage))
-        //    {
-        //        int x = (image.Width / 2 - watermarkImage.Width / 2);
-        //        int y = (image.Height / 2 - watermarkImage.Height / 2);
-        //        watermarkBrush.TranslateTransform(x, y);
+            //    using (Image image = Image.FromFile(photofilename))
+            //    using (Image watermarkImage = Image.FromFile("icon_hvm_300x300_50opc.png"))
+            //    using (Graphics imageGraphics = Graphics.FromImage(image))
+            //    using (TextureBrush watermarkBrush = new TextureBrush(watermarkImage))
+            //    {
+            //        int x = (image.Width / 2 - watermarkImage.Width / 2);
+            //        int y = (image.Height / 2 - watermarkImage.Height / 2);
+            //        watermarkBrush.TranslateTransform(x, y);
 
-        //        imageGraphics.FillRectangle(watermarkBrush, new Rectangle(new Point(x, y), new Size(watermarkImage.Width + 1, watermarkImage.Height)));
-        //        image.Save(watermarked);
-        //    }
+            //        imageGraphics.FillRectangle(watermarkBrush, new Rectangle(new Point(x, y), new Size(watermarkImage.Width + 1, watermarkImage.Height)));
+            //        image.Save(watermarked);
+            //    }
             return watermarked;
         }
 
@@ -132,18 +132,36 @@ namespace vkaudioposter_Console.Tools
 
         public Image DrawTextOnImage(string bgPath, string text, Font font, Brush textColor)
         {
-            Bitmap myBitmap = new Bitmap(bgPath);
-            Graphics g = Graphics.FromImage(myBitmap);
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            //Bitmap myBitmap = new Bitmap(bgPath);
+            //Graphics g = Graphics.FromImage(myBitmap);
+            //g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
-            StringFormat strFormat = new StringFormat();
-            strFormat.Alignment = StringAlignment.Center;
-            strFormat.LineAlignment = StringAlignment.Center;
-            g.DrawString(text, font, textColor,
-                new RectangleF(0, 0, 1280, 720), strFormat);
 
-            Image bmp = new Bitmap(1280,720, g); //pass size from BG
-            return bmp;
+            string imageFilePath = bgPath;
+            Bitmap bitmap = (Bitmap)Image.FromFile(imageFilePath);//load the image file
+
+            var textWidth = (font.Size * text.Length)/2;
+            PointF textLocation = new PointF(bitmap.Width/2- textWidth, bitmap.Height/2-font.Height);
+
+            using (Graphics graphics = Graphics.FromImage(bitmap))
+            {
+                using (Font mFont = font)
+                {
+                    graphics.DrawString(text, mFont, textColor, textLocation);
+                }
+            }
+
+            //bitmap.Save("new.jpg");//save the image file
+
+
+            //StringFormat strFormat = new StringFormat();
+            //strFormat.Alignment = StringAlignment.Center;
+            //strFormat.LineAlignment = StringAlignment.Center;
+            //g.DrawString(text, font, textColor,
+            //    new RectangleF(0, 0, myBitmap.Width, myBitmap.Height), strFormat);
+
+            //Image bmp = new Bitmap(myBitmap.Width, myBitmap.Height, g);
+            return bitmap;
             //g.DrawString(text, font, textColor, new PointF(0, 0));
         }
     }

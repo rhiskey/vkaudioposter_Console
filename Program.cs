@@ -253,15 +253,7 @@ namespace vkaudioposter_Console
             }
             finally
             {
-                ImageWorkers iw = new ImageWorkers();
-                var font = new System.Drawing.Font("Tahoma", 16);
-                var tColor = System.Drawing.Color.SteelBlue;
-                var bColor = System.Drawing.Color.Black;
-                var brushColor = System.Drawing.Brushes.DarkBlue;
-                //System.Drawing.Image styleImage = iw.DrawText("Playlist Style", font, tColor, bColor);
-                var styleOnBG = iw.DrawTextOnImage("background-image.png", "Playlist Style", font, brushColor);
-                //styleOnBG.Save("testTextOnBg.jpg");
-                //styleImage.Save("testText.jpg");
+
                 LoadConfigsFromEnv();
                 // Create Database with schema 
                 //vkaudioposter_ef.Program.InsertRoles();
@@ -461,8 +453,8 @@ namespace vkaudioposter_Console
 
                             if (photourl == null)
                             {
-                                // Девка дефолт
-                                photourl = "https://sun9-60.userapi.com/c638422/v638422659/24de8/rdpXft1B6Pw.jpg";
+                                //photourl = "https://sun9-60.userapi.com/c638422/v638422659/24de8/rdpXft1B6Pw.jpg";
+
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Logging.ErrorLogging(String.Format("Пустая ссылка на фото, сток: {0}", photostock_new));
                                 throw new Exception(String.Format("Пустая ссылка на фото, сток: {0}", photostock_new));
@@ -488,9 +480,9 @@ namespace vkaudioposter_Console
 
                             photourl = PhotoParserAuto(photostock_new, postcounter, style.PlaylistName, stockPage);
                             if (photourl == null)
-                            { 
-                                photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg"; 
-                                photo_exist = true; 
+                            {                             
+                                //photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg";
+                                photo_exist = true;
                             }// Default photo 2 High Volume Music 
 
                         }
@@ -510,13 +502,20 @@ namespace vkaudioposter_Console
                             {
                                 Logging.ErrorLogging(ex);
                                 Logging.ReadError();
-                                // Если не смогли скачать основную и заглушку
-                                using WebClient webClient = new();
-                                //Качаем заглушку 
-                                // Generate image
+                                //// Если не смогли скачать основную и заглушку
+                                //using WebClient webClient = new();
 
-                                webClient.DownloadFile(@"https://sun9-68.userapi.com/impg/alHziWJBnm2jUWkW4F0CNnsC1nTmpjrE38Xlmg/0AE3-4o5K6M.jpg?size=1200x1414&quality=96&proxy=1&sign=7b63d1207aa5e2de667afd982d14937c&type=album", photofilename);
-                                webClient.Dispose();
+                                // Generate image
+                                ImageWorkers iw = new ImageWorkers();
+                                var font = new System.Drawing.Font("Tahoma", 36);
+                                var tColor = System.Drawing.Color.SteelBlue;
+                                var bColor = System.Drawing.Color.Black;
+                                var brushColor = System.Drawing.Brushes.White;
+                                var styleOnBG = iw.DrawTextOnImage("background-image.png", "Chill House Deep Trance Hot Super", font, brushColor);
+                                styleOnBG.Save(photofilename, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                                //webClient.DownloadFile(@"https://sun9-68.userapi.com/impg/alHziWJBnm2jUWkW4F0CNnsC1nTmpjrE38Xlmg/0AE3-4o5K6M.jpg?size=1200x1414&quality=96&proxy=1&sign=7b63d1207aa5e2de667afd982d14937c&type=album", photofilename);
+                                //webClient.Dispose();
                                 photo_exist = true;
                             }
 
