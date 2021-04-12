@@ -28,8 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--<None Remove=".env" />-->
-    <None Remove=".env" />
     <None Remove="hvm.html" />
     <None Remove="newtempimage.jpg" />
     <None Remove="output.dll" />
@@ -43,9 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--<Content Include=".env">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>-->
     <Resource Include=".env">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -80,6 +75,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="background-image.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Dlls\posted_photo.dll">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>

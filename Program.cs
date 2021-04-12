@@ -208,23 +208,23 @@ namespace vkaudioposter_Console
 
         private static void Main(string[] args)
         {
-            CircularDoublyLinkedList<string> circularList = new CircularDoublyLinkedList<string>();
-            circularList.Add("Tom");
-            circularList.Add("Bob");
-            circularList.Add("Alice");
-            circularList.Add("Sam");
+            //CircularDoublyLinkedList<string> circularList = new CircularDoublyLinkedList<string>();
+            //circularList.Add("Tom");
+            //circularList.Add("Bob");
+            //circularList.Add("Alice");
+            //circularList.Add("Sam");
 
-            foreach (var item in circularList)
-            {
-                Console.WriteLine(item);
-            }
+            //foreach (var item in circularList)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
-            circularList.Remove("Bob");
-            Console.WriteLine("\n После удаления: \n");
-            foreach (var item in circularList)
-            {
-                Console.WriteLine(item);
-            }
+            //circularList.Remove("Bob");
+            //Console.WriteLine("\n После удаления: \n");
+            //foreach (var item in circularList)
+            //{
+            //    Console.WriteLine(item);
+            //}
 
 
             if (args is null)
@@ -253,6 +253,15 @@ namespace vkaudioposter_Console
             }
             finally
             {
+                ImageWorkers iw = new ImageWorkers();
+                var font = new System.Drawing.Font("Tahoma", 16);
+                var tColor = System.Drawing.Color.SteelBlue;
+                var bColor = System.Drawing.Color.Black;
+                var brushColor = System.Drawing.Brushes.DarkBlue;
+                //System.Drawing.Image styleImage = iw.DrawText("Playlist Style", font, tColor, bColor);
+                var styleOnBG = iw.DrawTextOnImage("background-image.png", "Playlist Style", font, brushColor);
+                //styleOnBG.Save("testTextOnBg.jpg");
+                //styleImage.Save("testText.jpg");
                 LoadConfigsFromEnv();
                 // Create Database with schema 
                 //vkaudioposter_ef.Program.InsertRoles();
@@ -479,7 +488,10 @@ namespace vkaudioposter_Console
 
                             photourl = PhotoParserAuto(photostock_new, postcounter, style.PlaylistName, stockPage);
                             if (photourl == null)
-                            { photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg"; photo_exist = true; }// Default photo 2 High Volume Music 
+                            { 
+                                photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg"; 
+                                photo_exist = true; 
+                            }// Default photo 2 High Volume Music 
 
                         }
                         finally
@@ -500,9 +512,10 @@ namespace vkaudioposter_Console
                                 Logging.ReadError();
                                 // Если не смогли скачать основную и заглушку
                                 using WebClient webClient = new();
-                                //Качаем заглушку 3 - pink girl
+                                //Качаем заглушку 
+                                // Generate image
+
                                 webClient.DownloadFile(@"https://sun9-68.userapi.com/impg/alHziWJBnm2jUWkW4F0CNnsC1nTmpjrE38Xlmg/0AE3-4o5K6M.jpg?size=1200x1414&quality=96&proxy=1&sign=7b63d1207aa5e2de667afd982d14937c&type=album", photofilename);
-                                //webClient.DownloadFile("https://sun9-71.userapi.com/c638422/v638422659/24dde/CrNKNnDTC1M.jpg", photofilename);
                                 webClient.Dispose();
                                 photo_exist = true;
                             }

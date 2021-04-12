@@ -1,5 +1,6 @@
 ﻿using MihaZupan;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using vkaudioposter_Console.Classes;
@@ -92,6 +93,58 @@ namespace vkaudioposter_Console.Tools
         //        image.Save(watermarked);
         //    }
             return watermarked;
+        }
+
+        public Image DrawText(String text, Font font, Color textColor, Color backColor)
+        {
+            //first, create a dummy bitmap just to get a graphics object
+            Image img = new Bitmap(1, 1);
+            Graphics drawing = Graphics.FromImage(img);
+
+            //measure the string to see how big the image needs to be
+            SizeF textSize = drawing.MeasureString(text, font);
+
+            //free up the dummy image and old graphics object
+            img.Dispose();
+            drawing.Dispose();
+
+            //create a new image of the right size
+            img = new Bitmap((int)textSize.Width, (int)textSize.Height);
+
+            drawing = Graphics.FromImage(img);
+
+            //paint the background
+            drawing.Clear(backColor);
+
+            //create a brush for the text
+            Brush textBrush = new SolidBrush(textColor);
+
+            drawing.DrawString(text, font, textBrush, 0, 0);
+
+            drawing.Save();
+
+            textBrush.Dispose();
+            drawing.Dispose();
+
+            return img;
+
+        }
+
+        public Image DrawTextOnImage(string bgPath, string text, Font font, Brush textColor)
+        {
+            Bitmap myBitmap = new Bitmap(bgPath);
+            Graphics g = Graphics.FromImage(myBitmap);
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+            StringFormat strFormat = new StringFormat();
+            strFormat.Alignment = StringAlignment.Center;
+            strFormat.LineAlignment = StringAlignment.Center;
+            g.DrawString(text, font, textColor,
+                new RectangleF(0, 0, 1280, 720), strFormat);
+
+            Image bmp = new Bitmap(1280,720, g); //pass size from BG
+            return bmp;
+            //g.DrawString(text, font, textColor, new PointF(0, 0));
         }
     }
 }
