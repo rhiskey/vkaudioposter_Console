@@ -507,6 +507,7 @@ namespace vkaudioposter_Console
 
                                 // Generate image
                                 ImageWorkers iw = new ImageWorkers();
+                                //Install Linux Font
                                 var font = new System.Drawing.Font("DejaVuSans", 36);
                                 var tColor = System.Drawing.Color.SteelBlue;
                                 var bColor = System.Drawing.Color.Black;
