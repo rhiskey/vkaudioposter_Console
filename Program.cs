@@ -453,7 +453,7 @@ namespace vkaudioposter_Console
 
                             if (photourl == null)
                             {
-                                //photourl = "https://sun9-60.userapi.com/c638422/v638422659/24de8/rdpXft1B6Pw.jpg";
+                                photourl = "https://sun9-60.userapi.com/c638422/v638422659/24de8/rdpXft1B6Pw.jpg";
 
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Logging.ErrorLogging(String.Format("Пустая ссылка на фото, сток: {0}", photostock_new));
@@ -481,7 +481,9 @@ namespace vkaudioposter_Console
                             photourl = PhotoParserAuto(photostock_new, postcounter, style.PlaylistName, stockPage);
                             if (photourl == null)
                             {
-                                //photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg";
+                                ///OLD
+                                photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg";
+                                ///OLD
                                 photo_exist = false;
                             }// Default photo 2 High Volume Music 
                             else photo_exist = true;
@@ -503,12 +505,15 @@ namespace vkaudioposter_Console
                                 Logging.ErrorLogging(ex);
                                 Logging.ReadError();
 
-    
-                                //styleOnBG.Save("tempMark.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
 
-                                //webClient.DownloadFile(@"https://sun9-68.userapi.com/impg/alHziWJBnm2jUWkW4F0CNnsC1nTmpjrE38Xlmg/0AE3-4o5K6M.jpg?size=1200x1414&quality=96&proxy=1&sign=7b63d1207aa5e2de667afd982d14937c&type=album", photofilename);
-                                //webClient.Dispose();
-                                photo_exist = false;
+                                //styleOnBG.Save("tempMark.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                                ///OLD
+                                using WebClient webClient = new();
+                                webClient.DownloadFile(@"https://sun9-68.userapi.com/impg/alHziWJBnm2jUWkW4F0CNnsC1nTmpjrE38Xlmg/0AE3-4o5K6M.jpg?size=1200x1414&quality=96&proxy=1&sign=7b63d1207aa5e2de667afd982d14937c&type=album", photofilename);
+                                webClient.Dispose();
+                                ///OLD
+
+                                photo_exist = true; //false
                             }
 
                         }
@@ -545,23 +550,23 @@ namespace vkaudioposter_Console
            
                             //styleOnBG.Save(fullPath, System.Drawing.Imaging.ImageFormat.Jpeg);
 
+
                             var attsTuple = VkTools.AddPhotoToAttachFromUrl(photofilename, attachments, postMessage, LstBox_AddedTracks);
                             attachments = attsTuple;
                         } else
                         {
-                            ImageWorkers iw = new ImageWorkers();
-                            //Install Linux Font
+                            //ImageWorkers iw = new ImageWorkers();
+                            ///Install Linux Font
                             //var font = new System.Drawing.Font("DejaVuSans", 36);
-                            var font = new System.Drawing.Font("DejaVuSans", 36);
 
-                            var brushColor = System.Drawing.Brushes.White;
-                            var styleOnBG = iw.DrawTextOnImage("background-image.png", style.PlaylistName, font, brushColor);
-                            string path = Directory.GetCurrentDirectory();
-                            string[] paths = { path, "tempMark.jpg" };
-                            string fullPath = Path.Combine(paths);
-                            styleOnBG.Save("tempMark.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                            //var brushColor = System.Drawing.Brushes.White;
+                            //var styleOnBG = iw.DrawTextOnImage("background-image.png", style.PlaylistName, font, brushColor);
+                            //string path = Directory.GetCurrentDirectory();
+                            //string[] paths = { path, "tempMark.jpg" };
+                            //string fullPath = Path.Combine(paths);
+                            //styleOnBG.Save("tempMark.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
 
-                            var attsTuple = VkTools.AddPhotoToAttachFromUrl(fullPath, attachments, postMessage, LstBox_AddedTracks);
+                            var attsTuple = VkTools.AddPhotoToAttachFromUrl(photofilename, attachments, postMessage, LstBox_AddedTracks);
                             attachments = attsTuple;
 
                         }
@@ -610,7 +615,7 @@ namespace vkaudioposter_Console
             Parser(trackscount, style, playlistId, trackstop);
             return null;
         }
-        
+
         /// <summary>
         /// Music patsing from Spotify or Beatport
         /// </summary>
@@ -619,6 +624,7 @@ namespace vkaudioposter_Console
         /// <param name="playlistId"></param>
         /// <param name="trackstop"></param>
         /// <returns></returns>
+        /// <include file='docParser.xml' path='docs/members[@name="parser"]/Parser/*'/>
         private static Task Parser(int trackscount, vkaudioposter_ef.parser.Playlist style, string playlistId, string trackstop)
         {
             ///v 6.0.x
@@ -649,6 +655,7 @@ namespace vkaudioposter_Console
                     int limit = 100; //default
                     int offset = 0; //смещение = 0
                     string market = "US"; //Сделать RU
+                    /// <include file='docParser.xml' path='docs/members[@name="parser"]/SpotyParser    /*'/>
                     SpotifyTools.SpotyParser(playlistId, fields, limit, offset, market, spotify);
                 }
                 else //Если пустые user_id и playlist_id -> Beatport (DEPRECIATED)
