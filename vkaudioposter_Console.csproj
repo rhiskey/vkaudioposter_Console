@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove=".env" />
     <None Remove="hvm.html" />
     <None Remove="newtempimage.jpg" />
     <None Remove="output.dll" />
@@ -44,6 +45,9 @@
     <Resource Include=".env">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Content Include=".env">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="tempimage.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
