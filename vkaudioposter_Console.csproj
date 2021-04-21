@@ -71,7 +71,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="vkaudioposter-ef\vkaudioposter-ef\vkaudioposter-ef.csproj" />
+	<ProjectReference Include="vkaudioposter-ef\vkaudioposter-ef\vkaudioposter-ef.csproj" />
   </ItemGroup>
 
   <ItemGroup>
