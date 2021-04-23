@@ -490,6 +490,7 @@ namespace vkaudioposter_Console
                         }
                         finally
                         {
+                            photofilename = "tempimage.jpg";
                             //Rabbit.NewLog("Download Photo");
                             try
                             {
@@ -505,13 +506,11 @@ namespace vkaudioposter_Console
                                 Logging.ErrorLogging(ex);
                                 Logging.ReadError();
 
+                                //photo_exist = ImageWorkers.DownloadImage(@"https://sun9-73.userapi.com/impg/UcMqhZMnrpXVl5G32ALhDchctfG2lnx-J5BzBg/6KVlZUh7Ie0.jpg?size=1192x600&quality=96&sign=5b9318b9472bcc2b2537979f30b247b4&type=album", photofilename);
 
+                                photofilename = "background-image.png";
                                 //styleOnBG.Save("tempMark.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
-                                ///OLD
-                                using WebClient webClient = new();
-                                webClient.DownloadFile(@"https://sun9-68.userapi.com/impg/alHziWJBnm2jUWkW4F0CNnsC1nTmpjrE38Xlmg/0AE3-4o5K6M.jpg?size=1200x1414&quality=96&proxy=1&sign=7b63d1207aa5e2de667afd982d14937c&type=album", photofilename);
-                                webClient.Dispose();
-                                ///OLD
+
 
                                 photo_exist = true; //false
                             }
