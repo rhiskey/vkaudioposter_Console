@@ -1,8 +1,21 @@
-# Load env + debian 10 to download photos correctly
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS runtime
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-COPY . /app
+FROM mcr.microsoft.com/dotnet/runtime:5.0 AS base
 WORKDIR /app
-#COPY --from=build /app ./
-ENTRYPOINT ["dotnet", "vkaudioposter_Console.dll"]
 
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+WORKDIR /src
+COPY ["vkaudioposter_Console.csproj", "."]
+COPY ["vkaudioposter-ef/vkaudioposter-ef/vkaudioposter-ef.csproj", "vkaudioposter-ef/vkaudioposter-ef/"]
+RUN dotnet restore "./vkaudioposter_Console.csproj"
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "vkaudioposter_Console.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "vkaudioposter_Console.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "vkaudioposter_Console.dll"]
