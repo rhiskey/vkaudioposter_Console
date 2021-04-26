@@ -552,6 +552,7 @@ namespace vkaudioposter_Console
 
                             var attsTuple = VkTools.AddPhotoToAttachFromUrl(photofilename, attachments, postMessage, LstBox_AddedTracks);
                             attachments = attsTuple;
+                            photofilename = "tempimage.png";
                         } else
                         {
                             //ImageWorkers iw = new ImageWorkers();
@@ -567,7 +568,7 @@ namespace vkaudioposter_Console
 
                             var attsTuple = VkTools.AddPhotoToAttachFromUrl(photofilename, attachments, postMessage, LstBox_AddedTracks);
                             attachments = attsTuple;
-
+                            photofilename = "tempimage.png";
                         }
 
                         PosterOnWall(attachments, style);
