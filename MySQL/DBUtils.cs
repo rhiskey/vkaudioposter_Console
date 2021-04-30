@@ -60,7 +60,7 @@ namespace vkaudioposter.MySQL
             return formattedList;
         }
 
-        public static void UpdatePublicationDateOfTracks(List<string> tracknames, FormattedPlaylist formattedPlaylist, DateTime publish_date)
+        public static void UpdatePublicationDateOfTracks(List<string> tracknames, FormattedPlaylist formattedPlaylist, DateTime publish_date, long postId = 0 )
         {
             try
             {
@@ -83,6 +83,7 @@ namespace vkaudioposter.MySQL
                         postedTrackInDate.Date = publish_date;
                         postedTrackInDate.MediaId = postedTrackInDate.MediaId;
                         postedTrackInDate.OwnerId = postedTrackInDate.OwnerId;
+                        postedTrackInDate.PostId = postId;
                         context.SaveChanges();
                         //context.Update(postedTrackInDate);
                         //context.PostedTracks.UpdateRange();

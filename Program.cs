@@ -1521,7 +1521,7 @@ namespace vkaudioposter_Console
 
                     LastDatePosted = publication_date;
 
-                    DBUtils.UpdatePublicationDateOfTracks(LstBox_AddedTracks, fmtPlaylist, LastDatePosted);
+                    DBUtils.UpdatePublicationDateOfTracks(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, post);
     
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Пост опубликован! {MessageToAttach}");
@@ -1606,7 +1606,7 @@ namespace vkaudioposter_Console
                     //если ошибка ограничение 25 постов в день - изменить день
                     if (changed_time == true)
                     {
-                        _ = api.Wall.Post(new WallPostParams
+                        var postId = api.Wall.Post(new WallPostParams
                         {
                             Attachments = attachments,
                             OwnerId = ownid,
@@ -1616,10 +1616,10 @@ namespace vkaudioposter_Console
 
                         LastDatePosted = publication_date;
 
-                        DBUtils.UpdatePublicationDateOfTracks(LstBox_AddedTracks, fmtPlaylist, LastDatePosted);
+                        DBUtils.UpdatePublicationDateOfTracks(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, postId);
 
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"Пост, увеличила дату {LastDatePosted}, опубликован! {MessageToAttach}");
+                        Console.WriteLine($"Пост {MessageToAttach}\n, увеличила дату {LastDatePosted}, опубликован!");
                         //Rabbit.NewLog($"Пост, увеличила дату {LastDatePosted}, опубликован! {MessageToAttach}");
 
                         ClearAll();
