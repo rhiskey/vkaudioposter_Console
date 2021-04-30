@@ -938,19 +938,13 @@ namespace vkaudioposter_Console
                                 int ownId = mediaOwnId.Item1;
                                 int mediaId = mediaOwnId.Item2;
 
-
                                 bool isExist = DBUtils.CheckFoundTrack(current_track, styletoDB, publication_date, false, ownId, mediaId);
 
                                 if (isExist == true)
                                 {
                                     continue;
-                                    //DBUtils.InsertUnfoundTrackInDB(current_track, styletoDB, false);
                                 }
-                                else {
-                                    //DBUtils.InsertFoundTrackInDB(current_track, styletoDB, publication_date, false, ownId, mediaId);
-                                };
-     
-         
+      
                                 //Rabbit.NewPostedTrack(current_track, styletoDB.PlaylistName, publication_date);
                                 //SearchingList.Add(new Track(url2, FullId));
 
