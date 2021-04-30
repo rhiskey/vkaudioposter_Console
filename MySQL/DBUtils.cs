@@ -82,7 +82,8 @@ namespace vkaudioposter.MySQL
             //}
             foreach (var at in atts)
                 foreach (var el in searchList)
-                {
+                {   
+                    // if audio ->; if photo->
                     try
                     {
                         PostedTrack postedTrack = new();
