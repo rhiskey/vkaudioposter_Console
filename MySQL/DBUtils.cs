@@ -55,25 +55,26 @@ namespace vkaudioposter.MySQL
                     }
                     FormattedPlaylist fmt = new FormattedPlaylist(elem, plID);
                     formattedList.Add(fmt);
-                }          
+                }
             }
             return formattedList;
         }
 
-        public static void UpdatePublicationDateOfTracks(List<string> tracknames, FormattedPlaylist formattedPlaylist, DateTime publish_date, long postId = 0 )
+        public static void UpdatePublicationDateOfTracks(List<string> tracknames, FormattedPlaylist formattedPlaylist, DateTime publish_date, long postId = 0, List<MediaAttachment> atts = null)
         {
-            try
+            using var context = new vkaudioposter_ef.AppContext();
+
+            // Creates the database if not exists
+            context.Database.EnsureCreated();
+
+            foreach (var at in atts)
             {
-                using var context = new vkaudioposter_ef.AppContext();
-
-                // Creates the database if not exists
-                context.Database.EnsureCreated();
-
-                foreach (var name in tracknames)
+                try
                 {
                     var postedTrackInDate = (from track in context.PostedTracks
                                              where track.PlaylistId == formattedPlaylist.Id
-                                             where track.Trackname == name
+                                             where track.MediaId == at.Id
+                                             where track.OwnerId == at.OwnerId
                                              select track).First();
                     if (postedTrackInDate != null)
                     {
@@ -85,11 +86,31 @@ namespace vkaudioposter.MySQL
                         postedTrackInDate.OwnerId = postedTrackInDate.OwnerId;
                         postedTrackInDate.PostId = postId;
                         context.SaveChanges();
-                        //context.Update(postedTrackInDate);
-                        //context.PostedTracks.UpdateRange();
                     }
                 }
-            }catch (Exception ex) { Console.WriteLine(ex); }
+                catch (Exception ex) { Console.WriteLine(ex); }
+
+            }
+            //foreach (var name in tracknames)
+            //{
+            //    var postedTrackInDate = (from track in context.PostedTracks
+            //                             where track.PlaylistId == formattedPlaylist.Id
+            //                             where track.Trackname == name
+            //                             select track).First();
+            //    if (postedTrackInDate != null)
+            //    {
+            //        postedTrackInDate.Id = postedTrackInDate.Id;
+            //        postedTrackInDate.PlaylistId = postedTrackInDate.PlaylistId;
+            //        postedTrackInDate.Trackname = postedTrackInDate.Trackname;
+            //        postedTrackInDate.Date = publish_date;
+            //        postedTrackInDate.MediaId = postedTrackInDate.MediaId;
+            //        postedTrackInDate.OwnerId = postedTrackInDate.OwnerId;
+            //        postedTrackInDate.PostId = postId;
+            //        context.SaveChanges();
+            //        //context.Update(postedTrackInDate);
+            //        //context.PostedTracks.UpdateRange();
+            //    }
+            //}
 
         }
 
@@ -147,7 +168,7 @@ namespace vkaudioposter.MySQL
 
                 context.SaveChanges();
             }
-        
+
         }
 
         public static void InsertUnfoundTrackInDB(string trackname, FormattedPlaylist formattedPlaylist, bool? isFirstTime)
@@ -172,7 +193,8 @@ namespace vkaudioposter.MySQL
                     context.UnfoundTracks.Add(pt1);
 
                     context.SaveChanges();
-                } catch (Exception ex) { }
+                }
+                catch (Exception ex) { }
             }
             else
             {
@@ -202,8 +224,8 @@ namespace vkaudioposter.MySQL
             using (var context = new vkaudioposter_ef.AppContext())
             {
                 unfoundTracksNames = (from track in context.UnfoundTracks
-                                     where track.Playlist == playlist
-                                     select track.Trackname).ToList();
+                                      where track.Playlist == playlist
+                                      select track.Trackname).ToList();
             }
 
             return unfoundTracksNames;
@@ -212,12 +234,12 @@ namespace vkaudioposter.MySQL
         public static List<string> GetPostedTracksFromDB(FormattedPlaylist playlist)
         {
             List<string> postedTracksNames = new List<string>();
-      
+
             using (var context = new vkaudioposter_ef.AppContext())
             {
                 postedTracksNames = (from track in context.PostedTracks
-                                    where track.Playlist == playlist
-                                    select track.Trackname).ToList();
+                                     where track.Playlist == playlist
+                                     select track.Trackname).ToList();
             }
 
             return postedTracksNames;
@@ -244,8 +266,8 @@ namespace vkaudioposter.MySQL
             {
 
                 var xPathId = (from stock in context.Photostocks
-                         where stock.Url == photostockName
-                         select stock.ParserXpathId).FirstOrDefault();
+                               where stock.Url == photostockName
+                               select stock.ParserXpathId).FirstOrDefault();
 
                 xPath = (from xp in context.ParserXpaths
                          where xp.Id == xPathId
@@ -390,16 +412,17 @@ namespace vkaudioposter.MySQL
             }
             else
                 using (var context = new vkaudioposter_ef.AppContext())
-            {
-                try
                 {
-                    lastPostedTrack = context.PostedTracks.OrderBy(d => d.Date).Last();
-                    publication_date = lastPostedTrack.Date;
-                } catch(System.InvalidOperationException ex)
-                {
-                    Console.WriteLine($"{ex.Message}");                
+                    try
+                    {
+                        lastPostedTrack = context.PostedTracks.OrderBy(d => d.Date).Last();
+                        publication_date = lastPostedTrack.Date;
+                    }
+                    catch (System.InvalidOperationException ex)
+                    {
+                        Console.WriteLine($"{ex.Message}");
+                    }
                 }
-            }
 
             DateTime LastDatePosted = new DateTime();
             //Возможна ошибка когда последняя дата раньше чем сейчас

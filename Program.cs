@@ -1521,7 +1521,7 @@ namespace vkaudioposter_Console
 
                     LastDatePosted = publication_date;
 
-                    DBUtils.UpdatePublicationDateOfTracks(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, post);
+                    DBUtils.UpdatePublicationDateOfTracks(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, post, attachments);
     
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Пост опубликован! {MessageToAttach}");
@@ -1616,7 +1616,7 @@ namespace vkaudioposter_Console
 
                         LastDatePosted = publication_date;
 
-                        DBUtils.UpdatePublicationDateOfTracks(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, postId);
+                        DBUtils.UpdatePublicationDateOfTracks(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, postId, attachments);
 
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Пост {MessageToAttach}\n, увеличила дату {LastDatePosted}, опубликован!");
