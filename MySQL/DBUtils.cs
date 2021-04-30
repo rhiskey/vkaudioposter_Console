@@ -60,57 +60,51 @@ namespace vkaudioposter.MySQL
             return formattedList;
         }
 
-        public static void UpdatePublicationDateOfTracks(List<string> tracknames, FormattedPlaylist formattedPlaylist, DateTime publish_date, long postId = 0, List<MediaAttachment> atts = null)
+        public static void UpdatePublicationDateOfTracksAndInsertToDB(List<string> tracknames, FormattedPlaylist formattedPlaylist,
+            DateTime publish_date, long postId = 0, List<MediaAttachment> atts = null, long ownerId = 0, string message = null,
+            List<Track> searchList = null)
         {
             using var context = new vkaudioposter_ef.AppContext();
 
             // Creates the database if not exists
             context.Database.EnsureCreated();
 
-            foreach (var at in atts)
-            {
-                try
-                {
-                    var postedTrackInDate = (from track in context.PostedTracks
-                                             where track.PlaylistId == formattedPlaylist.Id
-                                             where track.MediaId == at.Id
-                                             where track.OwnerId == at.OwnerId
-                                             select track).First();
-                    if (postedTrackInDate != null)
-                    {
-                        postedTrackInDate.Id = postedTrackInDate.Id;
-                        postedTrackInDate.PlaylistId = postedTrackInDate.PlaylistId;
-                        postedTrackInDate.Trackname = postedTrackInDate.Trackname;
-                        postedTrackInDate.Date = publish_date;
-                        postedTrackInDate.MediaId = postedTrackInDate.MediaId;
-                        postedTrackInDate.OwnerId = postedTrackInDate.OwnerId;
-                        postedTrackInDate.PostId = postId;
-                        context.SaveChanges();
-                    }
-                }
-                catch (Exception ex) { Console.WriteLine(ex); }
-
-            }
-            //foreach (var name in tracknames)
+            //vkaudioposter_ef.Model.Post post = context.Posts.OrderByDescending(p=> p.Id).FirstOrDefault();
+            //if (post == null)
             //{
-            //    var postedTrackInDate = (from track in context.PostedTracks
-            //                             where track.PlaylistId == formattedPlaylist.Id
-            //                             where track.Trackname == name
-            //                             select track).First();
-            //    if (postedTrackInDate != null)
-            //    {
-            //        postedTrackInDate.Id = postedTrackInDate.Id;
-            //        postedTrackInDate.PlaylistId = postedTrackInDate.PlaylistId;
-            //        postedTrackInDate.Trackname = postedTrackInDate.Trackname;
-            //        postedTrackInDate.Date = publish_date;
-            //        postedTrackInDate.MediaId = postedTrackInDate.MediaId;
-            //        postedTrackInDate.OwnerId = postedTrackInDate.OwnerId;
-            //        postedTrackInDate.PostId = postId;
-            //        context.SaveChanges();
-            //        //context.Update(postedTrackInDate);
-            //        //context.PostedTracks.UpdateRange();
-            //    }
+            vkaudioposter_ef.Model.Post post = new();
+                post.PostId = postId;
+                post.OwnerId = ownerId; 
+                post.Message = message; 
+                post.PublishDate = publish_date;
+                post.PostedTracks = new List<PostedTrack>();
+                context.Posts.Add(post);
             //}
+            foreach (var at in atts)
+                foreach (var el in searchList)
+                {
+                    try
+                    {
+                        PostedTrack postedTrack = new();
+
+                        var mIdSl = el.GetMediaId();
+                        var oIdSl = el.GetOwnerId();
+                        var titleSl = el.GetTitle();
+                        if (mIdSl == at.Id && oIdSl == at.OwnerId)
+                            postedTrack.Trackname = titleSl;
+                        else continue;
+
+                        postedTrack.PlaylistId = formattedPlaylist.Id;
+                        postedTrack.Date = publish_date;
+                        postedTrack.MediaId = at.Id;
+                        postedTrack.OwnerId = at.OwnerId;
+
+                        post.PostedTracks.Add(postedTrack);
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex); }
+
+                }
+            context.SaveChanges();
 
         }
 
@@ -168,6 +162,24 @@ namespace vkaudioposter.MySQL
 
                 context.SaveChanges();
             }
+
+        }
+
+        public static bool CheckFoundTrack(string trackname, FormattedPlaylist formattedPlaylist, DateTime publish_date, bool? isFirstTime, int ownerId = 0, int mediaId = 0)
+        {
+
+            using var context = new vkaudioposter_ef.AppContext();
+            if (isFirstTime == true)
+                context.Database.EnsureDeleted();
+
+            // Creates the database if not exists
+            context.Database.EnsureCreated();
+
+            var track = context.PostedTracks.Where(a => a.Trackname == trackname).FirstOrDefault();
+            if (track != null)
+                return true;
+            else return false;
+
 
         }
 
@@ -276,6 +288,7 @@ namespace vkaudioposter.MySQL
 
             return xPath;
         }
+
         //// IN - Parameters of attachments and POST ownId, message, publDate
         //public static void AddPostInDB(List<MediaAttachment> mediaAttachments, long? ownerId, string message, DateTime publishDate)
         //{

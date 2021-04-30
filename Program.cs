@@ -937,30 +937,24 @@ namespace vkaudioposter_Console
                                 var mediaOwnId = StringWorkers.GetOwnIdAndMediaIdFromFullId(FullId);
                                 int ownId = mediaOwnId.Item1;
                                 int mediaId = mediaOwnId.Item2;
-                                //Попытаться трек в БД записать
-                                try
-                                {
-                                    DBUtils.InsertFoundTrackInDB(current_track, styletoDB, publication_date, false, ownId, mediaId);
-                                }
-                                catch (Exception ex) //Если любая ошибка, перейти к след.треку!
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine($"Dublicate in PostedTracks: {current_track}");
-                                    Console.WriteLine($"{ ex.Message}");
-                                    Console.WriteLine($"{ ex.StackTrace}");
-                                    Console.WriteLine($"{ ex.InnerException}");
-                                    Console.WriteLine($"{ ex.Data}");
-                                    try
-                                    {
-                                        DBUtils.InsertUnfoundTrackInDB(current_track, styletoDB, false);
-                                    }
-                                    catch (Exception ex2) { Console.ForegroundColor = ConsoleColor.DarkRed; /*Console.WriteLine($"Dublicate in UnfoundTracks...skip");*/ continue; }
 
+
+                                bool isExist = DBUtils.CheckFoundTrack(current_track, styletoDB, publication_date, false, ownId, mediaId);
+
+                                if (isExist == true)
+                                {
                                     continue;
+                                    //DBUtils.InsertUnfoundTrackInDB(current_track, styletoDB, false);
                                 }
+                                else {
+                                    //DBUtils.InsertFoundTrackInDB(current_track, styletoDB, publication_date, false, ownId, mediaId);
+                                };
+     
          
                                 //Rabbit.NewPostedTrack(current_track, styletoDB.PlaylistName, publication_date);
-                                SearchingList.Add(new Track(url2, FullId));
+                                //SearchingList.Add(new Track(url2, FullId));
+
+                                SearchingList.Add(new Track(url2, mediaId, ownId));
 
                                 //Добавить треки в Quue очередь или класс при публикации заливать, очищать при нажатии отмена
                                 existcounter++;
@@ -1511,7 +1505,7 @@ namespace vkaudioposter_Console
                 try
                 {
 
-                    long post = api.Wall.Post(new WallPostParams
+                    long postId = api.Wall.Post(new WallPostParams
                     {
                         Attachments = attachments,
                         OwnerId = ownid,
@@ -1521,7 +1515,9 @@ namespace vkaudioposter_Console
 
                     LastDatePosted = publication_date;
 
-                    DBUtils.UpdatePublicationDateOfTracks(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, post, attachments);
+                    //DBUtils.InsertFoundTrackInDB();
+
+                    DBUtils.UpdatePublicationDateOfTracksAndInsertToDB(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, postId, attachments, ownid, MessageToAttach, SearchingList);
     
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Пост опубликован! {MessageToAttach}");
@@ -1616,7 +1612,7 @@ namespace vkaudioposter_Console
 
                         LastDatePosted = publication_date;
 
-                        DBUtils.UpdatePublicationDateOfTracks(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, postId, attachments);
+                        DBUtils.UpdatePublicationDateOfTracksAndInsertToDB(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, postId, attachments, ownid, MessageToAttach, SearchingList);
 
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Пост {MessageToAttach}\n, увеличила дату {LastDatePosted}, опубликован!");
