@@ -226,7 +226,6 @@ namespace vkaudioposter_Console
             //    Console.WriteLine(item);
             //}
 
-
             if (args is null)
             {
                 throw new ArgumentNullException(nameof(args));
@@ -283,6 +282,8 @@ namespace vkaudioposter_Console
                 Program P = new();
 
                 P.OnLoad();
+
+                DBUtils.CountPublishedTracksInStyles();
 
                 var dateTuple = DBUtils.GetLastDateFromDB(); 
                 

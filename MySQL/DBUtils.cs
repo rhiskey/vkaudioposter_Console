@@ -16,23 +16,34 @@ namespace vkaudioposter.MySQL
 {
     class DBUtils
     {
-        //private static readonly string efHost = vkaudioposter_Console.Program.DB_HOST;
-        //private static readonly string efUser = vkaudioposter_Console.Program.efUser;
-        //private static readonly string efPass = vkaudioposter_Console.Program.efPass;
-        //private static readonly string efDB = vkaudioposter_Console.Program.efDB;
-        //public static MySqlConnection GetDBConnection()
-        //{
-        //    //CREATE USER 'myuser'@'%' IDENTIFIED BY 'mypass';
-        //    //GRANT ALL ON databasename.* TO 'myuser'@'%';
+        public static void CountPublishedTracksInStyles()
+        {
+            using (var context = new vkaudioposter_ef.AppContext())
+            {
+                var countPerPlaylists =
+                    from track in context.PostedTracks
+                    group track by track.PlaylistId into trackGroup
+                    orderby trackGroup.Count() descending
+                    select new
+                    {
+                        ID = trackGroup.Key,
+                        Count = trackGroup.Count(),
+                    };
 
-        //    string host = vkaudioposter_Console.Program.DB_HOST; 
-        //    int port = 3306;
-        //    string database = vkaudioposter_Console.Program.DB_NAME;
-        //    string username = vkaudioposter_Console.Program.DB_USER;
-        //    string password = vkaudioposter_Console.Program.DB_PASS;
-
-        //    return DBMySQLUtils.GetDBConnection(host, port, database, username, password);
-        //}
+                foreach (var s in countPerPlaylists)
+                    AddToDb(s);
+            }
+        }
+        protected static async void AddToDb(dynamic t)
+        {
+            using (var context = new vkaudioposter_ef.AppContext())
+            {
+                var id = (int)t.ID;
+                var playlist = context.Playlists.Where(y => y.Id == id).FirstOrDefault();
+                playlist.Count = Convert.ToInt32(t.Count);
+                await context.SaveChangesAsync();
+            }
+        }
 
         public static List<FormattedPlaylist> GetAllPlaylists()
         {
@@ -66,23 +77,19 @@ namespace vkaudioposter.MySQL
         {
             using var context = new vkaudioposter_ef.AppContext();
 
-            // Creates the database if not exists
             context.Database.EnsureCreated();
 
-            //vkaudioposter_ef.Model.Post post = context.Posts.OrderByDescending(p=> p.Id).FirstOrDefault();
-            //if (post == null)
-            //{
             vkaudioposter_ef.Model.Post post = new();
-                post.PostId = postId;
-                post.OwnerId = ownerId; 
-                post.Message = message; 
-                post.PublishDate = publish_date;
-                post.PostedTracks = new List<PostedTrack>();
-                context.Posts.Add(post);
-            //}
+            post.PostId = postId;
+            post.OwnerId = ownerId;
+            post.Message = message;
+            post.PublishDate = publish_date;
+            post.PostedTracks = new List<PostedTrack>();
+            context.Posts.Add(post);
+
             foreach (var at in atts)
                 foreach (var el in searchList)
-                {   
+                {
                     // if audio ->; if photo->
                     try
                     {
@@ -105,6 +112,16 @@ namespace vkaudioposter.MySQL
                     catch (Exception ex) { Console.WriteLine(ex); }
 
                 }
+
+            var countInStyle =
+                from playlist in context.Playlists
+                where playlist.Id == formattedPlaylist.Id
+                select playlist.Count;
+
+            var playlist2 = context.Playlists.Where(y => y.Id == formattedPlaylist.Id).FirstOrDefault();
+            int newCount = Convert.ToInt32(countInStyle.First()) + searchList.Count;
+            playlist2.Count = newCount;
+
             context.SaveChanges();
 
         }
