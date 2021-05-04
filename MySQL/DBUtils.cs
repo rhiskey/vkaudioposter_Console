@@ -79,11 +79,27 @@ namespace vkaudioposter.MySQL
 
             context.Database.EnsureCreated();
 
+            ////TODO check curr timezone
+            //try
+            //{
+            //    TimeZoneInfo moZone = TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time");
+            //    var newDt = TimeZoneInfo.ConvertTime(publish_date, moZone, TimeZoneInfo.Local);
+            //}
+            //catch (TimeZoneNotFoundException)
+            //{
+            //    Console.WriteLine("The registry does not define the Russian Standard Time zone.");
+            //}
+            //catch (InvalidTimeZoneException)
+            //{
+            //    Console.WriteLine("Registry data on the Russian Standard Time zone has been corrupted.");
+            //}
+            DateTime GMTfixTime = publish_date.AddHours(3); //BAD
+
             vkaudioposter_ef.Model.Post post = new();
             post.PostId = postId;
             post.OwnerId = ownerId;
             post.Message = message;
-            post.PublishDate = publish_date;
+            post.PublishDate = GMTfixTime;
             post.PostedTracks = new List<PostedTrack>();
             context.Posts.Add(post);
 
@@ -103,7 +119,7 @@ namespace vkaudioposter.MySQL
                         else continue;
 
                         postedTrack.PlaylistId = formattedPlaylist.Id;
-                        postedTrack.Date = publish_date;
+                        postedTrack.Date = GMTfixTime;
                         postedTrack.MediaId = at.Id;
                         postedTrack.OwnerId = at.OwnerId;
 
