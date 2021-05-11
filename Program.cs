@@ -572,7 +572,7 @@ namespace vkaudioposter_Console
                             photofilename = "tempimage.png";
                         }
 
-                        PosterOnWall(attachments, style);
+                        PosterOnWall(attachments, style, photourl);
                         do
                         {
                             Thread.Sleep(100);
@@ -1426,7 +1426,7 @@ namespace vkaudioposter_Console
         /// <param name="fmtPlaylist"></param>
 
 #nullable enable
-        public void PosterOnWall(List<MediaAttachment> attachments, FormattedPlaylist? fmtPlaylist)
+        public void PosterOnWall(List<MediaAttachment> attachments, FormattedPlaylist? fmtPlaylist, string photourl)
         {
             DateTime localDate = DateTime.Now;
             string cultureName = "ru-RU";
@@ -1512,7 +1512,7 @@ namespace vkaudioposter_Console
 
                     //DBUtils.InsertFoundTrackInDB();
 
-                    DBUtils.UpdatePublicationDateOfTracksAndInsertToDB(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, postId, attachments, ownid, MessageToAttach, SearchingList);
+                    DBUtils.UpdatePublicationDateOfTracksAndInsertToDB(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, postId, attachments, ownid, MessageToAttach, SearchingList, photourl);
     
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Пост опубликован! {MessageToAttach}");
@@ -1607,7 +1607,7 @@ namespace vkaudioposter_Console
 
                         LastDatePosted = publication_date;
 
-                        DBUtils.UpdatePublicationDateOfTracksAndInsertToDB(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, postId, attachments, ownid, MessageToAttach, SearchingList);
+                        DBUtils.UpdatePublicationDateOfTracksAndInsertToDB(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, postId, attachments, ownid, MessageToAttach, SearchingList, photourl);
 
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Пост {MessageToAttach}\n, увеличила дату {LastDatePosted}, опубликован!");

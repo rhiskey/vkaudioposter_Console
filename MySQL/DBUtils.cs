@@ -73,7 +73,7 @@ namespace vkaudioposter.MySQL
 
         public static void UpdatePublicationDateOfTracksAndInsertToDB(List<string> tracknames, FormattedPlaylist formattedPlaylist,
             DateTime publish_date, long postId = 0, List<MediaAttachment> atts = null, long ownerId = 0, string message = null,
-            List<Track> searchList = null)
+            List<Track> searchList = null, string photourl = null)
         {
             using var context = new vkaudioposter_ef.AppContext();
 
@@ -101,6 +101,7 @@ namespace vkaudioposter.MySQL
             post.Message = message;
             post.PublishDate = GMTfixTime;
             post.PostedTracks = new List<PostedTrack>();
+            post.PostedPhotos = new List<PostedPhoto>();
             context.Posts.Add(post);
 
             foreach (var at in atts)
@@ -128,6 +129,10 @@ namespace vkaudioposter.MySQL
                     catch (Exception ex) { Console.WriteLine(ex); }
 
                 }
+
+            PostedPhoto postedPhoto = new();
+            postedPhoto.Url = photourl;
+            post.PostedPhotos.Add(postedPhoto);
 
             var countInStyle =
                 from playlist in context.Playlists
