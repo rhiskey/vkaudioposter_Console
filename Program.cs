@@ -32,6 +32,7 @@ using vkaudioposter_ef.Model;
 using Track = vkaudioposter.Track;
 using vkaudioposter_Console.DateStructures;
 
+
 namespace vkaudioposter_Console
 {
     class Program
@@ -45,6 +46,7 @@ namespace vkaudioposter_Console
 
         //логи в личку
         public static string kateMobileToken;
+        public static string rollbarToken;
 
         public static long adminID; //для отправки ЛС
         public static string torHost;
@@ -125,7 +127,7 @@ namespace vkaudioposter_Console
         Queue<Photostock_class> photostockQueue = new();
         Queue<WallPostParams> wallPostQueue = new();
 
-
+        
         #region Config
         /// <summary>
         /// 
@@ -137,6 +139,8 @@ namespace vkaudioposter_Console
             debug = DotNetEnv.Env.GetBool("DEBUG");
             hoursperiod = DotNetEnv.Env.GetInt("HOURS_PERIOD");
             minutesperiod = DotNetEnv.Env.GetInt("MINUTES_PERIOD");
+
+            rollbarToken = DotNetEnv.Env.GetString("ROLLBAR_TOKEN");
             //DB_HOST = DotNetEnv.Env.GetString("DB_HOST");
             //DB_USER = DotNetEnv.Env.GetString("DB_USER");
             //DB_PASS = DotNetEnv.Env.GetString("DB_PASS");
@@ -183,7 +187,6 @@ namespace vkaudioposter_Console
         private void OnLoad()
         {
             LoadConfigsFromEnv();
-
             allPlaylists = DBUtils.GetAllPlaylists();
             allPlaylists = Tools.Shufflers.ShuffleList(allPlaylists);
 

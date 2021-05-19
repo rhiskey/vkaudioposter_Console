@@ -31,16 +31,14 @@ namespace vkaudioposter_Console.Tools
         {
             bool downloaded = false;
 
-            //Use VPN
-            var proxy = new HttpToSocks5Proxy(TorProxy.Host, TorProxy.Port);
-
             using (WebClient webClient = new WebClient())
             {
+                //Use VPN
+                //HttpToSocks5Proxy proxy = new HttpToSocks5Proxy(TorProxy.Host, TorProxy.Port);
                 try
                 {
-                    ///VPN
                     if (Program.useProxy == true)
-                        webClient.Proxy = proxy;
+                        webClient.Proxy = new HttpToSocks5Proxy(TorProxy.Host, TorProxy.Port);
                     webClient.DownloadFile(photourl, photofilename);
                     webClient.Dispose();
                     downloaded = true;

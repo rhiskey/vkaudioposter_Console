@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rollbar;
+using System;
 using System.IO;
 using VkNet;
 using VkNet.Model;
@@ -10,6 +11,8 @@ namespace vkaudioposter_Console.Tools
     {
         public static void ErrorLogging(Exception ex)
         {
+            RollbarLocator.RollbarInstance.Configure(new RollbarConfig(Program.rollbarToken));
+
             if (Program.saveLogs == true)
             {
                 string strPath = "Log.txt";
@@ -46,6 +49,8 @@ namespace vkaudioposter_Console.Tools
 
             try
             {
+                RollbarLocator.RollbarInstance
+                .Error(ex);
 
                 var api = new VkApi();
 
@@ -69,6 +74,8 @@ namespace vkaudioposter_Console.Tools
 
         public static void ErrorLogging(string ex)
         {
+            RollbarLocator.RollbarInstance.Configure(new RollbarConfig(Program.rollbarToken));
+            //RollbarLocator.RollbarInstance.Info("Rollbar is configured properly.");
             if (Program.saveLogs == true)
             {
                 string strPath = "Log.txt";
@@ -97,6 +104,9 @@ namespace vkaudioposter_Console.Tools
                 Console.WriteLine("Error Message: " + ex);
                 Console.WriteLine("===========End============= " + DateTime.Now);
             }
+
+            RollbarLocator.RollbarInstance
+                .Error(ex);
 
             var api = new VkApi();
 

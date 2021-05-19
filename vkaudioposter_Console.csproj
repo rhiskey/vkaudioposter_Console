@@ -66,6 +66,7 @@
     <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.0-m8.0.23" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
+    <PackageReference Include="Rollbar" Version="4.0.3" />
     <PackageReference Include="SpotifyAPI.Web" Version="5.1.1" />
     <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
     <PackageReference Include="VkNet" Version="1.60.0" />
