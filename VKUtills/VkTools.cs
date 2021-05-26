@@ -206,7 +206,7 @@ namespace vkaudioposter_Console.VKUtills
         }
 
         //Авто добавление треков из Searching List
-        public static (List<string>, List<MediaAttachment>, bool) AutoAddTracksToAttachments(List<Track> SearchingList, List<string> LstBox_AddedTracks, List<MediaAttachment> attachments)
+        public static (List<string>, List<MediaAttachment>, bool) AutoAddTracksToAttachments(List<SpotyVKTrack> SearchingList, List<string> LstBox_AddedTracks, List<MediaAttachment> attachments)
         {
             bool tracks_attached = false;
             int maximum_tracks = 9;

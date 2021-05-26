@@ -30,12 +30,11 @@ namespace vkaudioposter_Console.Parsers
 
             AccessToken token = SpotifyTools.GetToken().Result;
 
-            //Нужно каждый раз получать токеn новый
-            var spotify = new SpotifyWebAPI
-            {
-                AccessToken = token.access_token,
-                TokenType = "Bearer"
-            };
+            var config = SpotifyClientConfig
+            .CreateDefault()
+            .WithAuthenticator(new ClientCredentialsAuthenticator("CLIENT_ID", "CLIENT_SECRET"));//from env
+
+            var spotify = new SpotifyClient(config);
 
             Console.WriteLine("Parsing: " + style.PlaylistName);
             //ГОВНО, если не находит свежих, перескакивает быстро -> не тот стиль (не успевает записать и прочесть из файла)
@@ -192,7 +191,7 @@ namespace vkaudioposter_Console.Parsers
                             Logging.ErrorLogging(ex);
                         }
 
-                        Program.ChartList.Add(new Chart(trackname, remixer, author));
+                        Program.ChartList.Add(new SpotyTrack(trackname, remixer, author));
                     }
 
                 }

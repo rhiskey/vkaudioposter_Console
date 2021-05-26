@@ -65,6 +65,7 @@ namespace vkaudioposter
             Author = CurrentAuthor;
             return;
         }
+
         public string GetTrackname()
         {
             return Trackname;
@@ -79,11 +80,11 @@ namespace vkaudioposter
         {
             return Remix;
         }
-
         public string GetTrackAndAuthors()
         {
             return Trackname + " " + Author;
         }
+
     }
 
 
@@ -91,8 +92,23 @@ namespace vkaudioposter
     //{
 
     //}
-    sealed class SpotyTracks : List<Chart>
+    sealed class SpotyTrack : Chart
     {
-        
+        public Dictionary<string, string> Urls { get; set; }
+        public string PreviewUrl { get; set; }
+
+        public SpotyTrack(string Trackname, string Author, Dictionary<string, string> urls, string previewUrl) : base(Trackname, Author)
+        {
+            Urls = urls;
+            PreviewUrl = previewUrl;
+        }
+
+        public SpotyTrack(string Trackname, string Remix, string Author) : base(Trackname, Remix, Author)
+        {
+            SetTrackname(Trackname);
+            SetAuthor(Author);
+            SetRemix(Remix);
+            return;
+        }
     }
 }

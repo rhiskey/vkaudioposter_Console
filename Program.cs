@@ -92,7 +92,7 @@ namespace vkaudioposter_Console
         private static bool apiWS = true; //Использовать при поиске APIЯWS или VK API (бесплатно)
 
         private static List<FormattedPlaylist> allPlaylists;
-        public static List<Chart> ChartList = new List<Chart>();
+        public static List<SpotyTrack> ChartList = new();
         #endregion
 
        
@@ -114,7 +114,7 @@ namespace vkaudioposter_Console
         public List<string> SelectedGenre = new();
         public List<string> PhotoStock = new();
 
-        private List<Track> SearchingList = new(); //Список найденных треков
+        private List<SpotyVKTrack> SearchingList = new(); //Список найденных треков
 
         private List<Track> SelectedTrackList = new();
         private List<MediaAttachment> attachments = new();
@@ -575,7 +575,7 @@ namespace vkaudioposter_Console
                             photofilename = "tempimage.png";
                         }
 
-                        PosterOnWall(attachments, style, photourl);
+                        PosterOnWall(attachments, style, photourl, SearchingList);
                         do
                         {
                             Thread.Sleep(100);
@@ -629,7 +629,7 @@ namespace vkaudioposter_Console
         /// <param name="trackstop"></param>
         /// <returns></returns>
         /// <include file='docParser.xml' path='docs/members[@name="parser"]/Parser/*'/>
-        private static Task Parser(int trackscount, vkaudioposter_ef.parser.Playlist style, string playlistId, string trackstop)
+        private static async Task Parser(int trackscount, vkaudioposter_ef.parser.Playlist style, string playlistId, string trackstop)
         {
             ///v 6.0.x
             //var config = SpotifyClientConfig
@@ -637,15 +637,20 @@ namespace vkaudioposter_Console
             //    .WithAuthenticator(new ClientCredentialsAuthenticator(clientId, clientSecret)); // takes care of access tokens
             //var spotify = new SpotifyClient(config);
 
+            var config = SpotifyClientConfig
+            .CreateDefault()
+            .WithAuthenticator(new ClientCredentialsAuthenticator("9db2bd4bb704465aaf147ad19c1b3ca5", "635b926e660c42219f826647455a00d1"));//from env
 
-            AccessToken token = SpotifyTools.GetToken().Result;
+            var spotify = new SpotifyClient(config);
 
-            //Нужно каждый раз получать токеn новый
-            var spotify = new SpotifyWebAPI
-            {
-                AccessToken = token.access_token,
-                TokenType = "Bearer"
-            };
+            //AccessToken token = SpotifyTools.GetToken().Result;
+
+            ////Нужно каждый раз получать токеn новый
+            //var spotify = new SpotifyWebAPI
+            //{
+            //    AccessToken = token.access_token,
+            //    TokenType = "Bearer"
+            //};
 
             Console.WriteLine("Parsing: " + style.PlaylistName);
 
@@ -660,7 +665,7 @@ namespace vkaudioposter_Console
                     int offset = 0; //смещение = 0
                     string market = "US"; //Сделать RU
                     /// <include file='docParser.xml' path='docs/members[@name="parser"]/SpotyParser    /*'/>
-                    SpotifyTools.SpotyParser(playlistId, fields, limit, offset, market, spotify);
+                    await SpotifyTools.SpotyParser(playlistId, fields, limit, offset, market, spotify);
                 }
                 else //Если пустые user_id и playlist_id -> Beatport (DEPRECIATED)
                 {
@@ -787,7 +792,7 @@ namespace vkaudioposter_Console
                             Logging.ErrorLogging(ex);
                         }
 
-                        Program.ChartList.Add(new Chart(trackname, remixer, author));
+                        Program.ChartList.Add(new SpotyTrack(trackname, remixer, author));
                     }
 
                 }
@@ -798,7 +803,7 @@ namespace vkaudioposter_Console
                 Console.WriteLine("\r\nDownload tracks canceled.\r\n");
             }
             Program.parser_finished = true;
-            return null;
+            //return null;
         }
 
         /// <summary>
@@ -832,7 +837,7 @@ namespace vkaudioposter_Console
         /// </summary>
         /// <param name="tracksToFind"></param>
         /// <param name="styletoDB"></param>
-        public void MakeUrlFromLines(List<Chart> tracksToFind, FormattedPlaylist styletoDB)
+        public void MakeUrlFromLines(List<SpotyTrack> tracksToFind, FormattedPlaylist styletoDB)
         {
             VkApi api = new();
 
@@ -854,16 +859,16 @@ namespace vkaudioposter_Console
                     Logging.ErrorLogging(ex);
                 }
 
-            string url2;
+            string trackNameAndAuthors;
             int existcounter = 0;
 
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("Список треков из парсера:\n");
 
-            foreach (var line in tracksToFind)
+            foreach (var track in tracksToFind)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"{line.GetTrackAndAuthors()}");
+                Console.WriteLine($"{track.GetTrackAndAuthors()}");
 
             }
             Console.ForegroundColor = ConsoleColor.Green;
@@ -880,9 +885,9 @@ namespace vkaudioposter_Console
             //для каждой строки с названием
             foreach (var trackobj in tracksToFind)
             {
-                string K = trackobj.GetTrackAndAuthors();
+                string nameAndAuthors = trackobj.GetTrackAndAuthors();
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine($"Текущий трек: {K}");
+                Console.WriteLine($"Текущий трек: {nameAndAuthors}");
 
                 //trackname = trackname.Replace("\'", "");
 
@@ -890,8 +895,8 @@ namespace vkaudioposter_Console
                 var postedTracks = DBUtils.GetPostedTracksFromDB(styletoDB);
                 var unfoundTracks = DBUtils.GetUnfoundTracksFromDB(styletoDB);
 
-                //Приводим название к видукак В БД
-                string current_track = K.Replace("\'", "\"");
+                //Приводим название к виду как В БД
+                string current_track = nameAndAuthors.Replace("\'", "\"");
 
                 List<string> fmtUnfoundTracks = new();
                 foreach (var uT in unfoundTracks)
@@ -924,8 +929,8 @@ namespace vkaudioposter_Console
                     if (apiWS == true)
                     {
                         //Если такого трека нет в файле, выполняем поиск в ВК 
-                        url2 = current_track;
-                        string url = JsonTools.ConcatSearchReq(url1, url2, url3);
+                        trackNameAndAuthors = current_track;
+                        string url = JsonTools.ConcatSearchReq(url1, trackNameAndAuthors, url3);
   
 
                         //---------------Old-------------------------
@@ -933,7 +938,7 @@ namespace vkaudioposter_Console
 
                         if (json != null)
                         {
-                            string strWithoutSpaces = url2.Replace("%20", " "); //Запрос поиска Имя+трек+микс
+                            string strWithoutSpaces = trackNameAndAuthors.Replace("%20", " "); //Запрос поиска Имя+трек+микс
                             string FullId = StringWorkers.GetFullIdFromString(strWithoutSpaces, json);//нашли в запросе ID первой песни -111111111_222222222
 
                             if (FullId != "0") //если нашли трек в поиске
@@ -948,11 +953,12 @@ namespace vkaudioposter_Console
                                 {
                                     continue;
                                 }
-      
+
                                 //Rabbit.NewPostedTrack(current_track, styletoDB.PlaylistName, publication_date);
                                 //SearchingList.Add(new Track(url2, FullId));
 
-                                SearchingList.Add(new Track(url2, mediaId, ownId));
+                                //trackobj.GetSpotifyInfoLink
+                                SearchingList.Add(new SpotyVKTrack(trackNameAndAuthors, mediaId, ownId, trackobj.Urls, trackobj.PreviewUrl));
 
                                 //Добавить треки в Quue очередь или класс при публикации заливать, очищать при нажатии отмена
                                 existcounter++;
@@ -1029,7 +1035,7 @@ namespace vkaudioposter_Console
                                     {
                                         ownID = audio.OwnerId;
                                         mediaID = audio.Id;
-                                        SearchingList.Add(new Track(fullTrackName, mediaID, ownID));
+                                        SearchingList.Add(new SpotyVKTrack(fullTrackName, mediaID, ownID));
                                         break;
                                     }
                                     else continue;
@@ -1052,7 +1058,7 @@ namespace vkaudioposter_Console
                         }
                         catch (Exception ex) //Если любая ошибка, перейти к след.треку!
                         {
-                            SearchingList.Remove(new Track(fullTrackName, mediaID, ownID));
+                            SearchingList.Remove(new SpotyVKTrack(fullTrackName, mediaID, ownID));
                             Logging.ErrorLogging(ex);
                             continue;
                         }
@@ -1062,7 +1068,7 @@ namespace vkaudioposter_Console
                         }
 
                         //если счетчик достиг 9 треков, остановить поиск!
-                        if (existcounter == 9) break;
+                        if (existcounter == 9) break; //9
                     }
                 }
                 Thread.Sleep(searchCoolDown); //Задержка поиска
@@ -1429,7 +1435,7 @@ namespace vkaudioposter_Console
         /// <param name="fmtPlaylist"></param>
 
 #nullable enable
-        public void PosterOnWall(List<MediaAttachment> attachments, FormattedPlaylist? fmtPlaylist, string photourl)
+        public void PosterOnWall(List<MediaAttachment> attachments, FormattedPlaylist? fmtPlaylist, string photourl, List<SpotyVKTrack> SearchingList)
         {
             DateTime localDate = DateTime.Now;
             string cultureName = "ru-RU";
@@ -1500,9 +1506,32 @@ namespace vkaudioposter_Console
             }
 
             {
+                //List<PollAnswer> pollAnswersList = new();
+
+                //pollAnswersList.Add( new PollAnswer {  Text = "Класс!"   });
+                //pollAnswersList.Add(new PollAnswer {  Text = "Не очень" });
+
+                //var pollAnswers = new System.Collections.ObjectModel.ReadOnlyCollection<PollAnswer>(list: pollAnswersList);
+
+                //attachments.Add(
+                //    new Poll
+                //    {
+                //        Anonymous = true,
+                //        Answers = pollAnswers,
+                //        CanEdit = true,
+                //        CanReport = false,
+                //        CanVote = true,
+                //        CanShare = true,
+                //        Multiple = false,
+                //        Question = "Оцени подборку",
+                //        AccessKey = accesstoken,
+                //        AuthorId = ownid,
+                //        OwnerId = ownid,
+                        
+                //    });
+
                 try
                 {
-
                     long postId = api.Wall.Post(new WallPostParams
                     {
                         Attachments = attachments,

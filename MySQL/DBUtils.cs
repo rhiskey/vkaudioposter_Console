@@ -73,7 +73,7 @@ namespace vkaudioposter.MySQL
 
         public static void UpdatePublicationDateOfTracksAndInsertToDB(List<string> tracknames, FormattedPlaylist formattedPlaylist,
             DateTime publish_date, long postId = 0, List<MediaAttachment> atts = null, long ownerId = 0, string message = null,
-            List<Track> searchList = null, string photourl = null)
+            List<SpotyVKTrack> searchList = null, string photourl = null)
         {
             using var context = new vkaudioposter_ef.AppContext();
 
@@ -119,10 +119,15 @@ namespace vkaudioposter.MySQL
                             postedTrack.Trackname = titleSl;
                         else continue;
 
+                        var preUrl = el.PreviewUrl;
+                        var urls = el.Urls;
+
                         postedTrack.PlaylistId = formattedPlaylist.Id;
                         postedTrack.Date = GMTfixTime;
                         postedTrack.MediaId = at.Id;
                         postedTrack.OwnerId = at.OwnerId;
+                        postedTrack.PreviewUrl = preUrl;
+                        postedTrack.Urls = urls;
 
                         post.PostedTracks.Add(postedTrack);
                     }

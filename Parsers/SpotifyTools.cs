@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SpotifyAPI.Web;
-using SpotifyAPI.Web.Models;
+//using SpotifyAPI.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,46 +25,83 @@ namespace vkaudioposter_Console.Parsers
         /// <param name="market"></param>
         /// <param name="api"></param>
         //Spotify Parser
-        public static void SpotyParser(string playlistid, string fields, int limit, int offset, string market, SpotifyWebAPI api)
+        public static async Task SpotyParser(string playlistid, string fields, int limit, int offset, string market, SpotifyClient api)
         {
             string fullartists;
             string trackname;
 
             try
             {
-                Paging<PlaylistTrack> res = api.GetPlaylistTracks(playlistid, fields, limit, offset, market);
+                //v.6.x.x
+                var playlist = await api.Playlists.Get(playlistid);
 
-                if (res.Items != null)
+                if (playlist.Uri != null)
                 {
 
-                    foreach (PlaylistTrack obj in res.Items)
+                    foreach (PlaylistTrack<IPlayableItem> item in playlist.Tracks.Items)
                     {
-                        fullartists = null;
-
-                        List<SimpleArtist> artists = new List<SimpleArtist>();
-
-                        artists = null;
-                        if (obj.Track != null)
-                            artists = obj.Track.Artists;
-
-                        trackname = obj.Track.Name.ToString();
-                        //TODO: (update spotiapi)
-                        //string prevURL = obj.Track.PreviewUrl;
-                        //var id = obj.Track.Id;
-         
-                        if (artists != null)
+                        if (item.Track is FullTrack track)
                         {
+                            // All FullTrack properties are available
+                            //Console.WriteLine(track.Name);
 
-                            foreach (SimpleArtist artist in artists)
+                            fullartists = null;
+
+                            List<SimpleArtist> artists = new List<SimpleArtist>();
+                            artists = track.Artists;
+                            trackname = track.Name;
+
+                            if (artists.Count!=0)
                             {
-                                fullartists += artist.Name.ToString() + " ";
+                                foreach (var artist in artists)
+                                    fullartists += artist.Name.ToString() + " ";
+
+                                var eUrl = track.ExternalUrls;
+                                var preUrl = track.PreviewUrl;
+                                Program.ChartList.Add(new SpotyTrack(trackname, fullartists, eUrl, preUrl));
                             }
-
-                            Program.ChartList.Add(new Chart(trackname, fullartists));  
+                            else continue;
                         }
-                        else continue;
 
+                        //if (item.Track is FullEpisode episode)
+                        //{
+                        //    //// All FullTrack properties are available
+                        //    sConsole.WriteLine(episode.Name);
+                        //}
                     }
+
+                    ///Depreciated v.5.1.1
+                    //var playlist = await api.Playlists.GetItems(playlistid, new PlaylistGetItemsRequest { Market = market, Limit = limit, Offset = offset });
+                    //Paging<PlaylistTrack> res = api.GetPlaylistTracks(playlistid, fields, limit, offset, market);
+
+                    //foreach (var obj in playlist.Items)
+                    //{
+                    //    fullartists = null;
+
+                    //    List<SimpleArtist> artists = new List<SimpleArtist>();
+
+                    //    artists = null;
+                    //    if (obj.Track != null)
+                    //        artists = obj.Track.Artists;
+
+                    //    trackname = obj.Track.Name.ToString();
+                    //    //TODO: (update spotiapi)
+                    //    //string prevURL = obj.Track.PreviewUrl;
+                    //    //var id = obj.Track.Id;
+
+                    //    if (artists != null)
+                    //    {
+
+                    //        foreach (SimpleArtist artist in artists)
+                    //        {
+                    //            fullartists += artist.Name.ToString() + " ";
+                    //        }
+
+                    //        Program.ChartList.Add(new Chart(trackname, fullartists));  
+                    //    }
+                    //    else continue;
+
+                    //}
                 }
             }
             catch (Exception ex)

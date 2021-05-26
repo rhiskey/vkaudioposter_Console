@@ -116,4 +116,20 @@ namespace vkaudioposter
         }
 
     }
+
+    sealed class SpotyVKTrack : Track
+    {
+        public Dictionary<string, string> Urls { get; set; }
+        public string PreviewUrl { get; set; }
+
+        public SpotyVKTrack(string CurrentTitle, long? CurrentMediaId, long? CurrentOwnerId, Dictionary<string, string> CurrUrls, string CurrPreviewUrl) : base (CurrentTitle, CurrentMediaId, CurrentOwnerId)
+        {
+            Urls = CurrUrls;
+            PreviewUrl = CurrPreviewUrl;
+        }
+
+        public SpotyVKTrack(string CurrentTitle, long? CurrentMediaId, long? CurrentOwnerId) : base(CurrentTitle, CurrentMediaId, CurrentOwnerId)
+        {
+        }
+    }
 }
