@@ -127,10 +127,17 @@ namespace vkaudioposter.MySQL
                         postedTrack.MediaId = at.Id;
                         postedTrack.OwnerId = at.OwnerId;
                         postedTrack.PreviewUrl = preUrl;
-                        postedTrack.Urls = urls;
+                        //postedTrack.Urls = urls;
                         //foreach (var ur in urls)
                         //    ur.Value.ToString();
                         postedTrack.Url = urls.First().Value.ToString();
+
+                        List<TrackUrl> trackUrls = new();
+                        foreach (var url in urls)
+                            trackUrls.Add(new TrackUrl { Key = url.Key, Value = url.Value});
+
+                        postedTrack.TrackUrls = trackUrls;
+
 
                         post.PostedTracks.Add(postedTrack);
                     }
