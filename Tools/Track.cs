@@ -66,7 +66,6 @@ namespace vkaudioposter
 
             SetOwnerId(temp_string);
 
-            int dlina = CurrentFullId.Length - 1;
             temp_string = CurrentFullId.Remove(0, ind3 + 1);
             SetMediaId(temp_string);
             return;

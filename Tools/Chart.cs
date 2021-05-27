@@ -44,10 +44,10 @@ namespace vkaudioposter
             return;
         }
 
-        ~Chart()
-        {
+        //~Chart()
+        //{
 
-        }
+        //}
 
         public void SetTrackname(string CurrentTrackname)
         {

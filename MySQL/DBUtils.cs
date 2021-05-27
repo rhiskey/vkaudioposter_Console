@@ -18,37 +18,33 @@ namespace vkaudioposter.MySQL
     {
         public static void CountPublishedTracksInStyles()
         {
-            using (var context = new vkaudioposter_ef.AppContext())
-            {
-                var countPerPlaylists =
-                    from track in context.PostedTracks
-                    group track by track.PlaylistId into trackGroup
-                    orderby trackGroup.Count() descending
-                    select new
-                    {
-                        ID = trackGroup.Key,
-                        Count = trackGroup.Count(),
-                    };
+            using var context = new vkaudioposter_ef.AppContext();
+            var countPerPlaylists =
+                from track in context.PostedTracks
+                group track by track.PlaylistId into trackGroup
+                orderby trackGroup.Count() descending
+                select new
+                {
+                    ID = trackGroup.Key,
+                    Count = trackGroup.Count(),
+                };
 
-                foreach (var s in countPerPlaylists)
-                    AddToDb(s);
-            }
+            foreach (var s in countPerPlaylists)
+                AddToDb(s);
         }
         protected static async void AddToDb(dynamic t)
         {
-            using (var context = new vkaudioposter_ef.AppContext())
-            {
-                var id = (int)t.ID;
-                var playlist = context.Playlists.Where(y => y.Id == id).FirstOrDefault();
-                playlist.Count = Convert.ToInt32(t.Count);
-                await context.SaveChangesAsync();
-            }
+            using var context = new vkaudioposter_ef.AppContext();
+            var id = (int)t.ID;
+            var playlist = context.Playlists.Where(y => y.Id == id).FirstOrDefault();
+            playlist.Count = Convert.ToInt32(t.Count);
+            await context.SaveChangesAsync();
         }
 
         public static List<FormattedPlaylist> GetAllPlaylists()
         {
             List<vkaudioposter_ef.parser.Playlist> playlists;
-            List<FormattedPlaylist> formattedList = new List<FormattedPlaylist>();
+            List<FormattedPlaylist> formattedList = new();
 
             using (var context = new vkaudioposter_ef.AppContext())
             {
@@ -64,14 +60,14 @@ namespace vkaudioposter.MySQL
                         string subs = elem.PlaylistId.Remove(0, index + 9);
                         plID = subs;
                     }
-                    FormattedPlaylist fmt = new FormattedPlaylist(elem, plID);
+                    FormattedPlaylist fmt = new(elem, plID);
                     formattedList.Add(fmt);
                 }
             }
             return formattedList;
         }
 
-        public static void UpdatePublicationDateOfTracksAndInsertToDB(List<string> tracknames, FormattedPlaylist formattedPlaylist,
+        public static void UpdatePublicationDateOfTracksAndInsertToDB(FormattedPlaylist formattedPlaylist,
             DateTime publish_date, long postId = 0, List<MediaAttachment> atts = null, long ownerId = 0, string message = null,
             List<SpotyVKTrack> searchList = null, string photourl = null)
         {
@@ -127,14 +123,11 @@ namespace vkaudioposter.MySQL
                         postedTrack.MediaId = at.Id;
                         postedTrack.OwnerId = at.OwnerId;
                         postedTrack.PreviewUrl = preUrl;
-                        //postedTrack.Urls = urls;
-                        //foreach (var ur in urls)
-                        //    ur.Value.ToString();
                         postedTrack.Url = urls.First().Value.ToString();
 
                         List<TrackUrl> trackUrls = new();
                         foreach (var url in urls)
-                            trackUrls.Add(new TrackUrl { Key = url.Key, Value = url.Value});
+                            trackUrls.Add(new TrackUrl { Key = url.Key, Value = url.Value });
 
                         postedTrack.TrackUrls = trackUrls;
 
@@ -190,7 +183,7 @@ namespace vkaudioposter.MySQL
 
                     context.SaveChanges();
                 }
-                catch (Exception ex) { }
+                catch (Exception ex) { var err = ex; }
             }
             else
             {
@@ -219,7 +212,7 @@ namespace vkaudioposter.MySQL
 
         }
 
-        public static bool CheckFoundTrack(string trackname, FormattedPlaylist formattedPlaylist, DateTime publish_date, bool? isFirstTime, int ownerId = 0, int mediaId = 0)
+        public static bool CheckFoundTrack(string trackname,  bool? isFirstTime)
         {
 
             using var context = new vkaudioposter_ef.AppContext();
@@ -260,7 +253,7 @@ namespace vkaudioposter.MySQL
 
                     context.SaveChanges();
                 }
-                catch (Exception ex) { }
+                catch (Exception ex) { var err = ex; }
             }
             else
             {
@@ -285,7 +278,7 @@ namespace vkaudioposter.MySQL
 
         public static List<string> GetUnfoundTracksFromDB(FormattedPlaylist playlist)
         {
-            List<string> unfoundTracksNames = new List<string>();
+            List<string> unfoundTracksNames = new();
 
             using (var context = new vkaudioposter_ef.AppContext())
             {
@@ -299,7 +292,7 @@ namespace vkaudioposter.MySQL
 
         public static List<string> GetPostedTracksFromDB(FormattedPlaylist playlist)
         {
-            List<string> postedTracksNames = new List<string>();
+            List<string> postedTracksNames = new();
 
             using (var context = new vkaudioposter_ef.AppContext())
             {
@@ -314,7 +307,7 @@ namespace vkaudioposter.MySQL
         public static List<string> LoadPhotoStocksFromDB()
         {
             List<vkaudioposter_ef.parser.ConsolePhotostock> photostocks;
-            List<string> urls = new List<string>();
+            List<string> urls = new();
             using (var context = new vkaudioposter_ef.AppContext())
             {
                 photostocks = context.Photostocks.Where(p => p.Status == 1).ToList();
@@ -326,7 +319,7 @@ namespace vkaudioposter.MySQL
 
         public static ParserXpath GetPhotostockNodContainer(string photostockName)
         {
-            ParserXpath xPath = new ParserXpath();
+            ParserXpath xPath = new();
 
             using (var context = new vkaudioposter_ef.AppContext())
             {
@@ -491,7 +484,7 @@ namespace vkaudioposter.MySQL
                     }
                 }
 
-            DateTime LastDatePosted = new DateTime();
+            DateTime LastDatePosted = new();
             //Возможна ошибка когда последняя дата раньше чем сейчас
             try
             {

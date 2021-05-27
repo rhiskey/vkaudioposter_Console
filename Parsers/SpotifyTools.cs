@@ -25,7 +25,7 @@ namespace vkaudioposter_Console.Parsers
         /// <param name="market"></param>
         /// <param name="api"></param>
         //Spotify Parser
-        public static async Task SpotyParser(string playlistid, string fields, int limit, int offset, string market, SpotifyClient api)
+        public static async Task SpotyParser(string playlistid, SpotifyClient api)
         {
             string fullartists;
             string trackname;
@@ -47,7 +47,7 @@ namespace vkaudioposter_Console.Parsers
 
                             fullartists = null;
 
-                            List<SimpleArtist> artists = new List<SimpleArtist>();
+                            List<SimpleArtist> artists = new();
                             artists = track.Artists;
                             trackname = track.Name;
 
@@ -117,18 +117,18 @@ namespace vkaudioposter_Console.Parsers
             Console.WriteLine("Getting Token");
             string credentials = string.Format("{0}:{1}", Program.clientId, Program.clientSecret);
 
-            using HttpClient client = new HttpClient();
+            using HttpClient client = new();
             //Define Headers
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes(credentials)));
             //Prepare Request Body
-            List<KeyValuePair<string, string>> requestData = new List<KeyValuePair<string, string>>
-                {
+            List<KeyValuePair<string, string>> requestData = new()
+            {
                     new KeyValuePair<string, string>("grant_type", "client_credentials")
                 };
-            FormUrlEncodedContent requestBody = new FormUrlEncodedContent(requestData);
+            FormUrlEncodedContent requestBody = new(requestData);
             //Request Token
             HttpResponseMessage request = await client.PostAsync("https://accounts.spotify.com/api/token", requestBody);
             string response = await request.Content.ReadAsStringAsync();

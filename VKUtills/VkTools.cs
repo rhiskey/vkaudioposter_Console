@@ -44,7 +44,7 @@ namespace vkaudioposter_Console.VKUtills
             return attachments;
         }
 
-        public static (List<MediaAttachment>, int) AddPhotoToAttachFromPC(string imagefile, List<MediaAttachment> attachments, string styleFilename, string postMessage)
+        public static (List<MediaAttachment>, int) AddPhotoToAttachFromPC(string imagefile, List<MediaAttachment> attachments,  string postMessage)
         {
             var sendTuple = SendOnServerOld(imagefile, postMessage);
 
@@ -70,14 +70,13 @@ namespace vkaudioposter_Console.VKUtills
             Console.WriteLine("Авторизировались для загрузки фото на стену");
             UploadServerInfo getWallUploadServer = api.Photo.GetWallUploadServer(Program.groupid);
             string uploadurl = getWallUploadServer.UploadUrl;
-            //long? userid = getWallUploadServer.UserId;
-            //long? albumid = getWallUploadServer.AlbumId;
-            string responseImg = null;
             IReadOnlyCollection<Photo> photolist = null;
             // Загрузить фотографию.
             try
             {
                 WebClient wc = new();
+                //long? userid = getWallUploadServer.UserId;
+                //long? albumid = getWallUploadServer.AlbumId;
                 //string responseImg = null;
                 //if (downloaded == false)
                 //{
@@ -87,7 +86,7 @@ namespace vkaudioposter_Console.VKUtills
                 //}
                 //else
                 // {
-                responseImg = Encoding.ASCII.GetString(wc.UploadFile(uploadurl, photoFilename));
+                string responseImg = Encoding.ASCII.GetString(wc.UploadFile(uploadurl, photoFilename));
                 responseImg.GetHashCode();
 
                 var msg = postMessage;
@@ -125,16 +124,15 @@ namespace vkaudioposter_Console.VKUtills
             Console.WriteLine("Авторизировались для загрузки фото на стену");
             UploadServerInfo getWallUploadServer = api.Photo.GetWallUploadServer(Program.groupid);
             string uploadurl = getWallUploadServer.UploadUrl;
-            //long? userid = getWallUploadServer.UserId;
-            //long? albumid = getWallUploadServer.AlbumId;
-            string responseImg = null;
             IReadOnlyCollection<Photo> photolist = null;
 
             try
             {
                 WebClient wc = new();
 
-                responseImg = Encoding.ASCII.GetString(wc.UploadFile(uploadurl, photoFilename));
+                //long? userid = getWallUploadServer.UserId;
+                //long? albumid = getWallUploadServer.AlbumId;
+                string responseImg = Encoding.ASCII.GetString(wc.UploadFile(uploadurl, photoFilename));
                 //Thread.Sleep(200);
                 responseImg.GetHashCode();
 

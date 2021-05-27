@@ -660,12 +660,12 @@ namespace vkaudioposter_Console
                 if (playlistId != null)
                 // if (user_id != null || playlist_id != null) //Если Spotify Only
                 {
-                    string fields = "items(added_by.id,track(name,artists))";
-                    int limit = 100; //default
-                    int offset = 0; //смещение = 0
-                    string market = "US"; //Сделать RU
+                    //string fields = "items(added_by.id,track(name,artists))";
+                    //int limit = 100; //default
+                    //int offset = 0; //смещение = 0
+                    //string market = "US"; //Сделать RU
                     /// <include file='docParser.xml' path='docs/members[@name="parser"]/SpotyParser    /*'/>
-                    await SpotifyTools.SpotyParser(playlistId, fields, limit, offset, market, spotify);
+                    await SpotifyTools.SpotyParser(playlistId, spotify);
                 }
                 else //Если пустые user_id и playlist_id -> Beatport (DEPRECIATED)
                 {
@@ -947,7 +947,7 @@ namespace vkaudioposter_Console
                                 int ownId = mediaOwnId.Item1;
                                 int mediaId = mediaOwnId.Item2;
 
-                                bool isExist = DBUtils.CheckFoundTrack(current_track, styletoDB, publication_date, false, ownId, mediaId);
+                                bool isExist = DBUtils.CheckFoundTrack(current_track, false);
 
                                 if (isExist == true)
                                 {
@@ -970,7 +970,7 @@ namespace vkaudioposter_Console
                                 {
                                     DBUtils.InsertUnfoundTrackInDB(current_track, styletoDB, false);
                                 }
-                                catch (Exception e) { Console.ForegroundColor = ConsoleColor.DarkGray; /*Console.WriteLine($"Dublicate in UnfoundTracks...skip");*/ /* Logging.ErrorLogging(e); */ continue; };
+                                catch (Exception e) { var err = e; Console.ForegroundColor = ConsoleColor.DarkGray; /*Console.WriteLine($"Dublicate in UnfoundTracks...skip");*/ /* Logging.ErrorLogging(e); */ continue; };
                             }
                             //если не нашли не добавляем в массив
                             //если счетчик достиг 9 треков, остановить поиск!
@@ -1544,7 +1544,7 @@ namespace vkaudioposter_Console
 
                     //DBUtils.InsertFoundTrackInDB();
 
-                    DBUtils.UpdatePublicationDateOfTracksAndInsertToDB(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, postId, attachments, ownid, MessageToAttach, SearchingList, photourl);
+                    DBUtils.UpdatePublicationDateOfTracksAndInsertToDB( fmtPlaylist, LastDatePosted, postId, attachments, ownid, MessageToAttach, SearchingList, photourl);
     
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Пост опубликован! {MessageToAttach}");
@@ -1639,7 +1639,7 @@ namespace vkaudioposter_Console
 
                         LastDatePosted = publication_date;
 
-                        DBUtils.UpdatePublicationDateOfTracksAndInsertToDB(LstBox_AddedTracks, fmtPlaylist, LastDatePosted, postId, attachments, ownid, MessageToAttach, SearchingList, photourl);
+                        DBUtils.UpdatePublicationDateOfTracksAndInsertToDB(fmtPlaylist, LastDatePosted, postId, attachments, ownid, MessageToAttach, SearchingList, photourl);
 
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Пост {MessageToAttach}\n, увеличила дату {LastDatePosted}, опубликован!");

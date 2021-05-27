@@ -22,7 +22,7 @@ namespace vkaudioposter_Console.Tools
                     File.Create(strPath).Dispose();
                 }
 
-                FileInfo file = new FileInfo(strPath);
+                FileInfo file = new(strPath);
                 if (file.Length > 5e+6)
                 {
                     // Clear File
@@ -84,7 +84,7 @@ namespace vkaudioposter_Console.Tools
                     File.Create(strPath).Dispose();
                 }
 
-                FileInfo file = new FileInfo(strPath);
+                FileInfo file = new(strPath);
                 if (file.Length > 5e+6)
                 {
                     // Clear File
@@ -130,7 +130,7 @@ namespace vkaudioposter_Console.Tools
             if (Program.saveLogs == true)
             {
                 string strPath = "Log.txt";
-                using StreamReader sr = new StreamReader(strPath);
+                using StreamReader sr = new(strPath);
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {

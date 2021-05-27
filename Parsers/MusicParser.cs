@@ -28,7 +28,7 @@ namespace vkaudioposter_Console.Parsers
             //    .WithAuthenticator(new ClientCredentialsAuthenticator(clientId, clientSecret)); // takes care of access tokens
             //var spotify = new SpotifyClient(config);
 
-            AccessToken token = SpotifyTools.GetToken().Result;
+            //AccessToken token = SpotifyTools.GetToken().Result;
 
             var config = SpotifyClientConfig
             .CreateDefault()
@@ -54,11 +54,11 @@ namespace vkaudioposter_Console.Parsers
                 {
                     //Не добавляем в плейлисты
 
-                    string fields = "items(added_by.id,track(name,artists))";
-                    int limit = 100; //default
-                    int offset = 0; //смещение = 0
-                    string market = "US"; //Сделать RU
-                    SpotifyTools.SpotyParser(playlistId, fields, limit, offset, market, spotify);
+                    //string fields = "items(added_by.id,track(name,artists))";
+                    //int limit = 100; //default
+                    //int offset = 0; //смещение = 0
+                    //string market = "US"; //Сделать RU
+                    SpotifyTools.SpotyParser(playlistId, spotify);
                 }
                 else //Если пустые user_id и playlist_id
                 {
@@ -163,7 +163,7 @@ namespace vkaudioposter_Console.Parsers
                     string Url = "https://www.beatport.com/genre/" + style_search + trackstop; // +"?per-page=150"; //можно добавить
 
 
-                    HtmlWeb web = new HtmlWeb();
+                    HtmlWeb web = new();
                     HtmlAgilityPack.HtmlDocument doc = web.Load(Url);
 
                     int sw = 2;

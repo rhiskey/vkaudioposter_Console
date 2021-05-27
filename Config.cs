@@ -56,7 +56,7 @@ namespace vkaudioposter_Console
         public static string clientSecret;
         public static Random random = new();
 
-        private static readonly int searchCoolDown = 700; //ms для поиска по apiяws
+        //private static readonly int searchCoolDown = 700; //ms для поиска по apiяws
 
         private static bool startOnce; //For Sheduler
 

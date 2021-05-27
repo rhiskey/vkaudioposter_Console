@@ -17,7 +17,7 @@ namespace vkaudioposter_Console.Tools
         {
             File.Delete(file);
 
-            FileStream stream = new FileStream(file, FileMode.CreateNew);
+            FileStream stream = new(file, FileMode.CreateNew);
             stream.Close();
         }
 
@@ -31,7 +31,7 @@ namespace vkaudioposter_Console.Tools
         {
             bool downloaded = false;
 
-            using (WebClient webClient = new WebClient())
+            using (WebClient webClient = new())
             {
                 //Use VPN
                 //HttpToSocks5Proxy proxy = new HttpToSocks5Proxy(TorProxy.Host, TorProxy.Port);
@@ -93,7 +93,7 @@ namespace vkaudioposter_Console.Tools
             return watermarked;
         }
 
-        public Image DrawText(String text, Font font, Color textColor, Color backColor)
+        public static Image DrawText(String text, Font font, Color textColor, Color backColor)
         {
             //first, create a dummy bitmap just to get a graphics object
             Image img = new Bitmap(1, 1);
@@ -128,7 +128,7 @@ namespace vkaudioposter_Console.Tools
 
         }
 
-        public Image DrawTextOnImage(string bgPath, string text, Font font, Brush textColor)
+        public static Image DrawTextOnImage(string bgPath, string text, Font font, Brush textColor)
         {
             //Bitmap myBitmap = new Bitmap(bgPath);
             //Graphics g = Graphics.FromImage(myBitmap);
@@ -140,14 +140,12 @@ namespace vkaudioposter_Console.Tools
 
             float fontSize = bitmap.Width / 20;
             var textWidth = (font.Size * text.Length)/2;
-            PointF textLocation = new PointF(bitmap.Width/2- textWidth, bitmap.Height/2-font.Height);
+            PointF textLocation = new(bitmap.Width/2- textWidth, bitmap.Height/2-font.Height);
 
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
-                using (Font mFont = new Font(font.Name, fontSize))
-                { 
-                    graphics.DrawString(text, mFont, textColor, textLocation);
-                }
+                using Font mFont = new(font.Name, fontSize);
+                graphics.DrawString(text, mFont, textColor, textLocation);
 
             }
 
