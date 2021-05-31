@@ -62,8 +62,8 @@ namespace vkaudioposter_Console
         public static ulong? ownerid3; //для сохранения фото на стене
         public static ulong? groupid3;//для  сохранения фото на стене
         public static long groupid; //для загрузки на сервер
-                                                     //public static string pusherAppId;
-                                                     //public static string pusherAppKey;
+                                    //public static string pusherAppId;
+                                    //public static string pusherAppKey;
 
         //public static string pusherAppSecret;
         public static long ownid;
@@ -78,7 +78,7 @@ namespace vkaudioposter_Console
         public static Random random = new();
 
         private static readonly int searchCoolDown = 700; //ms для поиска по apiяws
-        
+
         private static bool startOnce; //For Sheduler
 
         private static readonly string url1 = "https://api-vk.com/api.php?method=search&q=";
@@ -95,7 +95,7 @@ namespace vkaudioposter_Console
         public static List<SpotyTrack> ChartList = new();
         #endregion
 
-       
+
         private string MessageToAttach;
         private bool posted = false; //опубликован?
         private bool tracks_attached = false;
@@ -127,7 +127,7 @@ namespace vkaudioposter_Console
         Queue<Photostock_class> photostockQueue = new();
         Queue<WallPostParams> wallPostQueue = new();
 
-        
+
         #region Config
         /// <summary>
         /// 
@@ -288,8 +288,8 @@ namespace vkaudioposter_Console
 
                 DBUtils.CountPublishedTracksInStyles();
 
-                var dateTuple = DBUtils.GetLastDateFromDB(); 
-                
+                var dateTuple = DBUtils.GetLastDateFromDB();
+
                 publication_date = dateTuple.Item1;
                 LastDatePosted = dateTuple.Item2;
 
@@ -374,13 +374,13 @@ namespace vkaudioposter_Console
 
                 int threshhold = 0; //порог количества треков для публикации
                 string photostock_new = null;
-                bool photo_exist = false;
+                //bool photo_exist = false;
 
 
                 foreach (var style in playlists.ToList()) // if want  change list (remove elements)
                 {
-                    
-                    photo_exist = false;
+
+                    //photo_exist = false;
 
                     var wallTotal = VkTools.CheckPostponedAndGetCount();
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -464,11 +464,11 @@ namespace vkaudioposter_Console
                                 throw new Exception(String.Format("Пустая ссылка на фото, сток: {0}", photostock_new));
 
                             }
-                            else photo_exist = true;
+                            //else photo_exist = true;
                         }
                         catch (Exception ex)
                         {
-                            Logging.ErrorLogging(ex); Logging.ReadError(); photo_exist = false;
+                            Logging.ErrorLogging(ex); Logging.ReadError(); //photo_exist = false;
 
                             postcounter = 0; //Сброс
 
@@ -488,9 +488,9 @@ namespace vkaudioposter_Console
                                 ///OLD
                                 photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg";
                                 ///OLD
-                                photo_exist = false;
+                                //photo_exist = false;
                             }// Default photo 2 High Volume Music 
-                            else photo_exist = true;
+                            //else photo_exist = true;
                         }
                         finally
                         {
@@ -516,7 +516,7 @@ namespace vkaudioposter_Console
                                 //styleOnBG.Save("tempMark.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
 
 
-                                photo_exist = true; //false
+                                //photo_exist = true; //false
                             }
 
                         }
@@ -537,43 +537,43 @@ namespace vkaudioposter_Console
                         Console.WriteLine("Размещаем пост на стену");
                         //Rabbit.NewLog("Размещаем пост на стену");
 
-                        if (photo_exist == true) //если вообще скачалась фотка
-                        {
-                            //// Generate image
-                            //ImageWorkers iw = new ImageWorkers();
-                            ////Install Linux Font
-                            ////var font = new System.Drawing.Font("DejaVuSans", 36);
-                            //var font = new System.Drawing.Font("DejaVuSans", 16);
+                        //if (photo_exist == true) //если вообще скачалась фотка
+                        //{
+                        //// Generate image
+                        //ImageWorkers iw = new ImageWorkers();
+                        ////Install Linux Font
+                        ////var font = new System.Drawing.Font("DejaVuSans", 36);
+                        //var font = new System.Drawing.Font("DejaVuSans", 16);
 
-                            //var brushColor = System.Drawing.Brushes.White;
-                            //var styleOnBG = iw.DrawTextOnImage(photofilename, style.PlaylistName, font, brushColor);
-                            //string path = Directory.GetCurrentDirectory();
-                            //string[] paths = { path, "tempMark.jpg" };
-                            //string fullPath = Path.Combine(paths);
-           
-                            //styleOnBG.Save(fullPath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        //var brushColor = System.Drawing.Brushes.White;
+                        //var styleOnBG = iw.DrawTextOnImage(photofilename, style.PlaylistName, font, brushColor);
+                        //string path = Directory.GetCurrentDirectory();
+                        //string[] paths = { path, "tempMark.jpg" };
+                        //string fullPath = Path.Combine(paths);
+
+                        //styleOnBG.Save(fullPath, System.Drawing.Imaging.ImageFormat.Jpeg);
 
 
-                            var attsTuple = VkTools.AddPhotoToAttachFromUrl(photofilename, attachments, postMessage, LstBox_AddedTracks);
-                            attachments = attsTuple;
-                            photofilename = "tempimage.png";
-                        } else
-                        {
-                            //ImageWorkers iw = new ImageWorkers();
-                            ///Install Linux Font
-                            //var font = new System.Drawing.Font("DejaVuSans", 36);
+                        var attsTuple = VkTools.AddPhotoToAttachFromUrl(photofilename, attachments, postMessage, LstBox_AddedTracks);
+                        attachments = attsTuple;
+                        photofilename = "tempimage.png";
+                        //} else
+                        //{
+                        //    //ImageWorkers iw = new ImageWorkers();
+                        //    ///Install Linux Font
+                        //    //var font = new System.Drawing.Font("DejaVuSans", 36);
 
-                            //var brushColor = System.Drawing.Brushes.White;
-                            //var styleOnBG = iw.DrawTextOnImage("background-image.png", style.PlaylistName, font, brushColor);
-                            //string path = Directory.GetCurrentDirectory();
-                            //string[] paths = { path, "tempMark.jpg" };
-                            //string fullPath = Path.Combine(paths);
-                            //styleOnBG.Save("tempMark.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                        //    //var brushColor = System.Drawing.Brushes.White;
+                        //    //var styleOnBG = iw.DrawTextOnImage("background-image.png", style.PlaylistName, font, brushColor);
+                        //    //string path = Directory.GetCurrentDirectory();
+                        //    //string[] paths = { path, "tempMark.jpg" };
+                        //    //string fullPath = Path.Combine(paths);
+                        //    //styleOnBG.Save("tempMark.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
 
-                            var attsTuple = VkTools.AddPhotoToAttachFromUrl(photofilename, attachments, postMessage, LstBox_AddedTracks);
-                            attachments = attsTuple;
-                            photofilename = "tempimage.png";
-                        }
+                        //    var attsTuple = VkTools.AddPhotoToAttachFromUrl(photofilename, attachments, postMessage, LstBox_AddedTracks);
+                        //    attachments = attsTuple;
+                        //    photofilename = "tempimage.png";
+                        //}
 
                         PosterOnWall(attachments, style, photourl, SearchingList);
                         do
@@ -915,7 +915,7 @@ namespace vkaudioposter_Console
                 }
 
 
-                if ((fmtPostedTracks.IndexOf(current_track) != -1) /*&& (Output.Length != 0))*/ || (fmtUnfoundTracks.IndexOf(current_track) != -1))    
+                if ((fmtPostedTracks.IndexOf(current_track) != -1) /*&& (Output.Length != 0))*/ || (fmtUnfoundTracks.IndexOf(current_track) != -1))
                 {
                     //Нашли такой же трек- он был опубликован, значит пропускаем
                     publishedtracks++;
@@ -931,7 +931,7 @@ namespace vkaudioposter_Console
                         //Если такого трека нет в файле, выполняем поиск в ВК 
                         trackNameAndAuthors = current_track;
                         string url = JsonTools.ConcatSearchReq(url1, trackNameAndAuthors, url3);
-  
+
 
                         //---------------Old-------------------------
                         string json = JsonTools.SearchWeb(url);
@@ -1245,10 +1245,10 @@ namespace vkaudioposter_Console
                         catch (System.NullReferenceException ex)
                         {
                             Logging.ErrorLogging(ex);
-                            if (pickedStockPage <= stockMaxPages) 
+                            if (pickedStockPage <= stockMaxPages)
                             {
                                 //Если нет фотки
-                                pickedStockPage++; 
+                                pickedStockPage++;
                                 postcounter = 1;
                                 i = postcounter;
                                 photostock += "&page=" + pickedStockPage;
@@ -1275,10 +1275,10 @@ namespace vkaudioposter_Console
                         catch (System.NullReferenceException ex)
                         {
                             Logging.ErrorLogging(ex);
-                            if (pickedStockPage <= stockMaxPages) 
+                            if (pickedStockPage <= stockMaxPages)
                             {
 
-                                pickedStockPage++; 
+                                pickedStockPage++;
                                 postcounter = 1;
                                 i = postcounter;
                                 photostock += "&page=" + pickedStockPage;
@@ -1322,7 +1322,7 @@ namespace vkaudioposter_Console
                         break;
                     ///-----------END DEPRECIATED (УСТАРЕЛО)-----------
 
-                    case null:           
+                    case null:
                         break;
                     default:
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -1364,9 +1364,9 @@ namespace vkaudioposter_Console
                     catch (System.NullReferenceException ex)
                     {
                         Logging.ErrorLogging(ex);
-                        if (pickedStockPage <= stockMaxPages) 
+                        if (pickedStockPage <= stockMaxPages)
                         {
-                            pickedStockPage++; 
+                            pickedStockPage++;
                             postcounter = 1;
                             i = postcounter;
                             switch (photostock)
@@ -1474,7 +1474,7 @@ namespace vkaudioposter_Console
                 System.Console.WriteLine("{0:d} is today!", publication_date);
                 publication_date = publication_date.AddMinutes(minutesperiod);
             }
-            else 
+            else
             {
                 System.Console.WriteLine("{0:d} has not come yet.", publication_date);
             }
@@ -1527,7 +1527,7 @@ namespace vkaudioposter_Console
                 //        AccessKey = accesstoken,
                 //        AuthorId = ownid,
                 //        OwnerId = ownid,
-                        
+
                 //    });
 
                 try
@@ -1544,8 +1544,8 @@ namespace vkaudioposter_Console
 
                     //DBUtils.InsertFoundTrackInDB();
 
-                    DBUtils.UpdatePublicationDateOfTracksAndInsertToDB( fmtPlaylist, LastDatePosted, postId, attachments, ownid, MessageToAttach, SearchingList, photourl);
-    
+                    DBUtils.UpdatePublicationDateOfTracksAndInsertToDB(fmtPlaylist, LastDatePosted, postId, attachments, ownid, MessageToAttach, SearchingList, photourl);
+
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Пост опубликован! {MessageToAttach}");
                     //Rabbit.NewLog($"Пост опубликован! {MessageToAttach}");
@@ -1713,7 +1713,7 @@ namespace vkaudioposter_Console
             //for (int i = 0; i < 50; i++)
             //{
             while (true)
-            {                
+            {
                 //Rabbit.NewPostedTrack(Rabbit.RandomString(10), Rabbit.RandomString(5), DateTime.Now);
 
                 Thread.Sleep(2000);
