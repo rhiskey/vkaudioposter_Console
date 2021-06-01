@@ -260,7 +260,7 @@ namespace vkaudioposter_Console
                     ///If want to delete -> pass TRUE             
                     vkaudioposter_ef.CreateInitialSchema.CreateSchema(true);
                     vkaudioposter_ef.Program.InsertData(true);
-                    vkaudioposter_ef.Program.CreateStoredProceduresViewsAndFunctions(true);
+                    //vkaudioposter_ef.Program.CreateStoredProceduresViewsAndFunctions(true);
                 }
                 if (startOnce == true)
                     StatusChecker.ApiStart();
@@ -1131,11 +1131,13 @@ namespace vkaudioposter_Console
                 switch (photostock)
                 {
                     case var someVal when new Regex(@"https://www.deviantart.com/topic/(\w*)", RegexOptions.IgnoreCase).IsMatch(someVal):
-                        ParserXpath pXp = DBUtils.GetPhotostockNodContainer(photostock);
-                        nodContainer = pXp.Xpath;//Контейнер с картинками на странице (последний grid)
+                        //ParserXpath pXp = DBUtils.GetPhotostockNodContainer(photostock);
+                        //nodContainer = pXp.Xpath;//Контейнер с картинками на странице (последний grid)
+                                          //*[@id="root"]/div[1]/div/div/div/article/div/div[2]/div/div
+                        nodContainer = "//*[@id=\"root\"]/div[1]/div/div/div/article/div/div[2]/div/div";//Контейнер с картинками на странице (последний grid)
                         try
                         {
-                            url = PhotoParser.DevianPageParser(doc, nodContainer, i, pXp);
+                            url = PhotoParser.DevianPageParser(doc, nodContainer, i);
                         }
                         catch (System.NullReferenceException ex)
                         {
