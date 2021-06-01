@@ -1137,7 +1137,7 @@ namespace vkaudioposter_Console
                         //nodContainer = "//*[@id=\"root\"]/div[1]/div/div/div/article/div/div[2]/div/div";//Контейнер с картинками на странице (последний grid)
                         try
                         {
-                            url = PhotoParser.DevianPageParser(doc, nodContainer, i);
+                            url = PhotoParser.DevianPageParser(doc, nodContainer, i, pXp);
                         }
                         catch (System.NullReferenceException ex)
                         {
