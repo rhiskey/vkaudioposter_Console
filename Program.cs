@@ -1131,10 +1131,10 @@ namespace vkaudioposter_Console
                 switch (photostock)
                 {
                     case var someVal when new Regex(@"https://www.deviantart.com/topic/(\w*)", RegexOptions.IgnoreCase).IsMatch(someVal):
-                        //ParserXpath pXp = DBUtils.GetPhotostockNodContainer(photostock);
-                        //nodContainer = pXp.Xpath;//Контейнер с картинками на странице (последний grid)
+                        ParserXpath pXp = DBUtils.GetPhotostockNodContainer(photostock);
+                        nodContainer = pXp.Xpath;//Контейнер с картинками на странице (последний grid)
                                           //*[@id="root"]/div[1]/div/div/div/article/div/div[2]/div/div
-                        nodContainer = "//*[@id=\"root\"]/div[1]/div/div/div/article/div/div[2]/div/div";//Контейнер с картинками на странице (последний grid)
+                        //nodContainer = "//*[@id=\"root\"]/div[1]/div/div/div/article/div/div[2]/div/div";//Контейнер с картинками на странице (последний grid)
                         try
                         {
                             url = PhotoParser.DevianPageParser(doc, nodContainer, i);

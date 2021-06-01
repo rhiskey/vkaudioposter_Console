@@ -316,24 +316,24 @@ namespace vkaudioposter.MySQL
             return urls;
         }
 
-        //public static ParserXpath GetPhotostockNodContainer(string photostockName)
-        //{
-        //    ParserXpath xPath = new();
+        public static ParserXpath GetPhotostockNodContainer(string photostockName)
+        {
+            ParserXpath xPath = new();
 
-        //    using (var context = new vkaudioposter_ef.AppContext())
-        //    {
+            using (var context = new vkaudioposter_ef.AppContext())
+            {
 
-        //        var xPathId = (from stock in context.Photostocks
-        //                       where stock.Url == photostockName
-        //                       select stock.ParserXpathId).FirstOrDefault();
+                var xPathId = (from stock in context.Photostocks
+                               where stock.Url == photostockName
+                               select stock.ParserXpathId).FirstOrDefault();
 
-        //        xPath = (from xp in context.ParserXpaths
-        //                 where xp.Id == xPathId
-        //                 select xp).FirstOrDefault();
-        //    }
+                xPath = (from xp in context.ParserXpaths
+                         where xp.Id == xPathId
+                         select xp).FirstOrDefault();
+            }
 
-        //    return xPath;
-        //}
+            return xPath;
+        }
 
         //// IN - Parameters of attachments and POST ownId, message, publDate
         //public static void AddPostInDB(List<MediaAttachment> mediaAttachments, long? ownerId, string message, DateTime publishDate)
