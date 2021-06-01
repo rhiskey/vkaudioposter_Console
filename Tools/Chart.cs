@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace vkaudioposter
 {
@@ -29,7 +24,7 @@ namespace vkaudioposter
             return;
         }
 
-        public  Chart(string Trackname, string Remix, string Author)
+        public Chart(string Trackname, string Remix, string Author)
         {
             SetTrackname(Trackname);
             SetRemix(Remix);

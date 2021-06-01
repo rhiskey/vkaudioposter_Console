@@ -3,7 +3,6 @@ using SpotifyAPI.Web;
 //using SpotifyAPI.Web.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -51,7 +50,7 @@ namespace vkaudioposter_Console.Parsers
                             artists = track.Artists;
                             trackname = track.Name;
 
-                            if (artists.Count!=0)
+                            if (artists.Count != 0)
                             {
                                 foreach (var artist in artists)
                                     fullartists += artist.Name.ToString() + " ";
@@ -126,8 +125,8 @@ namespace vkaudioposter_Console.Parsers
             //Prepare Request Body
             List<KeyValuePair<string, string>> requestData = new()
             {
-                    new KeyValuePair<string, string>("grant_type", "client_credentials")
-                };
+                new KeyValuePair<string, string>("grant_type", "client_credentials")
+            };
             FormUrlEncodedContent requestBody = new(requestData);
             //Request Token
             HttpResponseMessage request = await client.PostAsync("https://accounts.spotify.com/api/token", requestBody);

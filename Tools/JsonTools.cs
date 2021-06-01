@@ -2,10 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using vkaudioposter_Console.Tools;
 
 namespace vkaudioposter
@@ -72,7 +69,7 @@ namespace vkaudioposter
         public static List<string> AddListItemMethod(int i, List<Track> SearchingList, List<string> listBox1)
         {
             string lst1elem = i + 1 + ") " + SearchingList[i].GetTitle();
- 
+
             listBox1.Add(lst1elem);
             return listBox1;
 

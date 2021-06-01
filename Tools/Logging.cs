@@ -56,9 +56,9 @@ namespace vkaudioposter_Console.Tools
 
                 api.Authorize(new ApiAuthParams
                 {
-                    AccessToken = Program.kateMobileToken 
+                    AccessToken = Program.kateMobileToken
                 });
-  
+
                 api.Messages.SendAsync(new MessagesSendParams
                 {
                     UserId = Program.adminID,
@@ -112,7 +112,7 @@ namespace vkaudioposter_Console.Tools
 
             api.Authorize(new ApiAuthParams
             {
-                AccessToken = Program.kateMobileToken 
+                AccessToken = Program.kateMobileToken
             });
 
             api.Messages.SendAsync(new MessagesSendParams

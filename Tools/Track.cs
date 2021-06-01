@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace vkaudioposter
 {
@@ -99,10 +96,10 @@ namespace vkaudioposter
             return Title;
         }
 
-         public string GetFullId()
+        public string GetFullId()
         {
-           string FullId = OwnerId + "_" + MediaId;
-           return FullId;
+            string FullId = OwnerId + "_" + MediaId;
+            return FullId;
         }
 
         public long GetOwnerId()
@@ -121,7 +118,7 @@ namespace vkaudioposter
         public Dictionary<string, string> Urls { get; set; }
         public string PreviewUrl { get; set; }
 
-        public SpotyVKTrack(string CurrentTitle, long? CurrentMediaId, long? CurrentOwnerId, Dictionary<string, string> CurrUrls, string CurrPreviewUrl) : base (CurrentTitle, CurrentMediaId, CurrentOwnerId)
+        public SpotyVKTrack(string CurrentTitle, long? CurrentMediaId, long? CurrentOwnerId, Dictionary<string, string> CurrUrls, string CurrPreviewUrl) : base(CurrentTitle, CurrentMediaId, CurrentOwnerId)
         {
             Urls = CurrUrls;
             PreviewUrl = CurrPreviewUrl;

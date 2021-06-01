@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Threading;
 using vkaudioposter;
 using vkaudioposter_Console.Tools;
 using VkNet;
@@ -31,7 +30,7 @@ namespace vkaudioposter_Console.VKUtills
                 OwnerId = Program.ownid,
                 //Offset
             });
-            var wallTotal = postponedCount.TotalCount;    
+            var wallTotal = postponedCount.TotalCount;
             return wallTotal;
         }
 
@@ -44,7 +43,7 @@ namespace vkaudioposter_Console.VKUtills
             return attachments;
         }
 
-        public static (List<MediaAttachment>, int) AddPhotoToAttachFromPC(string imagefile, List<MediaAttachment> attachments,  string postMessage)
+        public static (List<MediaAttachment>, int) AddPhotoToAttachFromPC(string imagefile, List<MediaAttachment> attachments, string postMessage)
         {
             var sendTuple = SendOnServerOld(imagefile, postMessage);
 
@@ -159,7 +158,7 @@ namespace vkaudioposter_Console.VKUtills
                 }
                 string HashTags_style = Program.HashTags + msg + " #" + tracksHashtags;
 
-                photolist = api.Photo.SaveWallPhoto(responseImg, Program.ownerid3, Program.groupid3, HashTags_style); 
+                photolist = api.Photo.SaveWallPhoto(responseImg, Program.ownerid3, Program.groupid3, HashTags_style);
             }
             catch (Exception ex)
             {
@@ -262,7 +261,7 @@ namespace vkaudioposter_Console.VKUtills
             //api.Wall.GetById();
             WallGetParams wallGetParams = new();
             wallGetParams.Filter = new VkNet.Enums.SafetyEnums.WallFilter();
-            
+
 
             api.Wall.Get(new WallGetParams { Count = 150, OwnerId = Program.ownid, Filter = new VkNet.Enums.SafetyEnums.WallFilter(), });
 

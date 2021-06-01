@@ -139,8 +139,8 @@ namespace vkaudioposter_Console.Tools
             Bitmap bitmap = (Bitmap)Image.FromFile(imageFilePath);//load the image file
 
             float fontSize = bitmap.Width / 20;
-            var textWidth = (font.Size * text.Length)/2;
-            PointF textLocation = new(bitmap.Width/2- textWidth, bitmap.Height/2-font.Height);
+            var textWidth = (font.Size * text.Length) / 2;
+            PointF textLocation = new(bitmap.Width / 2 - textWidth, bitmap.Height / 2 - font.Height);
 
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {

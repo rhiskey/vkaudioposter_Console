@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace vkaudioposter_Console.Classes
+﻿namespace vkaudioposter_Console.Classes
 {
     public static class TorProxy
     {

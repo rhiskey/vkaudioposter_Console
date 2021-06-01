@@ -87,8 +87,8 @@ namespace vkaudioposter_Console.API
                 {
                     Program.threadstopflag = false;
                     StatusChecker.ApiStart();
-                        //Program.SendTestTrackMessages(); //DEMO 
-                    }
+                    //Program.SendTestTrackMessages(); //DEMO 
+                }
                 if (message == "stop")
                 {
                     Program.threadstopflag = true;
@@ -97,17 +97,17 @@ namespace vkaudioposter_Console.API
                 if (message == "postponed")
                 {
                     var ppCount = VkTools.CheckPostponedAndGetCount();
-                        // Send to rabbit message with count of postponed or get from database
-                        //write to redis
-                        //Redis.WriteCountToRedis(ppCount);
+                    // Send to rabbit message with count of postponed or get from database
+                    //write to redis
+                    //Redis.WriteCountToRedis(ppCount);
 
-                    }
+                }
 
                 Console.WriteLine(" [x] Done");
 
-                    // Note: it is possible to access the channel via
-                    //       ((EventingBasicConsumer)sender).Model here
-                    channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+                // Note: it is possible to access the channel via
+                //       ((EventingBasicConsumer)sender).Model here
+                channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
             };
             channel.BasicConsume(queue: "hvm_commands",
                                  autoAck: false,
@@ -150,7 +150,8 @@ namespace vkaudioposter_Console.API
 
                 //Console.WriteLine(" Press [enter] to exit.");
                 //Console.ReadLine();
-            } catch (Exception ex) { Logging.ErrorLogging(ex); }
+            }
+            catch (Exception ex) { Logging.ErrorLogging(ex); }
         }
 
         /// <summary>
@@ -158,7 +159,7 @@ namespace vkaudioposter_Console.API
         /// </summary>
         /// <param name="message"></param>
         /// <param name="sever"></param>
-        public static void NewLog(string message, int sever=0)
+        public static void NewLog(string message, int sever = 0)
         {
             try
             {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace vkaudioposter_Console.Classes
+﻿namespace vkaudioposter_Console.Classes
 {
     public class FormattedPlaylist : vkaudioposter_ef.parser.Playlist
     {

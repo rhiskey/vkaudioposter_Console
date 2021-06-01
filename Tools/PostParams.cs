@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VkNet.Model.Attachments;
 
 namespace vkaudioposter
@@ -26,11 +23,11 @@ namespace vkaudioposter
             return Atts.GetEnumerator();
         }
 
-        public void Add(System.Collections.Generic.IEnumerable <MediaAttachment> attachments)
+        public void Add(System.Collections.Generic.IEnumerable<MediaAttachment> attachments)
         {
             Atts.AddRange(attachments);
         }
-        
+
     }
 
 
