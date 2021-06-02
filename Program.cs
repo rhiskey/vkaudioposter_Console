@@ -259,7 +259,7 @@ namespace vkaudioposter_Console
 
                     ///If want to delete -> pass TRUE             
                     vkaudioposter_ef.CreateInitialSchema.CreateSchema(true);
-                    vkaudioposter_ef.Program.InsertData(true);
+                    //vkaudioposter_ef.Program.InsertData(true);
                     //vkaudioposter_ef.Program.CreateStoredProceduresViewsAndFunctions(true);
                 }
                 if (startOnce == true)
