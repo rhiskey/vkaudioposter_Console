@@ -258,7 +258,7 @@ namespace vkaudioposter_Console
                     vkaudioposter_ef.Program.LoadConfig();
 
                     ///If want to delete -> pass TRUE             
-                    //vkaudioposter_ef.CreateInitialSchema.CreateSchema(true);
+                    vkaudioposter_ef.CreateInitialSchema.CreateSchema(true);
                     vkaudioposter_ef.Program.InsertData(true);
                     //vkaudioposter_ef.Program.CreateStoredProceduresViewsAndFunctions(true);
                 }
@@ -451,18 +451,20 @@ namespace vkaudioposter_Console
 
                             if (photourl == null)
                             {
-                                photourl = "https://sun9-60.userapi.com/c638422/v638422659/24de8/rdpXft1B6Pw.jpg";
+                                //Get PlaylistImage
+                                photourl = style.ImageUrl;
+                                //photourl = "https://sun9-60.userapi.com/c638422/v638422659/24de8/rdpXft1B6Pw.jpg";
 
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                Logging.ErrorLogging(String.Format("Пустая ссылка на фото, сток: {0}", photostock_new));
-                                throw new Exception(String.Format("Пустая ссылка на фото, сток: {0}", photostock_new));
+                                Logging.ErrorLogging(String.Format("Пустая ссылка на фото, сток: {0} счетчик постов: {2}, замена обложкой плейлиста {1}", photostock_new, photourl , postcounter));
+                                throw new Exception(String.Format("Пустая ссылка на фото, сток: {0} счетчик постов: {2}, замена обложкой плейлиста {1}", photostock_new, photourl, postcounter));
 
                             }
                             //else photo_exist = true;
                         }
                         catch (Exception ex)
                         {
-                            Logging.ErrorLogging(ex); Logging.ReadError(); //photo_exist = false;
+                            //Logging.ErrorLogging(ex); Logging.ReadError(); //photo_exist = false;
 
                             postcounter = 0; //Сброс
 
@@ -479,9 +481,14 @@ namespace vkaudioposter_Console
                             photourl = PhotoParserAuto(photostock_new, postcounter, style.PlaylistName, stockPage);
                             if (photourl == null)
                             {
-                                ///OLD
-                                photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg";
-                                ///OLD
+                                /////OLD
+                                //photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg";
+                                /////OLD
+                    
+                                //Get PlaylistImage
+                                photourl = style.ImageUrl;
+
+
                                 //photo_exist = false;
                             }// Default photo 2 High Volume Music 
                             //else photo_exist = true;
