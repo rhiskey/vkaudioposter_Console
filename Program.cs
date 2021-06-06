@@ -452,8 +452,8 @@ namespace vkaudioposter_Console
                             if (photourl == null)
                             {
                                 //Get PlaylistImage
-                                photourl = style.ImageUrl;
-                                //photourl = "https://sun9-60.userapi.com/c638422/v638422659/24de8/rdpXft1B6Pw.jpg";
+                                //photourl = style.ImageUrl;
+                                photourl = "https://sun9-60.userapi.com/c638422/v638422659/24de8/rdpXft1B6Pw.jpg";
 
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Logging.ErrorLogging(String.Format("Пустая ссылка на фото, сток: {0} счетчик постов: {2}, замена обложкой плейлиста {1}", photostock_new, photourl , postcounter));
@@ -482,11 +482,11 @@ namespace vkaudioposter_Console
                             if (photourl == null)
                             {
                                 /////OLD
-                                //photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg";
+                                photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg";
                                 /////OLD
                     
                                 //Get PlaylistImage
-                                photourl = style.ImageUrl;
+                                //photourl = style.ImageUrl;
 
 
                                 //photo_exist = false;
@@ -512,6 +512,8 @@ namespace vkaudioposter_Console
                                 Logging.ReadError();
 
                                 //photo_exist = ImageWorkers.DownloadImage(@"https://sun9-73.userapi.com/impg/UcMqhZMnrpXVl5G32ALhDchctfG2lnx-J5BzBg/6KVlZUh7Ie0.jpg?size=1192x600&quality=96&sign=5b9318b9472bcc2b2537979f30b247b4&type=album", photofilename);
+
+                                ImageWorkers.DownloadImage(photourl, photofilename);
 
                                 photofilename = "background-image.png";
                                 //styleOnBG.Save("tempMark.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -808,7 +810,7 @@ namespace vkaudioposter_Console
         }
 
         /// <summary>
-        /// 
+        /// Searching tracks in VK 
         /// </summary>
         /// <param name="styletothread"></param>
         /// <returns></returns>
@@ -1432,7 +1434,7 @@ namespace vkaudioposter_Console
         }
 
         /// <summary>
-        /// Posting on wall
+        /// Posting on VK wall
         /// </summary>
         /// <param name="attachments"></param>
         /// <param name="fmtPlaylist"></param>
