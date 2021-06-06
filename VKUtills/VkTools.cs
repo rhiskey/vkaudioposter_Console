@@ -34,6 +34,14 @@ namespace vkaudioposter_Console.VKUtills
             return wallTotal;
         }
 
+        /// <summary>
+        /// Add photos to VK attachments from URL
+        /// </summary>
+        /// <param name="photofilename"></param>
+        /// <param name="attachments"></param>
+        /// <param name="postMessage"></param>
+        /// <param name="trackNames"></param>
+        /// <returns></returns>
         public static List<MediaAttachment> AddPhotoToAttachFromUrl(string photofilename, List<MediaAttachment> attachments, string postMessage, List<string> trackNames)
         {
             string filename2 = Path.GetFullPath(photofilename);
@@ -202,7 +210,13 @@ namespace vkaudioposter_Console.VKUtills
             return data_time;
         }
 
-        //Авто добавление треков из Searching List
+        /// <summary>
+        /// Авто добавление треков из Searching List
+        /// </summary>
+        /// <param name="SearchingList"></param>
+        /// <param name="LstBox_AddedTracks"></param>
+        /// <param name="attachments"></param>
+        /// <returns></returns>
         public static (List<string>, List<MediaAttachment>, bool) AutoAddTracksToAttachments(List<SpotyVKTrack> SearchingList, List<string> LstBox_AddedTracks, List<MediaAttachment> attachments)
         {
             bool tracks_attached = false;

@@ -435,9 +435,12 @@ namespace vkaudioposter_Console
                         }
                         else // если меньше, просто берем элемент след. фото из текущего стока
                         {
-                            // получаем первый элемент без его извлечения
-                            Photostock_class pickedPhotostock = photostockQueue.Peek();
-                            photostock_new = pickedPhotostock.URL;
+                            try
+                            {
+                                // получаем первый элемент без его извлечения
+                                Photostock_class pickedPhotostock = photostockQueue.Peek();
+                                photostock_new = pickedPhotostock.URL;
+                            } catch (Exception ex) { Console.WriteLine(ex); photostock_new = null; }
                         }
 
                         int stockPage = 1; //только с 1ой страницы
@@ -446,14 +449,15 @@ namespace vkaudioposter_Console
                             //Меняем фотку
                             postcounter++;
 
+                            //if (String.IsNullOrEmpty(photourl) != true)
                             //Rabbit.NewLog("Photo Parser started");
                             photourl = PhotoParserAuto(photostock_new, postcounter, style.PlaylistName, stockPage);
 
-                            if (photourl == null)
+                            if (String.IsNullOrEmpty(photourl) == true)
                             {
                                 //Get PlaylistImage
-                                //photourl = style.ImageUrl;
-                                photourl = "https://sun9-60.userapi.com/c638422/v638422659/24de8/rdpXft1B6Pw.jpg";
+                                photourl = style.ImageUrl;
+                                //photourl = "https://sun9-60.userapi.com/c638422/v638422659/24de8/rdpXft1B6Pw.jpg";
 
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Logging.ErrorLogging(String.Format("Пустая ссылка на фото, сток: {0} счетчик постов: {2}, замена обложкой плейлиста {1}", photostock_new, photourl , postcounter));
@@ -468,26 +472,30 @@ namespace vkaudioposter_Console
 
                             postcounter = 0; //Сброс
 
-                            // получаем первый элемент стоков из очереди без его извлечения
-                            Photostock_class pickedPhotostock = photostockQueue.Peek();
+                            if (photostockQueue.Count > 0)
+                            {
+                                // получаем первый элемент стоков из очереди без его извлечения
+                                Photostock_class pickedPhotostock = photostockQueue.Peek();
 
-                            //Добавляем в конец очереди этот же фотосток
-                            photostockQueue.Enqueue(pickedPhotostock);
+                                //Добавляем в конец очереди этот же фотосток
+                                photostockQueue.Enqueue(pickedPhotostock);
 
-                            // извлекаем первый элемент очереди
-                            Photostock_class queuePhotostock = photostockQueue.Dequeue(); //теперь очередь из оставшихся стоков + в конце тот же сток
-                            photostock_new = queuePhotostock.URL;
-
-                            photourl = PhotoParserAuto(photostock_new, postcounter, style.PlaylistName, stockPage);
-                            if (photourl == null)
+                                // извлекаем первый элемент очереди
+                                Photostock_class queuePhotostock = photostockQueue.Dequeue(); //теперь очередь из оставшихся стоков + в конце тот же сток
+                                photostock_new = queuePhotostock.URL;
+                                photourl = PhotoParserAuto(photostock_new, postcounter, style.PlaylistName, stockPage);
+                            }
+                            else photostock_new = null;
+              
+                            if (String.IsNullOrEmpty(photourl) == true)
                             {
                                 /////OLD
-                                photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg";
+                                //photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg";
                                 /////OLD
                     
                                 //Get PlaylistImage
-                                //photourl = style.ImageUrl;
-
+                                photourl = style.ImageUrl;
+                                //ImageWorkers.DownloadImage(photourl, photofilename);
 
                                 //photo_exist = false;
                             }// Default photo 2 High Volume Music 
@@ -495,7 +503,9 @@ namespace vkaudioposter_Console
                         }
                         finally
                         {
-                            photofilename = "tempimage.jpg";
+                            //bool isImageExist = ImageWorkers.DownloadImage(photourl, photofilename);
+
+                            //photofilename = "tempimage.jpg";
                             //Rabbit.NewLog("Download Photo");
                             try
                             {
@@ -513,7 +523,7 @@ namespace vkaudioposter_Console
 
                                 //photo_exist = ImageWorkers.DownloadImage(@"https://sun9-73.userapi.com/impg/UcMqhZMnrpXVl5G32ALhDchctfG2lnx-J5BzBg/6KVlZUh7Ie0.jpg?size=1192x600&quality=96&sign=5b9318b9472bcc2b2537979f30b247b4&type=album", photofilename);
 
-                                ImageWorkers.DownloadImage(photourl, photofilename);
+                                //ImageWorkers.DownloadImage(photourl, photofilename);
 
                                 photofilename = "background-image.png";
                                 //styleOnBG.Save("tempMark.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
