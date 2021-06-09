@@ -9,6 +9,8 @@ using VkNet;
 using VkNet.Model;
 using VkNet.Model.Attachments;
 using VkNet.Model.RequestParams;
+using System.Linq;
+
 
 namespace vkaudioposter_Console.VKUtills
 {
@@ -262,6 +264,10 @@ namespace vkaudioposter_Console.VKUtills
 
         }
 
+        /// <summary>
+        /// Returns VK Community Wall latest postponed post date
+        /// </summary>
+        /// <returns></returns>
         public static DateTime GetLastPostponedPostDate()
         {
             DateTime dt = DateTime.Now;
@@ -274,13 +280,16 @@ namespace vkaudioposter_Console.VKUtills
 
             //api.Wall.GetById();
             WallGetParams wallGetParams = new();
-            wallGetParams.Filter = new VkNet.Enums.SafetyEnums.WallFilter();
+            var wallFilter = VkNet.Enums.SafetyEnums.WallFilter.Postponed;
 
+            var wallObj = api.Wall.Get(new WallGetParams { Offset = 50, Count = 100, OwnerId = Program.ownid, Filter = wallFilter });
+            var allPosts = wallObj.WallPosts;
+            var pCount = allPosts.Count;
+            var lastPost = allPosts.ElementAt(pCount - 1);
 
-            api.Wall.Get(new WallGetParams { Count = 150, OwnerId = Program.ownid, Filter = new VkNet.Enums.SafetyEnums.WallFilter(), });
+            //Console.WriteLine(lastPost.Date);
 
-
-            return dt;
+            return lastPost.Date.Value.AddHours(3); //TODO
         }
 
         /*        public static List<Track>SerachTracksVKApi(string query2search, VkApi api)
