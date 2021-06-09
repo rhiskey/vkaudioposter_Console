@@ -652,7 +652,7 @@ namespace vkaudioposter_Console
 
             var config = SpotifyClientConfig
             .CreateDefault()
-            .WithAuthenticator(new ClientCredentialsAuthenticator("9db2bd4bb704465aaf147ad19c1b3ca5", "635b926e660c42219f826647455a00d1"));//from env
+            .WithAuthenticator(new ClientCredentialsAuthenticator(clientId, clientSecret));
 
             var spotify = new SpotifyClient(config);
 
