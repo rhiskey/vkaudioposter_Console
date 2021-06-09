@@ -1,12 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
@@ -76,7 +78,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="vkaudioposter-ef\vkaudioposter-ef\vkaudioposter-ef.csproj" />
+	<ProjectReference Include="..\vkaudioposter-ef\vkaudioposter-ef\vkaudioposter-ef.csproj" />
   </ItemGroup>
 
   <ItemGroup>
