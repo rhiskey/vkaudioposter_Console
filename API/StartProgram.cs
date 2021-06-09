@@ -12,6 +12,7 @@ namespace vkaudioposter_Console.API
             //{
             //    IsBackground = false
             //};
+
             StatusChecker.ApiStart();
             return Task.CompletedTask;
         }
