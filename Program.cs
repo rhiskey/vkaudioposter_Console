@@ -282,7 +282,7 @@ namespace vkaudioposter_Console
 
                 DBUtils.CountPublishedTracksInStyles();
 
-                var dateTuple = DBUtils.GetLastDateFromDB();
+                var dateTuple = DBUtils.GetLastDateFromDB(true);
 
                 publication_date = dateTuple.Item1;
                 LastDatePosted = dateTuple.Item2;

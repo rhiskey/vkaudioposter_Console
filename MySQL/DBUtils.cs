@@ -446,7 +446,7 @@ namespace vkaudioposter.MySQL
         //       }
 
         /// <summary>
-        /// 
+        /// Checking last post date in DB or VK. If pass true -> get From VK
         /// </summary>
         /// <param name="checkLastPostedInVK"></param>
         /// <returns></returns>
@@ -455,7 +455,7 @@ namespace vkaudioposter.MySQL
             vkaudioposter_ef.parser.PostedTrack lastPostedTrack = null;
             DateTime publication_date = DateTime.Now;
 
-            if (checkLastPostedInVK)
+            if (checkLastPostedInVK == true)
             {
                 // Get last date from postponed wall post
                 //VkTools vkTools = new();
@@ -491,7 +491,7 @@ namespace vkaudioposter.MySQL
                 publication_date = publication_date.AddHours(vkaudioposter_Console.Program.hoursperiod);
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
                 Console.WriteLine($"Дата отложенной публикации: {publication_date}");
-                Console.WriteLine($"Дата публикации из БАЗЫ ДАННЫХ: {LastDatePosted}");
+                Console.WriteLine($"Дата публикации из БАЗЫ ДАННЫХ/VK: {LastDatePosted}");
             }
             catch (Exception ex)
             {
