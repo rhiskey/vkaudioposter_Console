@@ -122,6 +122,7 @@ namespace vkaudioposter_Console.Tools
             else
             {
                 Console.WriteLine($"Int32.TryParse could not parse '{fullId.Substring(0, lowSpaceIndex)}' to an int.");
+                //Program.connection.InvokeAsync("SendMessage", "Console", $"Int32.TryParse could not parse '{fullId.Substring(0, lowSpaceIndex)}' to an int.");
             }
             return (ownId, mediaId);
         }

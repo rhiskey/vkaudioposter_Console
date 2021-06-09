@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using SpotifyAPI.Web;
 using System;
@@ -24,6 +25,7 @@ using VkNet.Exception;
 using VkNet.Model;
 using VkNet.Model.Attachments;
 using VkNet.Model.RequestParams;
+using HubConnection = Microsoft.AspNetCore.SignalR.Client.HubConnection;
 using Track = vkaudioposter.Track;
 
 
@@ -89,6 +91,7 @@ namespace vkaudioposter_Console
         public static List<SpotyTrack> ChartList = new();
         #endregion
 
+        public HubConnection connection;
 
         private string MessageToAttach;
         private bool posted = false; //опубликован?
@@ -120,6 +123,7 @@ namespace vkaudioposter_Console
 
         Queue<Photostock_class> photostockQueue = new();
         Queue<WallPostParams> wallPostQueue = new();
+
 
 
         #region Config
@@ -178,7 +182,7 @@ namespace vkaudioposter_Console
             useProxy = DotNetEnv.Env.GetBool("USE_PROXY");
         }
 
-        private void OnLoad()
+        private async void OnLoad()
         {
             LoadConfigsFromEnv();
             allPlaylists = DBUtils.GetAllPlaylists();
@@ -199,6 +203,12 @@ namespace vkaudioposter_Console
             {
                 Console.WriteLine(stock.URL);
             }
+
+            connection = new HubConnectionBuilder()
+            .WithUrl("http://localhost:52602/chathub")
+            .WithAutomaticReconnect()         
+            .Build();
+            await connection.StartAsync();
         }
 
         #endregion
@@ -273,12 +283,15 @@ namespace vkaudioposter_Console
         /// </summary>
         public class StatusChecker
         {
-
             public static void ApiStart()
             {
                 Program P = new();
 
                 P.OnLoad();
+
+
+                P.connection.InvokeAsync("SendMessage",
+                  "Console", $"Started...");
 
                 DBUtils.CountPublishedTracksInStyles();
 
@@ -286,6 +299,9 @@ namespace vkaudioposter_Console
 
                 publication_date = dateTuple.Item1;
                 LastDatePosted = dateTuple.Item2;
+
+                P.connection.InvokeAsync("SendMessage",
+                  "Console", $"Last date: {LastDatePosted.ToString()}");
 
                 P.cleared = 0; //обнуление счетчика срабатываний ClearAll()
 
@@ -379,6 +395,9 @@ namespace vkaudioposter_Console
                     var wallTotal = VkTools.CheckPostponedAndGetCount();
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($"Отложенных {wallTotal} постов");
+
+                    connection.InvokeAsync("SendMessage",
+                      "Console", $"Отложенных {wallTotal} постов");
                     //Rabbit.NewLog($"Отложенных {wallTotal} постов");
 
                     // TODO: Остановка
@@ -387,6 +406,9 @@ namespace vkaudioposter_Console
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
                         Logging.ErrorLogging($"Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
+
+                        connection.InvokeAsync("SendMessage",
+                          "Console", $"Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
                         //Rabbit.NewLog($"Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
                         break;
                     }
@@ -398,7 +420,7 @@ namespace vkaudioposter_Console
                     try
                     {
                         Console.WriteLine($"playlist_id: {style.PlaylistId} ");
-
+                        connection.InvokeAsync("SendMessage", "Console", $"playlist_id: {style.PlaylistId} ");
                         Thread result = StartTheParserThread(trackscount, style, style.trueID, trackstop);
                         postMessage = StringWorkers.GetPostMessageFromStyle(style.PlaylistName);
                         do { Thread.Sleep(100); }
@@ -407,6 +429,7 @@ namespace vkaudioposter_Console
                     catch (Exception exc)
                     {
                         Console.WriteLine(exc);
+                        connection.InvokeAsync("SendMessage", "Console", $" {exc} ");
                     }
 
                     //Rabbit.NewLog($"Search Tracks in VK: {style.PlaylistName}");
@@ -440,7 +463,7 @@ namespace vkaudioposter_Console
                                 // получаем первый элемент без его извлечения
                                 Photostock_class pickedPhotostock = photostockQueue.Peek();
                                 photostock_new = pickedPhotostock.URL;
-                            } catch (Exception ex) { Console.WriteLine(ex); photostock_new = null; }
+                            } catch (Exception ex) { Console.WriteLine(ex); photostock_new = null; connection.InvokeAsync("SendMessage", "Console", $"{ex} "); }
                         }
 
                         int stockPage = 1; //только с 1ой страницы
@@ -461,6 +484,7 @@ namespace vkaudioposter_Console
 
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Logging.ErrorLogging(String.Format("Пустая ссылка на фото, сток: {0} счетчик постов: {2}, замена обложкой плейлиста {1}", photostock_new, photourl , postcounter));
+                                connection.InvokeAsync("SendMessage", "Console", String.Format("Пустая ссылка на фото, сток: {0} счетчик постов: {2}, замена обложкой плейлиста {1}", photostock_new, photourl, postcounter));
                                 throw new Exception(String.Format("Пустая ссылка на фото, сток: {0} счетчик постов: {2}, замена обложкой плейлиста {1}", photostock_new, photourl, postcounter));
 
                             }
@@ -520,7 +544,7 @@ namespace vkaudioposter_Console
                             {
                                 Logging.ErrorLogging(ex);
                                 Logging.ReadError();
-
+                                connection.InvokeAsync("SendMessage", "Console", $"{ex} ");
                                 //photo_exist = ImageWorkers.DownloadImage(@"https://sun9-73.userapi.com/impg/UcMqhZMnrpXVl5G32ALhDchctfG2lnx-J5BzBg/6KVlZUh7Ie0.jpg?size=1192x600&quality=96&sign=5b9318b9472bcc2b2537979f30b247b4&type=album", photofilename);
 
                                 //ImageWorkers.DownloadImage(photourl, photofilename);
@@ -548,6 +572,7 @@ namespace vkaudioposter_Console
                         Console.WriteLine("Добавили треки в список вложений");
 
                         Console.WriteLine("Размещаем пост на стену");
+                        connection.InvokeAsync("SendMessage", "Console", "Размещаем пост на стену");
                         //Rabbit.NewLog("Размещаем пост на стену");
 
                         //if (photo_exist == true) //если вообще скачалась фотка
@@ -606,6 +631,7 @@ namespace vkaudioposter_Console
                 }
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Процесс завершен!");
+                connection.InvokeAsync("SendMessage", "Console", "Процесс завершен!");
                 //Rabbit.NewLog("Процесс завершен!");
                 postcounter = 1;
             }
@@ -615,6 +641,7 @@ namespace vkaudioposter_Console
                          + exc.ExceptionState);
             }
             Console.WriteLine($"Процесс завершен. Текущее время: {DateTime.Now:g}");
+            connection.InvokeAsync("SendMessage", "Console", $"Процесс завершен. Текущее время: {DateTime.Now:g}");
             return null;
         }
 
@@ -652,7 +679,7 @@ namespace vkaudioposter_Console
 
             var config = SpotifyClientConfig
             .CreateDefault()
-            .WithAuthenticator(new ClientCredentialsAuthenticator("9db2bd4bb704465aaf147ad19c1b3ca5", "635b926e660c42219f826647455a00d1"));//from env
+            .WithAuthenticator(new ClientCredentialsAuthenticator(clientId, clientSecret));//from env
 
             var spotify = new SpotifyClient(config);
 
@@ -877,19 +904,21 @@ namespace vkaudioposter_Console
 
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("Список треков из парсера:\n");
+            connection.InvokeAsync("SendMessage",
+              "Console", $"Tracklist:");
 
             foreach (var track in tracksToFind)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($"{track.GetTrackAndAuthors()}");
-
+                connection.InvokeAsync("SendMessage","Console", $"{track.GetTrackAndAuthors()}");
             }
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\nЖанр: {styletoDB.PlaylistName}");
-
+            connection.InvokeAsync("SendMessage", "Console", $"Genre: {styletoDB.PlaylistName}");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("Ищем в поиске треки");
-
+            connection.InvokeAsync("SendMessage", "Console", $"Searching tracks..");
 
             int unsearchtracks = 0; //не найденоы
             int publishedtracks = 0; //уже опубликовано
@@ -934,6 +963,7 @@ namespace vkaudioposter_Console
                     publishedtracks++;
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Нашли опубликованный трек");
+
                     continue;
 
                 }
@@ -1459,6 +1489,7 @@ namespace vkaudioposter_Console
             MessageToAttach = postMessage;
 
             Console.WriteLine("Авторизация для поста");
+            connection.InvokeAsync("SendMessage", "Console", "Авторизация для поста");
             VkApi api = new();
             //Авторизация
             api.Authorize(new ApiAuthParams
@@ -1498,6 +1529,7 @@ namespace vkaudioposter_Console
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Будет опубликован: {publication_date}");
+                connection.InvokeAsync("SendMessage", "Console", $"Будет опубликован: {publication_date}");
 
             }
 
@@ -1508,17 +1540,20 @@ namespace vkaudioposter_Console
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"Пост 1 раз опубликован, увеличиваем дату на {hoursperiod} час");
+                    connection.InvokeAsync("SendMessage", "Console", $"Пост 1 раз опубликован, увеличиваем дату на {hoursperiod} час");
                     publication_date = publication_date.AddHours(hoursperiod);
                 }
                 if (minutesperiod != 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"Пост 1 раз опубликован, увеличиваем дату на {minutesperiod} минут");
+                    connection.InvokeAsync("SendMessage", "Console", $"Пост 1 раз опубликован, увеличиваем дату на {minutesperiod} минут");
                     publication_date = publication_date.AddMinutes(minutesperiod);
                 }
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Будет опубликован: {publication_date}  {cleared}й пост");
             }
+            connection.InvokeAsync("SendMessage", "Console", $"Будет опубликован: {publication_date}  {cleared}й пост");
 
             {
                 //List<PollAnswer> pollAnswersList = new();
@@ -1563,6 +1598,7 @@ namespace vkaudioposter_Console
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Пост опубликован! {MessageToAttach}");
+                    connection.InvokeAsync("SendMessage", "Console", $"Пост опубликован! {MessageToAttach}");
                     //Rabbit.NewLog($"Пост опубликован! {MessageToAttach}");
 
                     ClearAll();
@@ -1575,6 +1611,7 @@ namespace vkaudioposter_Console
                     Logging.ErrorLogging(vk_req);
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Превышено число запрсов в секунду к ВК, ждем 5 сек...");
+                    connection.InvokeAsync("SendMessage", "Console", "Превышено число запрсов в секунду к ВК, ждем 5 сек...");
                     Thread.Sleep(5000);
                     changed_time = true;
                 }
@@ -1584,6 +1621,7 @@ namespace vkaudioposter_Console
                     Logging.ErrorLogging(vk_lim);
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("Лимит запланированных записей! Добавили в очередь публикаций!");
+                    connection.InvokeAsync("SendMessage", "Console", "Лимит запланированных записей! Добавили в очередь публикаций!");
 
                     //Добавление в БД
                     try
@@ -1607,6 +1645,7 @@ namespace vkaudioposter_Console
                     Console.WriteLine("Пост Добавлен в очередь!");
                     Console.WriteLine($"Число постов в очереди: {wallPostQueue.Count}");
                     Console.WriteLine("Текущее время: {0}, {1:G}", localDate.ToString(culture), localDate.Kind);
+                    connection.InvokeAsync("SendMessage", "Console", $"Число постов в очереди: {wallPostQueue.Count}");
 
                     ClearAll();
                     posted = true;
@@ -1617,7 +1656,7 @@ namespace vkaudioposter_Console
                     Logging.ErrorLogging(unknown);
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"Ошибка, на это время уже отложена запись, увеличиваем время на {5} минут. Или ошибка публикации");
-
+                    connection.InvokeAsync("SendMessage", "Console", $"Ошибка, на это время уже отложена запись, увеличиваем время на {5} минут. Или ошибка публикации");
                     publication_date = publication_date.AddMinutes(5);
                     changed_time = true;
                 }
@@ -1634,7 +1673,7 @@ namespace vkaudioposter_Console
                     //SaveDate
                     LastDatePosted = publication_date;
                     Console.WriteLine("Текущее время: {0}, {1:G}", localDate.ToString(culture), localDate.Kind);
-
+                    connection.InvokeAsync("SendMessage", "Console", $"Ошибка {ex}\nТекущее время: {localDate.ToString(culture)}, {localDate.Kind}");
                     ClearAll();
                     changed_time = true;
                 }
@@ -1658,6 +1697,7 @@ namespace vkaudioposter_Console
 
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Пост {MessageToAttach}\n, увеличила дату {LastDatePosted}, опубликован!");
+                        connection.InvokeAsync("SendMessage", "Console", $"Пост {MessageToAttach}\n, увеличила дату {LastDatePosted}, опубликован!");
                         //Rabbit.NewLog($"Пост, увеличила дату {LastDatePosted}, опубликован! {MessageToAttach}");
 
                         ClearAll();
@@ -1717,6 +1757,7 @@ namespace vkaudioposter_Console
 
             parser_finished = false;
             cleared++;
+            connection.InvokeAsync("SendMessage", "Console", $"Очистка...");
         }
 
 
