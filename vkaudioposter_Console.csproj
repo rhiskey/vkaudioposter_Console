@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -78,7 +78,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\vkaudioposter-ef\vkaudioposter-ef\vkaudioposter-ef.csproj" />
+    <ProjectReference Include="vkaudioposter-ef\vkaudioposter-ef\vkaudioposter-ef.csproj" />
   </ItemGroup>
 
   <ItemGroup>

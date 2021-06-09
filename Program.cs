@@ -187,7 +187,7 @@ namespace vkaudioposter_Console
             CB_PhotoStock = DBUtils.LoadPhotoStocksFromDB();
             CB_PhotoStock = Tools.Shufflers.ShuffleList(CB_PhotoStock);
 
-            foreach (var item in CB_PhotoStock)
+            foreach (var item in CB_PhotoStock.ToList())
             {
                 photostockQueue.Enqueue(new Photostock_class()
                 {
@@ -195,7 +195,7 @@ namespace vkaudioposter_Console
                 });
             }
 
-            foreach (var stock in photostockQueue)
+            foreach (var stock in photostockQueue.ToList())
             {
                 Console.WriteLine(stock.URL);
             }
@@ -300,7 +300,7 @@ namespace vkaudioposter_Console
                     bool publError = false;
 
                     // Для каждого поста из БД
-                    foreach (var postQ in P.wallPostQueue) //Для каждлого поста в очереди
+                    foreach (var postQ in P.wallPostQueue.ToList()) //Для каждлого поста в очереди
                     {
                         try
                         {
@@ -878,7 +878,7 @@ namespace vkaudioposter_Console
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("Список треков из парсера:\n");
 
-            foreach (var track in tracksToFind)
+            foreach (var track in tracksToFind.ToList())
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($"{track.GetTrackAndAuthors()}");
@@ -896,7 +896,7 @@ namespace vkaudioposter_Console
 
 
             //для каждой строки с названием
-            foreach (var trackobj in tracksToFind)
+            foreach (var trackobj in tracksToFind.ToList())
             {
                 string nameAndAuthors = trackobj.GetTrackAndAuthors();
                 Console.ForegroundColor = ConsoleColor.Gray;
@@ -912,7 +912,7 @@ namespace vkaudioposter_Console
                 string current_track = nameAndAuthors.Replace("\'", "\"");
 
                 List<string> fmtUnfoundTracks = new();
-                foreach (var uT in unfoundTracks)
+                foreach (var uT in unfoundTracks.ToList())
                 {
                     var newT = uT.Replace("%20", "");
                     fmtUnfoundTracks.Add(newT);
@@ -921,7 +921,7 @@ namespace vkaudioposter_Console
                 //unfoundTracks = unfoundTracks.Replace("%20", "");
 
                 List<string> fmtPostedTracks = new();
-                foreach (var pT in postedTracks)
+                foreach (var pT in postedTracks.ToList())
                 {
                     var newT = pT.Replace("%20", "");
                     fmtPostedTracks.Add(newT);
@@ -1018,7 +1018,7 @@ namespace vkaudioposter_Console
 
                             if (audios.Count != 0)
                             {
-                                foreach (var audio in audios)
+                                foreach (var audio in audios.ToList())
                                 {
                                     string allArtists = null;
                                     mp3Url = audio.Url;
@@ -1026,7 +1026,7 @@ namespace vkaudioposter_Console
                                     string oneArtist = audio.Artist;
                                     string trackName = audio.Title;
                                     if (mainArtists.Count() > 1)
-                                        foreach (var artist in mainArtists)
+                                        foreach (var artist in mainArtists.ToList())
                                         {
                                             if (artist.Name != null)
                                             {
