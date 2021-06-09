@@ -5,7 +5,7 @@ namespace vkaudioposter_Console.API
 {
     public class StartProgram
     {
-        public static Task Start()
+        public static async Task Start()
         {
             Program.threadstopflag = false;
             //Thread rabbitReciever = new(new ThreadStart(StatusChecker.ApiStart))
@@ -14,7 +14,7 @@ namespace vkaudioposter_Console.API
             //};
 
             StatusChecker.ApiStart();
-            return Task.CompletedTask;
+            //return Task.CompletedTask;
         }
     }
 }
