@@ -205,7 +205,7 @@ namespace vkaudioposter_Console
             }
 
             connection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:52602/chathub")
+            .WithUrl("http://127.0.0.1:80/chathub")
             .WithAutomaticReconnect()         
             .Build();
             await connection.StartAsync();
