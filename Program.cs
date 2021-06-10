@@ -431,7 +431,7 @@ namespace vkaudioposter_Console
                     catch (Exception exc)
                     {
                         Console.WriteLine(exc);
-                        connection.InvokeAsync("SendMessage", "[{DateTime.Now}] Console", $" {exc} ");
+                        connection.InvokeAsync("SendMessage", "Console", $"[{DateTime.Now}] {exc} ");
                     }
 
                     //Rabbit.NewLog($"Search Tracks in VK: {style.PlaylistName}");
@@ -574,7 +574,7 @@ namespace vkaudioposter_Console
                         Console.WriteLine("Добавили треки в список вложений");
 
                         Console.WriteLine("Размещаем пост на стену");
-                        connection.InvokeAsync("SendMessage", "Console", "[{DateTime.Now}] Размещаем пост на стену");
+                        connection.InvokeAsync("SendMessage", "Console", $"[{DateTime.Now}] Размещаем пост на стену");
                         //Rabbit.NewLog("Размещаем пост на стену");
 
                         //if (photo_exist == true) //если вообще скачалась фотка
@@ -633,7 +633,7 @@ namespace vkaudioposter_Console
                 }
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Процесс завершен!");
-                connection.InvokeAsync("SendMessage", "Console", "[{DateTime.Now}] Процесс завершен!");
+                connection.InvokeAsync("SendMessage", "Console", $"[{DateTime.Now}] Процесс завершен!");
                 //Rabbit.NewLog("Процесс завершен!");
                 postcounter = 1;
             }
@@ -906,21 +906,21 @@ namespace vkaudioposter_Console
 
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("Список треков из парсера:\n");
-            connection.InvokeAsync("SendMessage",
-              "Console", $"Tracklist:");
+            //connection.InvokeAsync("SendMessage",
+            //  "Console", $"Tracklist:");
 
             foreach (var track in tracksToFind)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($"{track.GetTrackAndAuthors()}");
-                connection.InvokeAsync("SendMessage","Console", $"{track.GetTrackAndAuthors()}");
+                //connection.InvokeAsync("SendMessage","Console", $"{track.GetTrackAndAuthors()}");
             }
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\nЖанр: {styletoDB.PlaylistName}");
-            connection.InvokeAsync("SendMessage", "Console", $"Genre: {styletoDB.PlaylistName}");
+            connection.InvokeAsync("SendMessage", "Console", $"[{DateTime.Now}] Genre: {styletoDB.PlaylistName}");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("Ищем в поиске треки");
-            connection.InvokeAsync("SendMessage", "Console", $"Searching tracks..");
+            connection.InvokeAsync("SendMessage", "Console", $"[{DateTime.Now}] Searching tracks..");
 
             int unsearchtracks = 0; //не найденоы
             int publishedtracks = 0; //уже опубликовано
