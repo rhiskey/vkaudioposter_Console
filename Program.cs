@@ -72,6 +72,7 @@ namespace vkaudioposter_Console
         public static string clientId;
         public static string clientSecret;
         public static Random random = new();
+        public static string signalrConsoleHub;
 
         private static readonly int searchCoolDown = 700; //ms для поиска по apiяws
 
@@ -180,6 +181,7 @@ namespace vkaudioposter_Console
             //efPass = DotNetEnv.Env.GetString("EF_PASSWORD");
             firstRun = DotNetEnv.Env.GetBool("FIRST_RUN");
             useProxy = DotNetEnv.Env.GetBool("USE_PROXY");
+            signalrConsoleHub = DotNetEnv.Env.GetString("CONSOLE_HUB");
         }
 
         private async void OnLoad()
@@ -205,7 +207,7 @@ namespace vkaudioposter_Console
             }
 
             connection = new HubConnectionBuilder()
-            .WithUrl("http://127.0.0.1:80/chathub")
+            .WithUrl(signalrConsoleHub)
             .WithAutomaticReconnect()         
             .Build();
             await connection.StartAsync();
