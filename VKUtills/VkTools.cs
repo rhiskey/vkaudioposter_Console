@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using vkaudioposter;
@@ -9,7 +10,6 @@ using VkNet;
 using VkNet.Model;
 using VkNet.Model.Attachments;
 using VkNet.Model.RequestParams;
-using System.Linq;
 
 namespace vkaudioposter_Console.VKUtills
 {
@@ -281,10 +281,10 @@ namespace vkaudioposter_Console.VKUtills
             WallGetParams wallGetParams = new();
             var wallFilter = VkNet.Enums.SafetyEnums.WallFilter.Postponed;
 
-            var wallObj = api.Wall.Get(new WallGetParams {Offset=50, Count = 100, OwnerId = Program.ownid, Filter = wallFilter });
+            var wallObj = api.Wall.Get(new WallGetParams { Offset = 50, Count = 100, OwnerId = Program.ownid, Filter = wallFilter });
             var allPosts = wallObj.WallPosts;
             var pCount = allPosts.Count;
-            var lastPost = allPosts.ElementAt(pCount-1);
+            var lastPost = allPosts.ElementAt(pCount - 1);
 
             //Console.WriteLine(lastPost.Date);
 

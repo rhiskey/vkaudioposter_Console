@@ -205,10 +205,10 @@ namespace vkaudioposter_Console
             {
                 Console.WriteLine(stock.URL);
             }
-   
+
             connection = new HubConnectionBuilder()
             .WithUrl(signalrConsoleHub)
-            .WithAutomaticReconnect()         
+            .WithAutomaticReconnect()
             .Build();
             await connection.StartAsync();
         }
@@ -465,7 +465,8 @@ namespace vkaudioposter_Console
                                 // получаем первый элемент без его извлечения
                                 Photostock_class pickedPhotostock = photostockQueue.Peek();
                                 photostock_new = pickedPhotostock.URL;
-                            } catch (Exception ex) { Console.WriteLine(ex); photostock_new = null; connection.InvokeAsync("SendMessage", "Console", $"{ex} "); }
+                            }
+                            catch (Exception ex) { Console.WriteLine(ex); photostock_new = null; connection.InvokeAsync("SendMessage", "Console", $"{ex} "); }
                         }
 
                         int stockPage = 1; //только с 1ой страницы
@@ -485,7 +486,7 @@ namespace vkaudioposter_Console
                                 //photourl = "https://sun9-60.userapi.com/c638422/v638422659/24de8/rdpXft1B6Pw.jpg";
 
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                Logging.ErrorLogging(String.Format("Пустая ссылка на фото, сток: {0} счетчик постов: {2}, замена обложкой плейлиста {1}", photostock_new, photourl , postcounter));
+                                Logging.ErrorLogging(String.Format("Пустая ссылка на фото, сток: {0} счетчик постов: {2}, замена обложкой плейлиста {1}", photostock_new, photourl, postcounter));
                                 connection.InvokeAsync("SendMessage", "Console", String.Format("Пустая ссылка на фото, сток: {0} счетчик постов: {2}, замена обложкой плейлиста {1}", photostock_new, photourl, postcounter));
                                 throw new Exception(String.Format("Пустая ссылка на фото, сток: {0} счетчик постов: {2}, замена обложкой плейлиста {1}", photostock_new, photourl, postcounter));
 
@@ -512,13 +513,13 @@ namespace vkaudioposter_Console
                                 photourl = PhotoParserAuto(photostock_new, postcounter, style.PlaylistName, stockPage);
                             }
                             else photostock_new = null;
-              
+
                             if (String.IsNullOrEmpty(photourl) == true)
                             {
                                 /////OLD
                                 //photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg";
                                 /////OLD
-                    
+
                                 //Get PlaylistImage
                                 photourl = style.ImageUrl;
                                 //ImageWorkers.DownloadImage(photourl, photofilename);
@@ -1184,8 +1185,8 @@ namespace vkaudioposter_Console
                     case var someVal when new Regex(@"https://www.deviantart.com/topic/(\w*)", RegexOptions.IgnoreCase).IsMatch(someVal):
                         ParserXpath pXp = DBUtils.GetPhotostockNodContainer(photostock);
                         nodContainer = pXp.Xpath;//Контейнер с картинками на странице (последний grid)
-                                          //*[@id="root"]/div[1]/div/div/div/article/div/div[2]/div/div
-                        //nodContainer = "//*[@id=\"root\"]/div[1]/div/div/div/article/div/div[2]/div/div";//Контейнер с картинками на странице (последний grid)
+                                                 //*[@id="root"]/div[1]/div/div/div/article/div/div[2]/div/div
+                                                 //nodContainer = "//*[@id=\"root\"]/div[1]/div/div/div/article/div/div[2]/div/div";//Контейнер с картинками на странице (последний grid)
                         try
                         {
                             url = PhotoParser.DevianPageParser(doc, nodContainer, i, pXp);
