@@ -293,7 +293,7 @@ namespace vkaudioposter_Console
 
 
                 P.connection.InvokeAsync("SendMessage",
-                  "Console", $"Started...");
+                  "Console", $"[{DateTime.Now}] Started...");
 
                 DBUtils.CountPublishedTracksInStyles();
 
@@ -303,7 +303,7 @@ namespace vkaudioposter_Console
                 LastDatePosted = dateTuple.Item2;
 
                 P.connection.InvokeAsync("SendMessage",
-                  "Console", $"Last date: {LastDatePosted.ToString()}");
+                  "Console", $"[{DateTime.Now}] Last date: {LastDatePosted.ToString()}");
 
                 P.cleared = 0; //обнуление счетчика срабатываний ClearAll()
 
@@ -399,7 +399,7 @@ namespace vkaudioposter_Console
                     Console.WriteLine($"Отложенных {wallTotal} постов");
 
                     connection.InvokeAsync("SendMessage",
-                      "Console", $"Отложенных {wallTotal} постов");
+                      "Console", $"[{DateTime.Now}]  Отложенных {wallTotal} постов");
                     //Rabbit.NewLog($"Отложенных {wallTotal} постов");
 
                     // TODO: Остановка
@@ -410,7 +410,7 @@ namespace vkaudioposter_Console
                         Logging.ErrorLogging($"Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
 
                         connection.InvokeAsync("SendMessage",
-                          "Console", $"Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
+                          "Console", $"[{DateTime.Now}] Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
                         //Rabbit.NewLog($"Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
                         break;
                     }
@@ -422,7 +422,7 @@ namespace vkaudioposter_Console
                     try
                     {
                         Console.WriteLine($"playlist_id: {style.PlaylistId} ");
-                        connection.InvokeAsync("SendMessage", "Console", $"playlist_id: {style.PlaylistId} ");
+                        connection.InvokeAsync("SendMessage", "Console", $"[{DateTime.Now}] playlist_id: {style.PlaylistId} ");
                         Thread result = StartTheParserThread(trackscount, style, style.trueID, trackstop);
                         postMessage = StringWorkers.GetPostMessageFromStyle(style.PlaylistName);
                         do { Thread.Sleep(100); }
@@ -431,7 +431,7 @@ namespace vkaudioposter_Console
                     catch (Exception exc)
                     {
                         Console.WriteLine(exc);
-                        connection.InvokeAsync("SendMessage", "Console", $" {exc} ");
+                        connection.InvokeAsync("SendMessage", "[{DateTime.Now}] Console", $" {exc} ");
                     }
 
                     //Rabbit.NewLog($"Search Tracks in VK: {style.PlaylistName}");
@@ -546,7 +546,7 @@ namespace vkaudioposter_Console
                             {
                                 Logging.ErrorLogging(ex);
                                 Logging.ReadError();
-                                connection.InvokeAsync("SendMessage", "Console", $"{ex} ");
+                                connection.InvokeAsync("SendMessage", "Console", $"[{DateTime.Now}] {ex} ");
                                 //photo_exist = ImageWorkers.DownloadImage(@"https://sun9-73.userapi.com/impg/UcMqhZMnrpXVl5G32ALhDchctfG2lnx-J5BzBg/6KVlZUh7Ie0.jpg?size=1192x600&quality=96&sign=5b9318b9472bcc2b2537979f30b247b4&type=album", photofilename);
 
                                 //ImageWorkers.DownloadImage(photourl, photofilename);
@@ -574,7 +574,7 @@ namespace vkaudioposter_Console
                         Console.WriteLine("Добавили треки в список вложений");
 
                         Console.WriteLine("Размещаем пост на стену");
-                        connection.InvokeAsync("SendMessage", "Console", "Размещаем пост на стену");
+                        connection.InvokeAsync("SendMessage", "Console", "[{DateTime.Now}] Размещаем пост на стену");
                         //Rabbit.NewLog("Размещаем пост на стену");
 
                         //if (photo_exist == true) //если вообще скачалась фотка
@@ -633,7 +633,7 @@ namespace vkaudioposter_Console
                 }
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Процесс завершен!");
-                connection.InvokeAsync("SendMessage", "Console", "Процесс завершен!");
+                connection.InvokeAsync("SendMessage", "Console", "[{DateTime.Now}] Процесс завершен!");
                 //Rabbit.NewLog("Процесс завершен!");
                 postcounter = 1;
             }
