@@ -205,7 +205,7 @@ namespace vkaudioposter_Console
             {
                 Console.WriteLine(stock.URL);
             }
-
+   
             connection = new HubConnectionBuilder()
             .WithUrl(signalrConsoleHub)
             .WithAutomaticReconnect()         
