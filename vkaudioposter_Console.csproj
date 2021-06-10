@@ -1,0 +1,100 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>.</DockerfileContext>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="tests\**" />
+    <Compile Remove="Tools\Unused\**" />
+    <Compile Remove="vkaudioposter-ef\**" />
+    <EmbeddedResource Remove="tests\**" />
+    <EmbeddedResource Remove="Tools\Unused\**" />
+    <EmbeddedResource Remove="vkaudioposter-ef\**" />
+    <None Remove="tests\**" />
+    <None Remove="Tools\Unused\**" />
+    <None Remove="vkaudioposter-ef\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="API\ApiCommands.cs" />
+    <Compile Remove="API\Redis.cs" />
+    <Compile Remove="Classes\WallPost.cs" />
+    <Compile Remove="Config.cs" />
+    <Compile Remove="Tools\Notifications.cs" />
+    <Compile Remove="Tools\StyleFileClass.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="hvm.html" />
+    <None Remove="newtempimage.jpg" />
+    <None Remove="output.dll" />
+    <None Remove="playlist.json" />
+    <None Remove="posted_tracks.dll" />
+    <None Remove="posted_tracks.txt" />
+    <None Remove="response.dll" />
+    <None Remove="style.dll" />
+    <None Remove="tempimage.dll" />
+    <None Remove="tempimage.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include=".env">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="tempimage.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="2.1.1" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.33" />
+    <PackageReference Include="HttpToSocks5Proxy" Version="1.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
+    <PackageReference Include="MySql.Data" Version="8.0.23" />
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.0-m8.0.23" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
+    <PackageReference Include="Rollbar" Version="4.0.3" />
+    <PackageReference Include="SpotifyAPI.Web" Version="6.2.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
+    <PackageReference Include="VkNet" Version="1.60.0" />
+    <PackageReference Include="VkNet.AudioBypassService" Version="1.7.0" />
+    <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="vkaudioposter-ef\vkaudioposter-ef\vkaudioposter-ef.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="background-image.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Dlls\posted_photo.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    <Folder Include="Новая папка\" />
+  </ItemGroup>-->
+
+</Project>

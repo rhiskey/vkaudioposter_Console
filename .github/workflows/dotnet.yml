@@ -1,0 +1,33 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    #runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Checkout submodules
+    # You may pin to the exact commit or the version.
+    # uses: textbook/git-checkout-submodule-action@0cb23c7e6a67085e1dc5e884920bd620f7b9c469
+      uses: textbook/git-checkout-submodule-action@2.1.1
+      #with:
+        # Set the --remote flag
+        #remote:    
+    - name: Restore dependencies
+      run: sudo dotnet restore
+    - name: Build
+      run: sudo dotnet build --no-restore
+    - name: Test
+      run: sudo dotnet test --no-build --verbosity normal
