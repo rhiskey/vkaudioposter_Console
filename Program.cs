@@ -210,7 +210,11 @@ namespace vkaudioposter_Console
             .WithUrl(signalrConsoleHub)
             .WithAutomaticReconnect()
             .Build();
-            await connection.StartAsync();
+            try
+            {
+                await connection.StartAsync();
+            } catch(System.Net.Http.HttpRequestException ex) { Console.WriteLine(ex.Message); Logging.ErrorLogging(ex); } 
+            
         }
 
         #endregion
