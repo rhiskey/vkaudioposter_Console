@@ -13,6 +13,7 @@ namespace vkaudioposter_Console.Parsers
             string url = null;
             try
             {
+                container = container.Replace("\u0022", "\"");
                 var nodes = doc.DocumentNode.SelectNodes(container); //Контейнер с картинками на странице
                 List<string> urlList = new(nodes.Count); //Список ссылок на полные страницы фоток
 
