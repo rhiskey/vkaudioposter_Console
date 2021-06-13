@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -207,13 +208,27 @@ namespace vkaudioposter_Console
             }
 
             connection = new HubConnectionBuilder()
-            .WithUrl(signalrConsoleHub)
+            .WithUrl(
+            new Uri(signalrConsoleHub), options => {
+
+                var handler = new HttpClientHandler
+                {
+                    ClientCertificateOptions = ClientCertificateOption.Manual,
+                    ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => true
+                };
+                options.HttpMessageHandlerFactory = _ => handler;
+                options.WebSocketConfiguration = sockets =>
+                {
+                    sockets.RemoteCertificateValidationCallback = (sender, certificate, chain, policyErrors) => true;
+                };
+            })
             .WithAutomaticReconnect()
             .Build();
             try
             {
                 await connection.StartAsync();
-            } catch(System.Net.Http.HttpRequestException ex) { Console.WriteLine(ex.Message); } 
+            } catch(System.Net.Http.HttpRequestException ex) { 
+                Console.WriteLine(ex.Message); } 
             
         }
 
