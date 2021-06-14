@@ -130,58 +130,80 @@ namespace vkaudioposter_Console
 
         #region Config
         /// <summary>
-        /// 
+        /// Loads config from env or DB
         /// </summary>
         private static void LoadConfigsFromEnv()
         {
-            DotNetEnv.Env.Load();
-
-            debug = DotNetEnv.Env.GetBool("DEBUG");
-            hoursperiod = DotNetEnv.Env.GetInt("HOURS_PERIOD");
-            minutesperiod = DotNetEnv.Env.GetInt("MINUTES_PERIOD");
-
-            rollbarToken = DotNetEnv.Env.GetString("ROLLBAR_TOKEN");
-            //DB_HOST = DotNetEnv.Env.GetString("DB_HOST");
-            //DB_USER = DotNetEnv.Env.GetString("DB_USER");
-            //DB_PASS = DotNetEnv.Env.GetString("DB_PASS");
-            //DB_NAME = DotNetEnv.Env.GetString("DB_NAME");
-            accesstoken = DotNetEnv.Env.GetString("ACCESS_TOKEN");
-            kateMobileToken = DotNetEnv.Env.GetString("KATE_MOBILE_TOKEN");
-            Token = DotNetEnv.Env.GetString("TOKEN");
+            //LoadConfig from db
+            var cfg = DBUtils.GetConfigFromDb();
             string searchApiUrlPrefix = "&key=";
             string searchApiUrlPostfix = "&v=3";
-            url3 = searchApiUrlPrefix + DotNetEnv.Env.GetString("URL") + searchApiUrlPostfix;
-            var env_ownerid3 = DotNetEnv.Env.GetInt("OWNER_ID");
+
+            debug = cfg.Debug;
+            saveLogs = cfg.SaveLogs;
+            firstRun = cfg.FirstRun;
+            useProxy = cfg.UseProxy;
+            startOnce = cfg.StartOnce;
+
+            hoursperiod = cfg.HoursPeriod;
+            minutesperiod = cfg.MinutesPeriod;
+
+            clientId = cfg.SpotifyClientId;
+            clientSecret = cfg.SpotifyClientSecret;
+
+            accesstoken = cfg.AccessToken;
+            kateMobileToken = cfg.KateMobileToken;
+            Token = cfg.Token;
+            userAccessToken = cfg.UserAccesToken;
+            adminID = cfg.AdminId;
+
+            rollbarToken = cfg.RollbarToken;
+
+            url3 = searchApiUrlPrefix + cfg.ApiUrl + searchApiUrlPostfix;
+
+            var env_ownerid3 = cfg.OwnerId;
+            var env_groupid3 = cfg.GroupId;
             ownerid3 = Convert.ToUInt64(env_ownerid3);
-            var env_groupid3 = DotNetEnv.Env.GetInt("GROUP_ID");
             groupid3 = Convert.ToUInt64(env_groupid3);
+
+            torHost = cfg.TorHost;
+            torPort = cfg.TorPort;
+            rollbarToken = cfg.RollbarToken;
+            //signalrConsoleHub = cfg.ConsoleHub;
+
+            //DotNetEnv.Env.Load();
+
+            //debug = DotNetEnv.Env.GetBool("DEBUG");
+
+            //hoursperiod = DotNetEnv.Env.GetInt("HOURS_PERIOD");
+            //minutesperiod = DotNetEnv.Env.GetInt("MINUTES_PERIOD");
+            //rollbarToken = DotNetEnv.Env.GetString("ROLLBAR_TOKEN");
+            //accesstoken = DotNetEnv.Env.GetString("ACCESS_TOKEN");
+            //kateMobileToken = DotNetEnv.Env.GetString("KATE_MOBILE_TOKEN");
+            //Token = DotNetEnv.Env.GetString("TOKEN");
+
+            //var env_ownerid3 = DotNetEnv.Env.GetInt("OWNER_ID");
+            //ownerid3 = Convert.ToUInt64(env_ownerid3);
+            //var env_groupid3 = DotNetEnv.Env.GetInt("GROUP_ID");
+            //groupid3 = Convert.ToUInt64(env_groupid3);
+
             groupid = (long)groupid3;
             ownid = -(long)groupid3;
-            //HashTags = DotNetEnv.Env.GetString("HASH_TAGS");
-            clientId = DotNetEnv.Env.GetString("CLIENT_ID");
-            clientSecret = DotNetEnv.Env.GetString("CLIENT_SECRET");
-            userAccessToken = DotNetEnv.Env.GetString("USER_ACCESS_TOKEN");
-            adminID = DotNetEnv.Env.GetInt("ADMIN_ID");
 
-            //pusherAppId = DotNetEnv.Env.GetString("PUSHER_APP_ID");
-            //pusherAppKey = DotNetEnv.Env.GetString("PUSHER_APP_KEY");
-            //pusherAppSecret = DotNetEnv.Env.GetString("PUSHER_APP_SECRET");
+            //clientId = DotNetEnv.Env.GetString("CLIENT_ID");
+            //clientSecret = DotNetEnv.Env.GetString("CLIENT_SECRET");
 
-            startOnce = DotNetEnv.Env.GetBool("START_ONCE");
+            //userAccessToken = DotNetEnv.Env.GetString("USER_ACCESS_TOKEN");
+            //adminID = DotNetEnv.Env.GetInt("ADMIN_ID");
 
-            torHost = DotNetEnv.Env.GetString("TOR_HOST");
-            torPort = DotNetEnv.Env.GetInt("TOR_PORT");
-            saveLogs = DotNetEnv.Env.GetBool("SAVE_LOGS");
+            //startOnce = DotNetEnv.Env.GetBool("START_ONCE");
 
-            //redisHost = DotNetEnv.Env.GetString("REDIS_HOST");
-            //redisPort = DotNetEnv.Env.GetInt("REDIS_PORT");
-            //redisPassword = DotNetEnv.Env.GetString("REDIS_PASSWORD");
+            //torHost = DotNetEnv.Env.GetString("TOR_HOST");
+            //torPort = DotNetEnv.Env.GetInt("TOR_PORT");
+            //saveLogs = DotNetEnv.Env.GetBool("SAVE_LOGS");
 
-            //efDB = DotNetEnv.Env.GetString("EF_DATABASE");
-            //efUser = DotNetEnv.Env.GetString("EF_USER");
-            //efPass = DotNetEnv.Env.GetString("EF_PASSWORD");
-            firstRun = DotNetEnv.Env.GetBool("FIRST_RUN");
-            useProxy = DotNetEnv.Env.GetBool("USE_PROXY");
+            //firstRun = DotNetEnv.Env.GetBool("FIRST_RUN");
+            //useProxy = DotNetEnv.Env.GetBool("USE_PROXY");
             signalrConsoleHub = DotNetEnv.Env.GetString("CONSOLE_HUB");
         }
 

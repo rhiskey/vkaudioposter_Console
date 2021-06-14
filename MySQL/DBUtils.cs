@@ -15,6 +15,17 @@ namespace vkaudioposter.MySQL
 {
     class DBUtils
     {
+        public static Configuration GetConfigFromDb()
+        {
+            vkaudioposter_ef.Model.Configuration configs;
+
+            using (var context = new vkaudioposter_ef.AppContext())
+            {
+                configs = context.Configurations.FirstOrDefault();
+            }
+            return configs;
+        }
+
         public static void CountPublishedTracksInStyles()
         {
             using var context = new vkaudioposter_ef.AppContext();
