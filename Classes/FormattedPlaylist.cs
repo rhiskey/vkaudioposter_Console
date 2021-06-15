@@ -8,7 +8,7 @@
         /// <param name="pl"></param>
         /// <param name="trueID"></param>
         public FormattedPlaylist(vkaudioposter_ef.parser.Playlist pl, string trueID)
-            : base(pl.Id, pl.PlaylistId, pl.PlaylistName, pl.Mood, pl.ImageUrl)
+            : base(pl.Id, pl.PlaylistId, pl.PlaylistName, pl.ImageUrl)
         {
             this.trueID = trueID;
         }
