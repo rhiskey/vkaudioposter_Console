@@ -36,7 +36,6 @@ namespace vkaudioposter_Console.Tools
                 sw.WriteLine("Stack Trace: " + ex.StackTrace);
                 sw.WriteLine("===========End============= " + DateTime.Now);
 
-                //Rabbit.NewError(ex.StackTrace, ex.Message, DateTime.Now);
             }
             else
             {
@@ -66,8 +65,6 @@ namespace vkaudioposter_Console.Tools
                     RandomId = DateTime.Now.Millisecond
                 });
 
-                ///TODO:
-                //Rabbit.NewLog(ex.Message, 2);
             }
             catch (Exception exVK) { ErrorLogging(exVK); }
         }
@@ -75,7 +72,6 @@ namespace vkaudioposter_Console.Tools
         public static void ErrorLogging(string ex)
         {
             RollbarLocator.RollbarInstance.Configure(new RollbarConfig(Program.rollbarToken));
-            //RollbarLocator.RollbarInstance.Info("Rollbar is configured properly.");
             if (Program.saveLogs == true)
             {
                 string strPath = "Log.txt";
@@ -122,8 +118,6 @@ namespace vkaudioposter_Console.Tools
                 RandomId = DateTime.Now.Millisecond
             });
 
-            ///TODO:               
-            //Rabbit.NewLog(ex, 2);
         }
         public static void ReadError()
         {

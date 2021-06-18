@@ -85,20 +85,6 @@ namespace vkaudioposter.MySQL
 
             context.Database.EnsureCreated();
 
-            ////TODO check curr timezone
-            //try
-            //{
-            //    TimeZoneInfo moZone = TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time");
-            //    var newDt = TimeZoneInfo.ConvertTime(publish_date, moZone, TimeZoneInfo.Local);
-            //}
-            //catch (TimeZoneNotFoundException)
-            //{
-            //    Console.WriteLine("The registry does not define the Russian Standard Time zone.");
-            //}
-            //catch (InvalidTimeZoneException)
-            //{
-            //    Console.WriteLine("Registry data on the Russian Standard Time zone has been corrupted.");
-            //}
             DateTime GMTfixTime = publish_date.AddHours(3); //BAD
 
             vkaudioposter_ef.Model.Post post = new();
@@ -346,116 +332,6 @@ namespace vkaudioposter.MySQL
             return xPath;
         }
 
-        //// IN - Parameters of attachments and POST ownId, message, publDate
-        //public static void AddPostInDB(List<MediaAttachment> mediaAttachments, long? ownerId, string message, DateTime publishDate)
-        //{
-        //    // Insert in Postponed_Posts through Procedure DB
-        //    string DateTimeMySQL = publishDate.ToString("yyyy-MM-dd H:mm:ss");
-        //    // Generate AttachmentsId int(11)
-        //    Random rnd = new Random();
-
-        //    int postId = rnd.Next(1, 99999999);
-
-        //    string sql = "sp_insert_postponed_post";
-        //    MySqlCommand command = new MySqlCommand(); ;
-        //    // MySqlDataAdapter adapter = new MySqlDataAdapter();
-
-        //    MySqlConnection connection = DBUtils.GetDBConnection();
-        //    command.Connection = connection;
-
-        //    command = new MySqlCommand(sql, connection)
-        //    {
-        //        CommandType = CommandType.StoredProcedure
-        //    };
-
-        //    command.Parameters.AddWithValue("in_attachments", postId);
-        //    command.Parameters.AddWithValue("in_ownerID", ownerId);
-        //    command.Parameters.AddWithValue("in_message", message);
-        //    command.Parameters.AddWithValue("in_PublishDate", publishDate);
-
-
-        //    command.Connection.Open();
-
-        //    var result = command.ExecuteNonQuery(); //result = # of rows affected       
-        //    if (result == 0)
-        //    {
-        //        throw new Exception(String.Format($"Невозможно выполнить процедуру вставки поста DateTimeMySQL= {DateTimeMySQL} "));
-        //    }
-
-        //    Console.WriteLine("Inserted postponed post: " + DateTimeMySQL);
-        //    //Notifications.PostponedPost("Inserted postponed post: " + DateTimeMySQL + " message: " + message);
-
-        //    command.Dispose();
-        //    connection.Close();
-
-        //    List<int> attIdList = new List<int>();
-
-        //    // Foreach attach Insert in Media_Attachment
-        //    foreach (var attach in mediaAttachments)
-        //    {
-        //        // Insert In Procedure DB: sp_insert_media_attachment
-        //        sql = "func_insert_media_attachment";
-        //        command = new MySqlCommand(); ;
-        //        // MySqlDataAdapter adapter = new MySqlDataAdapter();
-
-        //        connection = DBUtils.GetDBConnection();
-        //        command.Connection = connection;
-
-        //        command = new MySqlCommand(sql, connection)
-        //        {
-        //            CommandType = CommandType.StoredProcedure
-        //        };
-
-        //        command.Parameters.AddWithValue("in_mediaID", attach.Id);
-        //        command.Parameters.AddWithValue("in_ownerID", attach.OwnerId);
-        //        command.Parameters.AddWithValue("in_accessKey", attach.AccessKey);
-        //        command.Parameters.AddWithValue("in_postID", postId);
-
-        //        //Attempt to call stored function '`parser`.`func_insert_media_attachment`' without specifying a return parameter
-        //        var id_out = new MySqlParameter("@out_id", SqlDbType.Int)
-        //        {
-        //            Direction = ParameterDirection.ReturnValue
-        //        }; //@out_id
-        //        command.Parameters.Add(id_out);
-
-        //        command.Connection.Open();
-
-        //        result = command.ExecuteNonQuery(); //result = # of rows affected       
-        //        //if (result == 0)
-        //        //{
-        //        //    throw new Exception(String.Format("Невозможно выполнить процедуру вставки вложения mediaId= {0} ", attach.Id));
-        //        //}
-        //        var id = id_out.Value;
-        //        Console.WriteLine("Inserted media attachment ID: " + id);
-
-        //        //Add ids to list <int> - TODO check if not null?
-        //        attIdList.Add((int)id);
-
-        //        command.Dispose();
-        //        connection.Close();
-        //    }
-        //}
-
-        //       // Получение из базы отложенных постов - формирование списка постов + вложений
-        //       private List<WallPostParams> GetPostponedPromDB()
-        //       {
-        //           List<WallPostParams> postponedPostList = new List<WallPostParams>();
-        //           //TODO
-        //// SELECT * From vw_countposts()
-
-        //           // TODO Получить список постов из БД, получить список вложений, сопоставить в классе
-
-        //           //for (int i = 0; i<= ppCount; i++)
-        //           //{
-        //           //    postponedPostList[i].Attachments = ; //TODO SELECT * FROM vw_attachments => where 
-        //           //    postponedPostList[i].Message = ;
-        //           //    postponedPostList[i].OwnerId = ;
-        //           //    postponedPostList[i].PublishDate = ;
-        //           //}
-
-        //           return postponedPostList;
-        //       }
-
         /// <summary>
         /// Checking last post date in DB or VK. If pass true -> get From VK
         /// </summary>
@@ -495,6 +371,7 @@ namespace vkaudioposter.MySQL
                 }
 
             DateTime LastDatePosted = new();
+
             //Возможна ошибка когда последняя дата раньше чем сейчас
             try
             {

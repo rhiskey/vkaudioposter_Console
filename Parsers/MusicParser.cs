@@ -19,14 +19,6 @@ namespace vkaudioposter_Console.Parsers
         /// <returns></returns>
         public static Task Parser(int trackscount, vkaudioposter_ef.parser.Playlist style, string playlistId, string trackstop)
         {
-            ///v 6.0.x
-            //var config = SpotifyClientConfig
-            //    .CreateDefault()
-            //    .WithAuthenticator(new ClientCredentialsAuthenticator(clientId, clientSecret)); // takes care of access tokens
-            //var spotify = new SpotifyClient(config);
-
-            //AccessToken token = SpotifyTools.GetToken().Result;
-
             var config = SpotifyClientConfig
             .CreateDefault()
             .WithAuthenticator(new ClientCredentialsAuthenticator("CLIENT_ID", "CLIENT_SECRET"));//from env
@@ -34,27 +26,13 @@ namespace vkaudioposter_Console.Parsers
             var spotify = new SpotifyClient(config);
 
             Console.WriteLine("Parsing: " + style.PlaylistName);
-            //ГОВНО, если не находит свежих, перескакивает быстро -> не тот стиль (не успевает записать и прочесть из файла)
-            //Текст в поле + для поста
-            //File.WriteAllText(Program.stylefilename, style.PlaylistName);
 
-
-            //style = styleTuple.Item1;
-
-            //postMessage = styleTuple.Item3;
-            //string playlist_id = style.PlaylistId;
             try
             {
                 //For Spotify
                 if (playlistId != null)
                 // if (user_id != null || playlist_id != null) //Если Spotify Only
                 {
-                    //Не добавляем в плейлисты
-
-                    //string fields = "items(added_by.id,track(name,artists))";
-                    //int limit = 100; //default
-                    //int offset = 0; //смещение = 0
-                    //string market = "US"; //Сделать RU
                     SpotifyTools.SpotyParser(playlistId, spotify);
                 }
                 else //Если пустые user_id и playlist_id

@@ -4,8 +4,6 @@ namespace vkaudioposter_Console.Tools
 {
     class Metrics
     {
-
-        //Поиск расстояния между похожими строками
         public static int LevenshteinDistance(string string1, string string2)
         {
             if (string1 == null)

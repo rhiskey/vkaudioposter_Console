@@ -42,60 +42,40 @@ namespace vkaudioposter_Console.Tools
         /// <returns></returns>
         public static string GetFullIdFromString(string SearchingName, string json)
         {
-
-            string s = json;//файл json ответа
+            string s = json;
             string subs2 = "0";
 
-            //Поиск названия по алгоритму Левенштейна (сравнение расстояний между строками - примерный поиск)
-            string[] charsToRemove = new string[] { ",", "\u0022", "\\", "//" }; //удаляем лишние символы и заменяем на пробелы или пустоту
+            string[] charsToRemove = new string[] { ",", "\u0022", "\\", "//" };
             foreach (string c in charsToRemove)
             {
                 s = s.Replace(c, string.Empty);
             }
-            int diff = Tools.Metrics.LevenshteinDistance(SearchingName, s); //Получение расстояния между строками исходной и результатов
+            int diff = Tools.Metrics.LevenshteinDistance(SearchingName, s); 
 
             int errind = -1;
             int errind2 = -1;
-            errind = s.IndexOf("error: audio_search"); //ошибка поиска может вылететь, проверка
-            errind2 = s.IndexOf("no key"); //ошибка поиска может вылететь, проверка
-
-
-            //if ((diff != -1) && (diff <= 1000) && (diff > 35) && (diff != 0) && (errind == -1) && (errind2 == -1)) //проверка на пустоту и расстояние чтобы поиск был точным (расхождение символов)
+            errind = s.IndexOf("error: audio_search");
+            errind2 = s.IndexOf("no key"); 
+           
             if ((diff != -1) && (errind == -1) && (errind2 == -1))
             {
                 try
                 {
-                    //string subsname = s.Remove(0, diff); //удалили все что до этого найденного совпадения
 
-                    //DEBUG
-                    //Console.WriteLine("Удаление до совпадения= " + subsname);
-
-                    if (s.IndexOf("audio_id") != -1)//пока не дошли до индекса первого найденного слова content_id (v3)
-                                                    //if (s.IndexOf("content_id") != -1)//пока не дошли до индекса первого найденного слова content_id (OLD)
+                    if (s.IndexOf("audio_id") != -1)
                     {
-                        //int ind = s.IndexOf("content_id"); //позиция content id
                         int ind = s.IndexOf("audio_id");
-                        //string subs = s.Remove(0, ind + 11); //сместились, удалили все что до цифр, включая content_id это 15 элементов с кракозябрами
                         string subs = s.Remove(0, ind + 9);
-
-                        //DEBUG
-                        //Console.WriteLine("Айди+все что далее= " + subs);
-
-                        //int ind2 = subs.IndexOf("s:"); //нашли символ "\" после цифр
                         int ind2 = subs.IndexOf(" artist");
-                        subs2 = subs.Substring(0, ind2); //вычли подстроку до символа "\" 
+                        subs2 = subs.Substring(0, ind2); 
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Чистый айди= " + subs2);
-
-                        //FullId = subs2;
                     }
                 }
                 catch (Exception ex)
                 {
-
                     Console.WriteLine(ex.Message);
                     Logging.ErrorLogging(ex);
-                    //ReadError();
                 }
 
             }
@@ -117,12 +97,10 @@ namespace vkaudioposter_Console.Tools
                 ownId = ownIdParsed;
                 Int32.TryParse(fullId.Remove(0, lowSpaceIndex + 1), out int mediaIdParsed);
                 mediaId = mediaIdParsed;
-                //Console.WriteLine(ownIdParsed);
             }
             else
             {
-                Console.WriteLine($"Int32.TryParse could not parse '{fullId.Substring(0, lowSpaceIndex)}' to an int.");
-                //Program.connection.InvokeAsync("SendMessage", "Console", $"Int32.TryParse could not parse '{fullId.Substring(0, lowSpaceIndex)}' to an int.");
+                Console.WriteLine($"Int32.TryParse could not parse '{fullId.Substring(0, lowSpaceIndex)}' to an int.");              
             }
             return (ownId, mediaId);
         }

@@ -50,21 +50,18 @@ namespace vkaudioposter_Console.Parsers
 
         public static string PicjumboParser(HtmlAgilityPack.HtmlDocument doc, string container, int postcounter)
         {
-            //Вход /html/body/div[5]/div
 
             string url;
-            var nodes = doc.DocumentNode.SelectNodes(container); //Контейнер с картинками на странице
-            List<string> urlList = new(nodes.Count); //Список ссылок на полные страницы фоток
+            var nodes = doc.DocumentNode.SelectNodes(container); 
+            List<string> urlList = new(nodes.Count); 
 
             if (nodes != null)
             {
-                foreach (var node in nodes) // html / body / div[5]
-                { //html/body/div[5]/div/div[4]  /html/body/div[5]/div/div[8]/a[1]
-                    var nodestoadd = node.SelectNodes("//div[contains(@class, 'tri_img')]"); //Перебор по class="tri_img_one masonry_item"
+                foreach (var node in nodes) 
+                { 
+                    var nodestoadd = node.SelectNodes("//div[contains(@class, 'tri_img')]"); 
                     foreach (var nod in nodestoadd)
                     {
-                        //var child = nod.ChildNodes;
-                        //var img = child.SelectNodes("//div[contains(@class, 'tri_img')]");// class="tri_img"
                         urlList.Add(nod.Attributes[2].Value);
                     }
                 }
@@ -75,8 +72,7 @@ namespace vkaudioposter_Console.Parsers
             HtmlWeb web_img = new();
             doc = web_img.Load(url);
 
-            url = doc.DocumentNode.SelectNodes("/html/body/div[4]/div/div[1]/article/div/div[1]/picture/a/img")[0].Attributes[3].Value; //Ссылка на 1 фото
-            //string title = doc.DocumentNode.SelectNodes("/html/body/div[4]/div/div[1]/article/div/div[1]/picture/a/img")[0].Attributes[4].Value;
+            url = doc.DocumentNode.SelectNodes("/html/body/div[4]/div/div[1]/article/div/div[1]/picture/a/img")[0].Attributes[3].Value; 
 
             return url;
         }
@@ -84,19 +80,18 @@ namespace vkaudioposter_Console.Parsers
         public static string PixabayParser(HtmlAgilityPack.HtmlDocument doc, string container, int postcounter)
         {
             string url;
-            var nodes = doc.DocumentNode.SelectNodes(container); //Контейнер с картинками на странице
-            List<string> urlList = new(nodes.Count); //Список ссылок на полные страницы фоток
+            var nodes = doc.DocumentNode.SelectNodes(container);
+            List<string> urlList = new(nodes.Count);
 
             if (nodes != null)
             {
-                foreach (var node in nodes) // html / body / div[5]
-                { //*[@id="content"]/div/div[2]/div/div[2]     /div[7]/a
+                foreach (var node in nodes) 
+                { 
                     var nodestoadd = node.SelectNodes("//div[contains(@class, 'item')]");
                     foreach (var nod in nodestoadd)
-                    {//*[@id="content"]/div/div[2]/div/div[2]/div[7]/a
+                    {
                         var fC = nod.FirstChild;
-                        //var child = nod.ChildNodes;
-                        //var img = child.SelectNodes("//div[contains(@class, 'tri_img')]");// class="tri_img"
+
                         urlList.Add(fC.Attributes[0].Value);
                     }
                 }
@@ -107,9 +102,7 @@ namespace vkaudioposter_Console.Parsers
             HtmlWeb web_img = new();
             doc = web_img.Load(url);
 
-            url = doc.DocumentNode.SelectNodes("//*[@id=\"media_container\"]/img")[0].Attributes[2].Value; //Ссылка на 1 фото
-            //string title = doc.DocumentNode.SelectNodes("/html/body/div[4]/div/div[1]/article/div/div[1]/picture/a/img")[0].Attributes[4].Value;
-
+            url = doc.DocumentNode.SelectNodes("//*[@id=\"media_container\"]/img")[0].Attributes[2].Value; 
             return url;
         }
 

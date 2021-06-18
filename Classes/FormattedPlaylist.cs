@@ -13,12 +13,6 @@
             this.trueID = trueID;
         }
 
-        //public FormattedPlaylist(vkaudioposter_ef.parser.Playlist pl)
-        //    : base(pl.Id, pl.PlaylistId, pl.PlaylistName, pl.Mood, pl.ImageUrl)
-        //{
-
-        //}
-
         public string trueID { get; set; }
 
     }

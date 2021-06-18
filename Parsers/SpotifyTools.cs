@@ -31,7 +31,6 @@ namespace vkaudioposter_Console.Parsers
 
             try
             {
-                //v.6.x.x
                 var playlist = await api.Playlists.Get(playlistid);
 
                 if (playlist.Uri != null)
@@ -41,8 +40,6 @@ namespace vkaudioposter_Console.Parsers
                     {
                         if (item.Track is FullTrack track)
                         {
-                            // All FullTrack properties are available
-                            //Console.WriteLine(track.Name);
 
                             fullartists = null;
 
@@ -62,45 +59,7 @@ namespace vkaudioposter_Console.Parsers
                             else continue;
                         }
 
-                        //if (item.Track is FullEpisode episode)
-                        //{
-                        //    //// All FullTrack properties are available
-                        //    sConsole.WriteLine(episode.Name);
-                        //}
                     }
-
-                    ///Depreciated v.5.1.1
-                    //var playlist = await api.Playlists.GetItems(playlistid, new PlaylistGetItemsRequest { Market = market, Limit = limit, Offset = offset });
-                    //Paging<PlaylistTrack> res = api.GetPlaylistTracks(playlistid, fields, limit, offset, market);
-
-                    //foreach (var obj in playlist.Items)
-                    //{
-                    //    fullartists = null;
-
-                    //    List<SimpleArtist> artists = new List<SimpleArtist>();
-
-                    //    artists = null;
-                    //    if (obj.Track != null)
-                    //        artists = obj.Track.Artists;
-
-                    //    trackname = obj.Track.Name.ToString();
-                    //    //TODO: (update spotiapi)
-                    //    //string prevURL = obj.Track.PreviewUrl;
-                    //    //var id = obj.Track.Id;
-
-                    //    if (artists != null)
-                    //    {
-
-                    //        foreach (SimpleArtist artist in artists)
-                    //        {
-                    //            fullartists += artist.Name.ToString() + " ";
-                    //        }
-
-                    //        Program.ChartList.Add(new Chart(trackname, fullartists));  
-                    //    }
-                    //    else continue;
-
-                    //}
                 }
             }
             catch (Exception ex)
@@ -110,7 +69,6 @@ namespace vkaudioposter_Console.Parsers
             }
 
         }
-        //Spotify Authorisation
         public static async Task<vkaudioposter.AccessToken> GetToken()
         {
             Console.WriteLine("Getting Token");

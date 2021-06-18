@@ -59,8 +59,6 @@ namespace vkaudioposter_Console
         public static ulong? ownerid3; //для сохранения фото на стене
         public static ulong? groupid3;//для  сохранения фото на стене
         public static long groupid; //для загрузки на сервер
-                                    //public static string pusherAppId;
-                                    //public static string pusherAppKey;
 
         //public static string pusherAppSecret;
         public static long ownid;
@@ -119,7 +117,6 @@ namespace vkaudioposter_Console
         private List<MediaAttachment> attachments = new();
         //For COnsole
         private List<string> CB_PhotoStock = new();
-        //private List<string> LSTBOX_Genres = new List<string>();
 
         private List<string> LstBox_AddedTracks = new();
 
@@ -169,41 +166,9 @@ namespace vkaudioposter_Console
             torHost = cfg.TorHost;
             torPort = cfg.TorPort;
             rollbarToken = cfg.RollbarToken;
-            //signalrConsoleHub = cfg.ConsoleHub;
-
-            //DotNetEnv.Env.Load();
-
-            //debug = DotNetEnv.Env.GetBool("DEBUG");
-
-            //hoursperiod = DotNetEnv.Env.GetInt("HOURS_PERIOD");
-            //minutesperiod = DotNetEnv.Env.GetInt("MINUTES_PERIOD");
-            //rollbarToken = DotNetEnv.Env.GetString("ROLLBAR_TOKEN");
-            //accesstoken = DotNetEnv.Env.GetString("ACCESS_TOKEN");
-            //kateMobileToken = DotNetEnv.Env.GetString("KATE_MOBILE_TOKEN");
-            //Token = DotNetEnv.Env.GetString("TOKEN");
-
-            //var env_ownerid3 = DotNetEnv.Env.GetInt("OWNER_ID");
-            //ownerid3 = Convert.ToUInt64(env_ownerid3);
-            //var env_groupid3 = DotNetEnv.Env.GetInt("GROUP_ID");
-            //groupid3 = Convert.ToUInt64(env_groupid3);
-
             groupid = (long)groupid3;
             ownid = -(long)groupid3;
 
-            //clientId = DotNetEnv.Env.GetString("CLIENT_ID");
-            //clientSecret = DotNetEnv.Env.GetString("CLIENT_SECRET");
-
-            //userAccessToken = DotNetEnv.Env.GetString("USER_ACCESS_TOKEN");
-            //adminID = DotNetEnv.Env.GetInt("ADMIN_ID");
-
-            //startOnce = DotNetEnv.Env.GetBool("START_ONCE");
-
-            //torHost = DotNetEnv.Env.GetString("TOR_HOST");
-            //torPort = DotNetEnv.Env.GetInt("TOR_PORT");
-            //saveLogs = DotNetEnv.Env.GetBool("SAVE_LOGS");
-
-            //firstRun = DotNetEnv.Env.GetBool("FIRST_RUN");
-            //useProxy = DotNetEnv.Env.GetBool("USE_PROXY");
             signalrConsoleHub = DotNetEnv.Env.GetString("CONSOLE_HUB");
         }
 
@@ -286,24 +251,9 @@ namespace vkaudioposter_Console
                 Thread.CurrentThread.IsBackground = false;
             }).Start();
 
-            try
-            {
-                Thread rabbitReciever = new(new ThreadStart(Rabbit.CommandsReciever))
-                {
-                    IsBackground = false
-                };
-                //rabbitReciever.Start();
-
-                //SendTestTrackMessages();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-            finally
-            {
 
                 LoadConfigsFromEnv();
+
                 // Create Database with schema 
                 //vkaudioposter_ef.Program.InsertRoles();
                 if (firstRun == true)
@@ -317,7 +267,7 @@ namespace vkaudioposter_Console
                 }
                 if (startOnce == true)
                     StatusChecker.ApiStart();
-            }
+            
         }
 
         #region Appcycle
@@ -346,9 +296,9 @@ namespace vkaudioposter_Console
                 P.connection.InvokeAsync("SendMessage",
                   "Console", $"Last date: {LastDatePosted.ToString()}");
 
-                P.cleared = 0; //обнуление счетчика срабатываний ClearAll()
+                P.cleared = 0; 
 
-                if (P.wallPostQueue.Count != 0) //Если в очереди есть посты
+                if (P.wallPostQueue.Count != 0) 
                 {
                     VkApi api = new();
 
@@ -358,8 +308,7 @@ namespace vkaudioposter_Console
                     });
                     bool publError = false;
 
-                    // Для каждого поста из БД
-                    foreach (var postQ in P.wallPostQueue) //Для каждлого поста в очереди
+                    foreach (var postQ in P.wallPostQueue)
                     {
                         try
                         {
@@ -388,8 +337,7 @@ namespace vkaudioposter_Console
                             //Если без ошибок опубликовали, значит удаляем из очереди
                             if (publError == false)
                             {
-                                // Удалили пост из БД
-                                P.wallPostQueue.Dequeue(); //Удалили этот элем из очереди
+                                P.wallPostQueue.Dequeue();
                             }
                             Console.WriteLine($"Число постов в очереди: {P.wallPostQueue.Count}");
 
@@ -414,7 +362,6 @@ namespace vkaudioposter_Console
         {
             try
             {
-                //Rabbit.NewLog("Start Parser");
 
                 string trackstop = "tracks";
                 if (switcher == "fresh")
@@ -427,13 +374,10 @@ namespace vkaudioposter_Console
 
                 int threshhold = 0; //порог количества треков для публикации
                 string photostock_new = null;
-                //bool photo_exist = false;
 
 
-                foreach (var style in playlists.ToList()) // if want  change list (remove elements)
+                foreach (var style in playlists.ToList()) 
                 {
-
-                    //photo_exist = false;
 
                     var wallTotal = VkTools.CheckPostponedAndGetCount();
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -441,7 +385,6 @@ namespace vkaudioposter_Console
 
                     connection.InvokeAsync("SendMessage",
                       "Console", $"Отложенных {wallTotal} постов");
-                    //Rabbit.NewLog($"Отложенных {wallTotal} постов");
 
                     // TODO: Остановка
                     if (threadstopflag == true || wallTotal == 150)
@@ -452,7 +395,6 @@ namespace vkaudioposter_Console
 
                         connection.InvokeAsync("SendMessage",
                           "Console", $"Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
-                        //Rabbit.NewLog($"Остановили поток: {threadstopflag} или лимит отложенных постов = {wallTotal}");
                         break;
                     }
 
@@ -475,7 +417,6 @@ namespace vkaudioposter_Console
                         connection.InvokeAsync("SendMessage", "Console", $"{exc} ");
                     }
 
-                    //Rabbit.NewLog($"Search Tracks in VK: {style.PlaylistName}");
                     SearchTracksVk(style);
                     do
                     {
@@ -516,15 +457,12 @@ namespace vkaudioposter_Console
                             //Меняем фотку
                             postcounter++;
 
-                            //if (String.IsNullOrEmpty(photourl) != true)
-                            //Rabbit.NewLog("Photo Parser started");
                             photourl = PhotoParserAuto(photostock_new, postcounter, style.PlaylistName, stockPage);
 
                             if (String.IsNullOrEmpty(photourl) == true)
                             {
                                 //Get PlaylistImage
                                 photourl = style.ImageUrl;
-                                //photourl = "https://sun9-60.userapi.com/c638422/v638422659/24de8/rdpXft1B6Pw.jpg";
 
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Logging.ErrorLogging(String.Format("Пустая ссылка на фото, сток: {0} счетчик постов: {2}, замена обложкой плейлиста {1}", photostock_new, photourl, postcounter));
@@ -532,11 +470,9 @@ namespace vkaudioposter_Console
                                 throw new Exception(String.Format("Пустая ссылка на фото, сток: {0} счетчик постов: {2}, замена обложкой плейлиста {1}", photostock_new, photourl, postcounter));
 
                             }
-                            //else photo_exist = true;
                         }
                         catch (Exception ex)
                         {
-                            //Logging.ErrorLogging(ex); Logging.ReadError(); //photo_exist = false;
 
                             postcounter = 0; //Сброс
 
@@ -557,24 +493,12 @@ namespace vkaudioposter_Console
 
                             if (String.IsNullOrEmpty(photourl) == true)
                             {
-                                /////OLD
-                                //photourl = "https://sun9-48.userapi.com/c638422/v638422659/24e71/pWGAQj9rKgk.jpg";
-                                /////OLD
-
-                                //Get PlaylistImage
                                 photourl = style.ImageUrl;
-                                //ImageWorkers.DownloadImage(photourl, photofilename);
+                            }
 
-                                //photo_exist = false;
-                            }// Default photo 2 High Volume Music 
-                            //else photo_exist = true;
                         }
                         finally
                         {
-                            //bool isImageExist = ImageWorkers.DownloadImage(photourl, photofilename);
-
-                            //photofilename = "tempimage.jpg";
-                            //Rabbit.NewLog("Download Photo");
                             try
                             {
                                 bool isImageExist = ImageWorkers.DownloadImage(photourl, photofilename);
@@ -589,15 +513,7 @@ namespace vkaudioposter_Console
                                 Logging.ErrorLogging(ex);
                                 Logging.ReadError();
                                 connection.InvokeAsync("SendMessage", "Console", $" {ex} ");
-                                //photo_exist = ImageWorkers.DownloadImage(@"https://sun9-73.userapi.com/impg/UcMqhZMnrpXVl5G32ALhDchctfG2lnx-J5BzBg/6KVlZUh7Ie0.jpg?size=1192x600&quality=96&sign=5b9318b9472bcc2b2537979f30b247b4&type=album", photofilename);
-
-                                //ImageWorkers.DownloadImage(photourl, photofilename);
-
                                 photofilename = "background-image.png";
-                                //styleOnBG.Save("tempMark.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
-
-
-                                //photo_exist = true; //false
                             }
 
                         }
@@ -617,46 +533,10 @@ namespace vkaudioposter_Console
 
                         Console.WriteLine("Размещаем пост на стену");
                         connection.InvokeAsync("SendMessage", "Console", $"Размещаем пост на стену");
-                        //Rabbit.NewLog("Размещаем пост на стену");
-
-                        //if (photo_exist == true) //если вообще скачалась фотка
-                        //{
-                        //// Generate image
-                        //ImageWorkers iw = new ImageWorkers();
-                        ////Install Linux Font
-                        ////var font = new System.Drawing.Font("DejaVuSans", 36);
-                        //var font = new System.Drawing.Font("DejaVuSans", 16);
-
-                        //var brushColor = System.Drawing.Brushes.White;
-                        //var styleOnBG = iw.DrawTextOnImage(photofilename, style.PlaylistName, font, brushColor);
-                        //string path = Directory.GetCurrentDirectory();
-                        //string[] paths = { path, "tempMark.jpg" };
-                        //string fullPath = Path.Combine(paths);
-
-                        //styleOnBG.Save(fullPath, System.Drawing.Imaging.ImageFormat.Jpeg);
-
 
                         var attsTuple = VkTools.AddPhotoToAttachFromUrl(photofilename, attachments, postMessage, LstBox_AddedTracks);
                         attachments = attsTuple;
                         photofilename = "tempimage.png";
-                        //} else
-                        //{
-                        //    //ImageWorkers iw = new ImageWorkers();
-                        //    ///Install Linux Font
-                        //    //var font = new System.Drawing.Font("DejaVuSans", 36);
-
-                        //    //var brushColor = System.Drawing.Brushes.White;
-                        //    //var styleOnBG = iw.DrawTextOnImage("background-image.png", style.PlaylistName, font, brushColor);
-                        //    //string path = Directory.GetCurrentDirectory();
-                        //    //string[] paths = { path, "tempMark.jpg" };
-                        //    //string fullPath = Path.Combine(paths);
-                        //    //styleOnBG.Save("tempMark.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
-
-                        //    var attsTuple = VkTools.AddPhotoToAttachFromUrl(photofilename, attachments, postMessage, LstBox_AddedTracks);
-                        //    attachments = attsTuple;
-                        //    photofilename = "tempimage.png";
-                        //}
-
                         PosterOnWall(attachments, style, photourl, SearchingList);
                         do
                         {
@@ -665,7 +545,7 @@ namespace vkaudioposter_Console
                         } while (posted == false);
                         ind++;
                     }
-                    else //SearchingList=0 если не найдено в поиске треков, что делать? Переступать на след. шаг, нужно ли очищать что-то? Вроде нет
+                    else //SearchingList=0 если не найдено в поиске треков, что делать?
                     {
                         parser_finished = false;
                         tracksfound = false;
@@ -676,7 +556,6 @@ namespace vkaudioposter_Console
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Процесс завершен!");
                 connection.InvokeAsync("SendMessage", "Console", $"Процесс завершен!");
-                //Rabbit.NewLog("Процесс завершен!");
                 postcounter = 1;
             }
             catch (ThreadAbortException exc)
@@ -715,27 +594,11 @@ namespace vkaudioposter_Console
         /// <include file='docParser.xml' path='docs/members[@name="parser"]/Parser/*'/>
         private static async Task Parser(int trackscount, vkaudioposter_ef.parser.Playlist style, string playlistId, string trackstop)
         {
-            ///v 6.0.x
-            //var config = SpotifyClientConfig
-            //    .CreateDefault()
-            //    .WithAuthenticator(new ClientCredentialsAuthenticator(clientId, clientSecret)); // takes care of access tokens
-            //var spotify = new SpotifyClient(config);
-
             var config = SpotifyClientConfig
             .CreateDefault()
             .WithAuthenticator(new ClientCredentialsAuthenticator(clientId, clientSecret));//from env
 
             var spotify = new SpotifyClient(config);
-
-            //AccessToken token = SpotifyTools.GetToken().Result;
-
-            ////Нужно каждый раз получать токеn новый
-            //var spotify = new SpotifyWebAPI
-            //{
-            //    AccessToken = token.access_token,
-            //    TokenType = "Bearer"
-            //};
-
             Console.WriteLine("Parsing: " + style.PlaylistName);
 
             try
@@ -744,141 +607,7 @@ namespace vkaudioposter_Console
                 if (playlistId != null)
                 // if (user_id != null || playlist_id != null) //Если Spotify Only
                 {
-                    //string fields = "items(added_by.id,track(name,artists))";
-                    //int limit = 100; //default
-                    //int offset = 0; //смещение = 0
-                    //string market = "US"; //Сделать RU
-                    /// <include file='docParser.xml' path='docs/members[@name="parser"]/SpotyParser    /*'/>
                     await SpotifyTools.SpotyParser(playlistId, spotify);
-                }
-                else //Если пустые user_id и playlist_id -> Beatport (DEPRECIATED)
-                {
-                    string style_search = null;
-                    switch (style.PlaylistName)
-                    {
-                        case "All styles":
-                            style_search = "all";
-                            break;
-                        case "AFRO HOUSE":
-                            style_search = "afro-house/89/";
-                            break;
-                        case "BIG ROOM":
-                            style_search = "big-room/79/";
-                            break;
-                        case "BREAKS":
-                            style_search = "breaks/9/";
-                            break;
-                        case "DANCE":
-                            style_search = "dance/39/";
-                            break;
-                        case "DEEP HOUSE":
-                            style_search = "deep-house/12/";
-                            break;
-                        case "DRUM & BASS":
-                            style_search = "drum-and-bass/1/";
-                            break;
-                        case "DUBSTEP":
-                            style_search = "dubstep/18/";
-                            break;
-                        case "HARDCORE / HARD TECHNO":
-                            style_search = "hardcore-hard-techno/2/";
-                            break;
-                        case "HIP-HOP / R&B":
-                            style_search = "hip-hop-r-and-b/38/";
-                            break;
-                        case "HOUSE":
-                            style_search = "house/5/";
-                            break;
-                        case "INDIE DANCE / NU DISCO":
-                            style_search = "indie-dance-nu-disco/37/";
-                            break;
-                        case "LEFTFIELD BASS":
-                            style_search = "leftfield-bass/85/";
-                            break;
-                        case "LEFTFIELD HOUSE & TECHNO":
-                            style_search = "leftfield-house-and-techno/80/";
-                            break;
-                        case "MELODIC HOUSE & TECHNO":
-                            style_search = "melodic-house-and-techno/90/";
-                            break;
-                        case "MINIMAL / DEEP TECH":
-                            style_search = "minimal-deep-tech/14/";
-                            break;
-                        case "ELECTRO HOUSE":
-                            style_search = "electro-house/17/";
-                            break;
-                        case "ELECTRONICA / DOWNTEMPO":
-                            style_search = "electronica-downtempo/3/";
-                            break;
-                        case "FUNK / SOUL / DISCO":
-                            style_search = "funk-soul-disco/40/";
-                            break;
-                        case "FUNKY / GROOVE / JACKIN' HOUSE":
-                            style_search = "funky-groove-jackin-house/81/";
-                            break;
-                        case "FUTURE HOUSE":
-                            style_search = "future-house/65/";
-                            break;
-                        case "GARAGE / BASSLINE / GRIME":
-                            style_search = "garage-bassline-grime/86/";
-                            break;
-                        case "HARD DANCE":
-                            style_search = "hard-dance/8/";
-                            break;
-                        case "PROGRESSIVE HOUSE":
-                            style_search = "progressive-house/15/";
-                            break;
-                        case "PSY-TRANCE":
-                            style_search = "psy-trance/13/";
-                            break;
-                        case "REGGAE / DANCEHALL / DUB":
-                            style_search = "reggae-dancehall-dub/41/";
-                            break;
-                        case "TECH HOUSE":
-                            style_search = "tech-house/11/";
-                            break;
-                        case "TECHNO":
-                            style_search = "techno/6/";
-                            break;
-                        case "TRANCE":
-                            style_search = "trance/7/";
-                            break;
-                        case "TRAP / FUTURE BASS":
-                            style_search = "trap-future-bass/87/";
-                            break;
-                    }
-
-                    string Url = "https://www.beatport.com/genre/" + style_search + trackstop; // +"?per-page=150"; 
-
-                    HtmlWeb web = new();
-                    HtmlAgilityPack.HtmlDocument doc = web.Load(Url);
-
-                    int sw = 2;
-                    if (trackstop == "tracks")
-                    {
-                        sw = 2;
-                    }
-                    else
-                    {
-                        sw = 3;
-                    }
-
-                    for (int i = 1; i <= trackscount; i++)
-                    {
-                        string trackname = null, author = null, remixer = null;
-                        try
-                        {
-                            trackname = doc.DocumentNode.SelectNodes("//*[@id=\"pjax-inner-wrapper\"]/section/main/div[2]/div[2]/ul/li[" + i + "]/div[" + sw + "]/div[1]/p[1]/a")[0].InnerText;
-                            author = doc.DocumentNode.SelectNodes("//*[@id=\"pjax-inner-wrapper\"]/section/main/div[2]/div[2]/ul/li[" + i + "]/div[" + sw + "]/div[1]/p[2]")[0].InnerText;
-                        }
-                        catch (Exception ex)
-                        {
-                            Logging.ErrorLogging(ex);
-                        }
-
-                        Program.ChartList.Add(new SpotyTrack(trackname, remixer, author));
-                    }
-
                 }
             }
             catch (OperationCanceledException)
@@ -887,7 +616,6 @@ namespace vkaudioposter_Console
                 Console.WriteLine("\r\nDownload tracks canceled.\r\n");
             }
             Program.parser_finished = true;
-            //return null;
         }
 
         /// <summary>
@@ -948,14 +676,11 @@ namespace vkaudioposter_Console
 
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("Список треков из парсера:\n");
-            //connection.InvokeAsync("SendMessage",
-            //  "Console", $"Tracklist:");
 
             foreach (var track in tracksToFind)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($"{track.GetTrackAndAuthors()}");
-                //connection.InvokeAsync("SendMessage","Console", $"{track.GetTrackAndAuthors()}");
             }
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\nЖанр: {styletoDB.PlaylistName}");
@@ -964,18 +689,14 @@ namespace vkaudioposter_Console
             Console.WriteLine("Ищем в поиске треки");
             connection.InvokeAsync("SendMessage", "Console", $"Searching tracks..");
 
-            int unsearchtracks = 0; //не найденоы
-            int publishedtracks = 0; //уже опубликовано
+            int unsearchtracks = 0;
+            int publishedtracks = 0;
 
-
-            //для каждой строки с названием
             foreach (var trackobj in tracksToFind.ToList())
             {
                 string nameAndAuthors = trackobj.GetTrackAndAuthors();
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.WriteLine($"Текущий трек: {nameAndAuthors}");
-
-                //trackname = trackname.Replace("\'", "");
 
                 //Обращаться к БД каждый раз как пытаемся новый K трек найти, Если в БД нет такого - то ищем
                 var postedTracks = DBUtils.GetPostedTracksFromDB(styletoDB);
@@ -991,15 +712,12 @@ namespace vkaudioposter_Console
                     fmtUnfoundTracks.Add(newT);
                 }
 
-                //unfoundTracks = unfoundTracks.Replace("%20", "");
-
                 List<string> fmtPostedTracks = new();
                 foreach (var pT in postedTracks.ToList())
                 {
                     var newT = pT.Replace("%20", "");
                     fmtPostedTracks.Add(newT);
                 }
-
 
                 if ((fmtPostedTracks.IndexOf(current_track) != -1) /*&& (Output.Length != 0))*/ || (fmtUnfoundTracks.IndexOf(current_track) != -1))
                 {
@@ -1041,10 +759,6 @@ namespace vkaudioposter_Console
                                     continue;
                                 }
 
-                                //Rabbit.NewPostedTrack(current_track, styletoDB.PlaylistName, publication_date);
-                                //SearchingList.Add(new Track(url2, FullId));
-
-                                //trackobj.GetSpotifyInfoLink
                                 SearchingList.Add(new SpotyVKTrack(trackNameAndAuthors, mediaId, ownId, trackobj.Urls, trackobj.PreviewUrl));
 
                                 //Добавить треки в Quue очередь или класс при публикации заливать, очищать при нажатии отмена
@@ -1057,10 +771,8 @@ namespace vkaudioposter_Console
                                 {
                                     DBUtils.InsertUnfoundTrackInDB(current_track, styletoDB, false);
                                 }
-                                catch (Exception e) { var err = e; Console.ForegroundColor = ConsoleColor.DarkGray; /*Console.WriteLine($"Dublicate in UnfoundTracks...skip");*/ /* Logging.ErrorLogging(e); */ continue; };
+                                catch (Exception e) { var err = e; Console.ForegroundColor = ConsoleColor.DarkGray;  continue; };
                             }
-                            //если не нашли не добавляем в массив
-                            //если счетчик достиг 9 треков, остановить поиск!
                             if (existcounter == 9)
                             {
                                 break;
@@ -1085,7 +797,6 @@ namespace vkaudioposter_Console
                                 Autocomplete = false,
                                 Query = current_track,
                                 Count = totalCount,
-                                //Offset = 0,
                                 SearchOwn = false,
                                 Sort = AudioSort.AddedDate
                             });
@@ -1161,11 +872,6 @@ namespace vkaudioposter_Console
                 Thread.Sleep(searchCoolDown); //Задержка поиска
             }
 
-            if (SearchingList.Count == 0)
-            {
-                //TODO
-            }
-
             tracksfound = true;
             return;
         }
@@ -1180,31 +886,8 @@ namespace vkaudioposter_Console
         /// <returns></returns>
         private string PhotoParserAuto(string photostock, int i, string music_style, int pickedStockPage) //i=postcounter
         {
-            //int dig = i % max_photo; //Остаток от деления (кратность числу макс фото на странице стока)
             string url = null; //Прямая ссылка на фото
-            //find url photo
             HtmlAgilityPack.HtmlDocument doc = null;
-
-            ///выбираем сток, соответствующий стилю, надо сопоставить в БД каждому стилю свой сток
-            ///Пробуем найти страницу со стилем по tag
-            ///
-
-            //switch (music_style)
-            //{
-            //    case var someVal when new Regex(@"metal|(\w*)", RegexOptions.IgnoreCase).IsMatch(someVal):
-            //        photostock = "https://www.deviantart.com/tag/brutal";
-            //        break;
-            //    case var someVal when new Regex(@"trance|(\w*)", RegexOptions.IgnoreCase).IsMatch(someVal):
-            //        photostock = "https://www.deviantart.com/whats-hot/?q=trance";
-            //        break;
-            //    case var someVal when new Regex(@"adrenaline(\w*)", RegexOptions.IgnoreCase).IsMatch(someVal):
-            //        photostock = "https://www.deviantart.com/whats-hot/?q=adrenaline";
-            //        break;
-            //    case var someVal when new Regex(@"house(\w*)", RegexOptions.IgnoreCase).IsMatch(someVal):
-            //        photostock = "https://www.pexels.com/search/music/";
-            //        break;
-            //}
-            //int pagecounter = photostockQueue.Peek().Page;
 
             try
             {
@@ -1227,7 +910,7 @@ namespace vkaudioposter_Console
                         ParserXpath pXp = DBUtils.GetPhotostockNodContainer(photostock);
                         nodContainer = pXp.Xpath;//Контейнер с картинками на странице (последний grid)
                                                  //*[@id="root"]/div[1]/div/div/div/article/div/div[2]/div/div
-                                                 //nodContainer = "//*[@id=\"root\"]/div[1]/div/div/div/article/div/div[2]/div/div";//Контейнер с картинками на странице (последний grid)
+                                                 //nodContainer = "//*[@id=\"root\"]/div[1]/div/div/div/article/div/div[2]/div/div";
                         try
                         {
                             url = PhotoParser.DevianPageParser(doc, nodContainer, i, pXp);
@@ -1242,8 +925,6 @@ namespace vkaudioposter_Console
                                                    //Сбросить счётчик фото
                                 postcounter = 1;
                                 i = postcounter;
-                                //StringBuilder photostock_SB = new StringBuilder(photostock);
-                                //photostock_SB.Append(new string { "&page=" + pagecounter });
                                 photostock += "&page=" + pickedStockPage;
 
                                 //скачиваем страницу
@@ -1260,156 +941,6 @@ namespace vkaudioposter_Console
                             }
                         }
                         break;
-
-                    case "https://picjumbo.com/latest-free-stock-photos/":
-                        try
-                        {
-                            url = doc.DocumentNode.SelectNodes("/html/body/div[5]/div/div[" + i + "]/a/picture/img")[0].Attributes[3].Value;
-                        }
-                        catch (System.NullReferenceException ex)
-                        {
-                            Logging.ErrorLogging(ex);
-                            if (pickedStockPage <= stockMaxPages)
-                            {
-                                postcounter = 1;
-                                i = postcounter;
-                                photostock += "page/" + pickedStockPage + "/";
-
-                                //скачиваем страницу
-                                try
-                                {
-                                    photostockQueue.Enqueue(new Photostock_class { URL = photostock, Page = pickedStockPage });
-                                }
-                                catch (Exception ex1)
-                                {
-                                    Logging.ErrorLogging(ex1);
-                                    Logging.ReadError();
-                                }
-                            }
-                        }
-
-                        break;
-                    case "https://picjumbo.com/":
-                        try
-                        {
-                            url = doc.DocumentNode.SelectNodes("/html/body/div[6]/div/div[" + i + "]/a[1]/picture/img")[0].Attributes[3].Value;
-                        }
-                        catch (System.NullReferenceException ex)
-                        {
-                            Logging.ErrorLogging(ex);
-                            if (pickedStockPage <= stockMaxPages)
-                            {
-                                pickedStockPage++;
-                                postcounter = 1;
-                                i = postcounter;
-                                photostock += "page/" + pickedStockPage + "/";
-
-                                try
-                                {
-                                    photostockQueue.Enqueue(new Photostock_class { URL = photostock, Page = pickedStockPage });
-
-                                }
-                                catch (Exception ex1)
-                                {
-                                    Logging.ErrorLogging(ex1);
-                                    Logging.ReadError();
-
-                                }
-                            }
-
-                        }
-                        break;
-
-                    case "https://pixabay.com/ru/editors_choice":
-                        url = doc.DocumentNode.SelectNodes("//*[@id=\"content\"]/div[2]/div/div/div[" + i + "]/a/img")[0].Attributes[1].Value;
-                        break;
-
-                    ///----------- BEGIN DEPRECIATED (УСТАРЕЛО)-----------
-                    case var someVal when new Regex(@"https://www.deviantart.com/?order=whats-hot(\w*)", RegexOptions.IgnoreCase).IsMatch(someVal):
-                        nodContainer = "//*[@id=\"root\"]/div[2]/div[2]/div/section/div/div[2]/div[2]";//Контейнер с картинками на странице 
-                        try
-                        {
-                            url = PhotoParser.DevianPageParser(doc, nodContainer, i);
-                        }
-                        catch (System.NullReferenceException ex)
-                        {
-                            Logging.ErrorLogging(ex);
-                            if (pickedStockPage <= stockMaxPages)
-                            {
-                                //Если нет фотки
-                                pickedStockPage++;
-                                postcounter = 1;
-                                i = postcounter;
-                                photostock += "&page=" + pickedStockPage;
-                                try
-                                {
-                                    photostockQueue.Enqueue(new Photostock_class { URL = photostock, Page = pickedStockPage });
-                                }
-                                catch (Exception ex1)
-                                {
-                                    Logging.ErrorLogging(ex1);
-                                    Logging.ReadError();
-                                }
-                            }
-
-                        }
-                        break;
-
-                    case var someVal when new Regex(@"https://www.deviantart.com/tag/(\w*)", RegexOptions.IgnoreCase).IsMatch(someVal):
-                        nodContainer = "//*[@id=\"root\"]/div[2]/div/div/div/div[2]/div[2]";
-                        try
-                        {
-                            url = PhotoParser.DevianPageParser(doc, nodContainer, i);
-                        }
-                        catch (System.NullReferenceException ex)
-                        {
-                            Logging.ErrorLogging(ex);
-                            if (pickedStockPage <= stockMaxPages)
-                            {
-
-                                pickedStockPage++;
-                                postcounter = 1;
-                                i = postcounter;
-                                photostock += "&page=" + pickedStockPage;
-                                try
-                                {
-                                    photostockQueue.Enqueue(new Photostock_class { URL = photostock, Page = pickedStockPage });
-                                }
-                                catch (Exception ex1)
-                                {
-                                    Logging.ErrorLogging(ex1);
-                                    Logging.ReadError();
-                                }
-                            }
-                        }
-                        break;
-
-                    case var someVal when new Regex(@"https://www.deviantart.com/search?q=(\w*)", RegexOptions.IgnoreCase).IsMatch(someVal):
-                        nodContainer = "//*[@id=\"root\"]/div[2]/div[2]/div/div/div[3]/div[2]";
-                        url = PhotoParser.DevianPageParser(doc, nodContainer, i);
-                        break;
-                    case "https://www.tumblr.com/search/cool+photo/recent":
-                        url = doc.DocumentNode.SelectNodes("//*[@id=\"search_posts\"]/article[" + i + "]/section[1]/div[1]/img")[0].Attributes[0].Value;
-                        break;
-                    case "https://www.stockvault.net/latest-photos/?li=3":
-                        string url1 = doc.DocumentNode.SelectNodes("//*[@id=\"flexgrid\"]/div[" + i + "]/a/img")[0].Attributes[0].Value;
-                        url = "https://www.stockvault.net" + url1;
-                        break;
-                    case "https://www.pexels.com/search/music/":
-                        url = doc.DocumentNode.SelectNodes("/html/body/div[1]/div[3]/div[3]/div[1]/div[" + i + "]/article/a[1]/img")[0].Attributes[5].Value;
-                        break;
-
-                    case "https://nos.twnsnd.co/":
-                        url = doc.DocumentNode.SelectNodes("//*[@id=\"posts\"]/div/article[" + i + "]/div/section[1]/figure/div/div/a/img")[0].Attributes[1].Value;
-                        break;
-                    case "https://littlevisuals.co/":
-                        url = doc.DocumentNode.SelectNodes("//*[@id=\"main\"]/article[" + i + 1 + "]/a/img")[0].Attributes[0].Value;
-                        break;
-
-                    case var someVal when new Regex(@"https://www.canstockphoto.com/stock-photo-images/(\w*)", RegexOptions.IgnoreCase).IsMatch(someVal):
-                        url = doc.DocumentNode.SelectNodes("/html/body/div[3]/div[1]/div/div/div[2]/section/article[" + i + "]/a/span[1]/img")[0].Attributes[5].Value;
-                        break;
-                    ///-----------END DEPRECIATED (УСТАРЕЛО)-----------
 
                     case null:
                         break;
@@ -1418,93 +949,6 @@ namespace vkaudioposter_Console
                         Console.WriteLine("Null passed to this method.\n No SWITCH IN STOCK");
                         break;
                 }
-
-
-                ///-----------BEGIN DEPRECIATED (УСТАРЕЛО)-----------
-
-                if ((photostock == "https://pixabay.com/ru/") || (photostock == "https://pixabay.com/ru/photos/"))
-                {
-                    url = doc.DocumentNode.SelectNodes("//*[@id=\"content\"]/div[2]/div[1]/div[1]/div[" + i + "]/a/img")[0].Attributes[2].Value;
-                }
-
-                if ((photostock == "https://pixabay.com/images/search/?order=latest") || (photostock == "https://pixabay.com/images/search/"))
-                {
-                    nodContainer = "//*[@id=\"content\"]/div/div[2]/div/div[2]/div[" + i + "]/a/img";
-                    url = PhotoParser.PixabayParser(doc, nodContainer, i);
-                }
-
-                if (photostock == "https://www.deviantart.com/")
-                {
-                    nodContainer = "//*[@id=\"root\"]/div[2]/div[2]/div/div/div[2]/div[2]";
-                    url = PhotoParser.DevianPageParser(doc, nodContainer, i);
-
-                }
-
-                if ((photostock == "https://www.deviantart.com/search/deviations?order=most-recent&q=wallpaper") ||
-                    (photostock == "https://www.deviantart.com/?order=whats-hot") ||
-                    (photostock == "https://www.deviantart.com/search/deviations?q=wallpaper&order=whats-hot"))
-                {
-                    //24 фото на странице
-                    nodContainer = "//*[@id=\"root\"]/div[2]/div[2]/div/div/div[2]/div[2]/div";
-                    try
-                    {
-                        url = PhotoParser.DevianPageParser(doc, nodContainer, i);
-                    }
-                    catch (System.NullReferenceException ex)
-                    {
-                        Logging.ErrorLogging(ex);
-                        if (pickedStockPage <= stockMaxPages)
-                        {
-                            pickedStockPage++;
-                            postcounter = 1;
-                            i = postcounter;
-                            switch (photostock)
-                            {
-                                case "https://www.deviantart.com/?order=whats-hot":
-                                    photostock = "https://www.deviantart.com/search/deviations?order=whats-hot&page=" + pickedStockPage;
-                                    break;
-                                case "https://www.deviantart.com/search/deviations?order=most-recent&q=wallpaper":
-                                    photostock = "https://www.deviantart.com/search/deviations?order=most-recent&page=" + pickedStockPage + "&q=wallpaper";
-                                    break;
-                                case "https://www.deviantart.com/search/deviations?q=wallpaper&order=whats-hot":
-                                    photostock = "https://www.deviantart.com/search/deviations?order=whats-hot&page=" + pickedStockPage + "&q=wallpaper";
-                                    break;
-                            }
-                            try
-                            {
-                                photostockQueue.Enqueue(new Photostock_class { URL = photostock, Page = pickedStockPage });
-
-                            }
-                            catch (Exception ex1)
-                            {
-
-                                Logging.ErrorLogging(ex1);
-                                Logging.ReadError();
-                            }
-                        }
-
-                    }
-
-                }
-
-
-                if ((photostock == "https://www.deviantart.com/luckynumber113/favourites/76516524/Pretty-Wallpapers-Backgrounds-and-Designs") ||
-                    (photostock == "https://www.deviantart.com/james-is-james/favourites/60347448/Abstract") ||
-                    (photostock == "https://www.deviantart.com/psychospartanex/favourites/77875659/Amazing-Wallpapers"))
-                {
-
-                    nodContainer = "//*[@id=sub-folder-gallery]/div/div[2]/div/div/div[2]/div";
-                    url = PhotoParser.DevianPageParser(doc, nodContainer, i);
-
-                }
-
-                //-------TEST-------
-                if (photostock == "https://www.rawpixel.com/free-images?sort=curated&photo=1&premium=free&page=1")
-                {
-                    url = doc.DocumentNode.SelectNodes("//*[@id=\"page\"]/div/main/div/section/div/figure[" + i + "]/a")[0].Attributes[0].Value;
-                }
-
-                ///-----------END DEPRECIATED (УСТАРЕЛО)-----------
 
             }
             catch (Exception ex)
@@ -1535,7 +979,6 @@ namespace vkaudioposter_Console
             Console.WriteLine("Авторизация для поста");
             connection.InvokeAsync("SendMessage", "Console", "Авторизация для поста");
             VkApi api = new();
-            //Авторизация
             api.Authorize(new ApiAuthParams
             {
                 AccessToken = Token
@@ -1600,30 +1043,6 @@ namespace vkaudioposter_Console
             connection.InvokeAsync("SendMessage", "Console", $"Будет опубликован: {publication_date}  {cleared}й пост");
 
             {
-                //List<PollAnswer> pollAnswersList = new();
-
-                //pollAnswersList.Add( new PollAnswer {  Text = "Класс!"   });
-                //pollAnswersList.Add(new PollAnswer {  Text = "Не очень" });
-
-                //var pollAnswers = new System.Collections.ObjectModel.ReadOnlyCollection<PollAnswer>(list: pollAnswersList);
-
-                //attachments.Add(
-                //    new Poll
-                //    {
-                //        Anonymous = true,
-                //        Answers = pollAnswers,
-                //        CanEdit = true,
-                //        CanReport = false,
-                //        CanVote = true,
-                //        CanShare = true,
-                //        Multiple = false,
-                //        Question = "Оцени подборку",
-                //        AccessKey = accesstoken,
-                //        AuthorId = ownid,
-                //        OwnerId = ownid,
-
-                //    });
-
                 try
                 {
                     long postId = api.Wall.Post(new WallPostParams
@@ -1636,14 +1055,11 @@ namespace vkaudioposter_Console
 
                     LastDatePosted = publication_date;
 
-                    //DBUtils.InsertFoundTrackInDB();
-
                     DBUtils.UpdatePublicationDateOfTracksAndInsertToDB(fmtPlaylist, LastDatePosted, postId, attachments, ownid, MessageToAttach, SearchingList, photourl);
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Пост опубликован! {MessageToAttach}");
                     connection.InvokeAsync("SendMessage", "Console", $"Пост опубликован! {MessageToAttach}");
-                    //Rabbit.NewLog($"Пост опубликован! {MessageToAttach}");
 
                     ClearAll();
                     posted = true;
@@ -1666,13 +1082,6 @@ namespace vkaudioposter_Console
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("Лимит запланированных записей! Добавили в очередь публикаций!");
                     connection.InvokeAsync("SendMessage", "Console", "Лимит запланированных записей! Добавили в очередь публикаций!");
-
-                    //Добавление в БД
-                    try
-                    {
-                        //DBUtils.AddPostInDB(attachments, ownid, MessageToAttach, publication_date);
-                    }
-                    catch (Exception dbEX) { Console.WriteLine(dbEX.Message); Logging.ErrorLogging(dbEX); }
 
                     wallPostQueue.Enqueue(new WallPostParams
                     {
@@ -1742,8 +1151,6 @@ namespace vkaudioposter_Console
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Пост {MessageToAttach}\n, увеличила дату {LastDatePosted}, опубликован!");
                         connection.InvokeAsync("SendMessage", "Console", $"Пост {MessageToAttach}\n, увеличила дату {LastDatePosted}, опубликован!");
-                        //Rabbit.NewLog($"Пост, увеличила дату {LastDatePosted}, опубликован! {MessageToAttach}");
-
                         ClearAll();
                         posted = true;
                     }
@@ -1804,21 +1211,5 @@ namespace vkaudioposter_Console
             connection.InvokeAsync("SendMessage", "Console", $"Очистка...");
         }
 
-
-        /// <summary>
-        /// Test
-        /// </summary>
-        public static void SendTestTrackMessages()
-        {
-            //for (int i = 0; i < 50; i++)
-            //{
-            while (true)
-            {
-                //Rabbit.NewPostedTrack(Rabbit.RandomString(10), Rabbit.RandomString(5), DateTime.Now);
-
-                Thread.Sleep(2000);
-            }
-            //}
-        }
     }
 }
