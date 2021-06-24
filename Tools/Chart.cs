@@ -91,11 +91,19 @@ namespace vkaudioposter
     {
         public Dictionary<string, string> Urls { get; set; }
         public string PreviewUrl { get; set; }
+        public int Popularity { get; set; }
 
         public SpotyTrack(string Trackname, string Author, Dictionary<string, string> urls, string previewUrl) : base(Trackname, Author)
         {
             Urls = urls;
             PreviewUrl = previewUrl;
+        }
+
+        public SpotyTrack(string Trackname, string Author, Dictionary<string, string> urls, string previewUrl, int popularity) : base(Trackname, Author)
+        {
+            Urls = urls;
+            PreviewUrl = previewUrl;
+            Popularity = popularity;
         }
 
         public SpotyTrack(string Trackname, string Remix, string Author) : base(Trackname, Remix, Author)

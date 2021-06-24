@@ -50,13 +50,13 @@ namespace vkaudioposter_Console.Tools
             {
                 s = s.Replace(c, string.Empty);
             }
-            int diff = Tools.Metrics.LevenshteinDistance(SearchingName, s); 
+            int diff = Tools.Metrics.LevenshteinDistance(SearchingName, s);
 
             int errind = -1;
             int errind2 = -1;
             errind = s.IndexOf("error: audio_search");
-            errind2 = s.IndexOf("no key"); 
-           
+            errind2 = s.IndexOf("no key");
+
             if ((diff != -1) && (errind == -1) && (errind2 == -1))
             {
                 try
@@ -67,7 +67,7 @@ namespace vkaudioposter_Console.Tools
                         int ind = s.IndexOf("audio_id");
                         string subs = s.Remove(0, ind + 9);
                         int ind2 = subs.IndexOf(" artist");
-                        subs2 = subs.Substring(0, ind2); 
+                        subs2 = subs.Substring(0, ind2);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Чистый айди= " + subs2);
                     }
@@ -100,7 +100,7 @@ namespace vkaudioposter_Console.Tools
             }
             else
             {
-                Console.WriteLine($"Int32.TryParse could not parse '{fullId.Substring(0, lowSpaceIndex)}' to an int.");              
+                Console.WriteLine($"Int32.TryParse could not parse '{fullId.Substring(0, lowSpaceIndex)}' to an int.");
             }
             return (ownId, mediaId);
         }

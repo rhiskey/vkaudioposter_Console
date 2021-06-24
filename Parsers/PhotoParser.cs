@@ -52,14 +52,14 @@ namespace vkaudioposter_Console.Parsers
         {
 
             string url;
-            var nodes = doc.DocumentNode.SelectNodes(container); 
-            List<string> urlList = new(nodes.Count); 
+            var nodes = doc.DocumentNode.SelectNodes(container);
+            List<string> urlList = new(nodes.Count);
 
             if (nodes != null)
             {
-                foreach (var node in nodes) 
-                { 
-                    var nodestoadd = node.SelectNodes("//div[contains(@class, 'tri_img')]"); 
+                foreach (var node in nodes)
+                {
+                    var nodestoadd = node.SelectNodes("//div[contains(@class, 'tri_img')]");
                     foreach (var nod in nodestoadd)
                     {
                         urlList.Add(nod.Attributes[2].Value);
@@ -72,7 +72,7 @@ namespace vkaudioposter_Console.Parsers
             HtmlWeb web_img = new();
             doc = web_img.Load(url);
 
-            url = doc.DocumentNode.SelectNodes("/html/body/div[4]/div/div[1]/article/div/div[1]/picture/a/img")[0].Attributes[3].Value; 
+            url = doc.DocumentNode.SelectNodes("/html/body/div[4]/div/div[1]/article/div/div[1]/picture/a/img")[0].Attributes[3].Value;
 
             return url;
         }
@@ -85,8 +85,8 @@ namespace vkaudioposter_Console.Parsers
 
             if (nodes != null)
             {
-                foreach (var node in nodes) 
-                { 
+                foreach (var node in nodes)
+                {
                     var nodestoadd = node.SelectNodes("//div[contains(@class, 'item')]");
                     foreach (var nod in nodestoadd)
                     {
@@ -102,7 +102,7 @@ namespace vkaudioposter_Console.Parsers
             HtmlWeb web_img = new();
             doc = web_img.Load(url);
 
-            url = doc.DocumentNode.SelectNodes("//*[@id=\"media_container\"]/img")[0].Attributes[2].Value; 
+            url = doc.DocumentNode.SelectNodes("//*[@id=\"media_container\"]/img")[0].Attributes[2].Value;
             return url;
         }
 

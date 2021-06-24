@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using vkaudioposter;
 using vkaudioposter.Classes;
 using vkaudioposter.MySQL;
-using vkaudioposter_Console.API;
 using vkaudioposter_Console.Classes;
 using vkaudioposter_Console.Parsers;
 using vkaudioposter_Console.Tools;
@@ -196,7 +195,8 @@ namespace vkaudioposter_Console
 
             connection = new HubConnectionBuilder()
             .WithUrl(
-            new Uri(signalrConsoleHub), options => {
+            new Uri(signalrConsoleHub), options =>
+            {
 
                 var handler = new HttpClientHandler
                 {
@@ -214,9 +214,12 @@ namespace vkaudioposter_Console
             try
             {
                 await connection.StartAsync();
-            } catch(System.Net.Http.HttpRequestException ex) { 
-                Console.WriteLine(ex.Message); } 
-            
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
         }
 
         #endregion
@@ -252,22 +255,22 @@ namespace vkaudioposter_Console
             }).Start();
 
 
-                LoadConfigsFromEnv();
+            LoadConfigsFromEnv();
 
-                // Create Database with schema 
-                //vkaudioposter_ef.Program.InsertRoles();
-                if (firstRun == true)
-                {
-                    vkaudioposter_ef.Program.LoadConfig();
+            // Create Database with schema 
+            //vkaudioposter_ef.Program.InsertRoles();
+            if (firstRun == true)
+            {
+                vkaudioposter_ef.Program.LoadConfig();
 
-                    ///If want to delete -> pass TRUE             
-                    vkaudioposter_ef.CreateInitialSchema.CreateSchema(true); //TODO:recreate
-                    vkaudioposter_ef.Program.InsertData(true);
-                    //vkaudioposter_ef.Program.CreateStoredProceduresViewsAndFunctions(true);
-                }
-                if (startOnce == true)
-                    StatusChecker.ApiStart();
-            
+                ///If want to delete -> pass TRUE             
+                vkaudioposter_ef.CreateInitialSchema.CreateSchema(true); //TODO:recreate
+                vkaudioposter_ef.Program.InsertData(true);
+                //vkaudioposter_ef.Program.CreateStoredProceduresViewsAndFunctions(true);
+            }
+            if (startOnce == true)
+                StatusChecker.ApiStart();
+
         }
 
         #region Appcycle
@@ -296,9 +299,9 @@ namespace vkaudioposter_Console
                 P.connection.InvokeAsync("SendMessage",
                   "Console", $"Last date: {LastDatePosted.ToString()}");
 
-                P.cleared = 0; 
+                P.cleared = 0;
 
-                if (P.wallPostQueue.Count != 0) 
+                if (P.wallPostQueue.Count != 0)
                 {
                     VkApi api = new();
 
@@ -376,7 +379,7 @@ namespace vkaudioposter_Console
                 string photostock_new = null;
 
 
-                foreach (var style in playlists.ToList()) 
+                foreach (var style in playlists.ToList())
                 {
 
                     var wallTotal = VkTools.CheckPostponedAndGetCount();
@@ -771,7 +774,7 @@ namespace vkaudioposter_Console
                                 {
                                     DBUtils.InsertUnfoundTrackInDB(current_track, styletoDB, false);
                                 }
-                                catch (Exception e) { var err = e; Console.ForegroundColor = ConsoleColor.DarkGray;  continue; };
+                                catch (Exception e) { var err = e; Console.ForegroundColor = ConsoleColor.DarkGray; continue; };
                             }
                             if (existcounter == 9)
                             {

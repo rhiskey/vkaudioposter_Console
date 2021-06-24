@@ -137,7 +137,7 @@ namespace vkaudioposter_Console.VKUtills
                 {
                     string track = trackNamesList[i];
                     string formatted = track.ToLower();
-                    formatted = formatted.Remove(formatted.Length - 1); 
+                    formatted = formatted.Remove(formatted.Length - 1);
                     formatted = formatted.Replace(" ", "_");
                     formatted = formatted.Replace("-", "");
                     if (i < (trackNamesList.Count - 1))
@@ -253,5 +253,5 @@ namespace vkaudioposter_Console.VKUtills
             return lastPost.Date.Value.AddHours(3); //TODO
         }
     }
-   
+
 }

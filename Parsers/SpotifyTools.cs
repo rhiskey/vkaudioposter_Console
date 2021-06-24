@@ -40,7 +40,6 @@ namespace vkaudioposter_Console.Parsers
                     {
                         if (item.Track is FullTrack track)
                         {
-
                             fullartists = null;
 
                             List<SimpleArtist> artists = new();
@@ -55,6 +54,7 @@ namespace vkaudioposter_Console.Parsers
                                 var eUrl = track.ExternalUrls;
                                 var preUrl = track.PreviewUrl;
                                 Program.ChartList.Add(new SpotyTrack(trackname, fullartists, eUrl, preUrl));
+                                //Program.ChartList.Add(new SpotyTrack(trackname, fullartists, eUrl, preUrl, track.Popularity));
                             }
                             else continue;
                         }
