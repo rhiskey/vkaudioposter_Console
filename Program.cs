@@ -762,7 +762,7 @@ namespace vkaudioposter_Console
                                     continue;
                                 }
 
-                                SearchingList.Add(new SpotyVKTrack(trackNameAndAuthors, mediaId, ownId, trackobj.Urls, trackobj.PreviewUrl));
+                                SearchingList.Add(new SpotyVKTrack(trackNameAndAuthors.Trim(), mediaId, ownId, trackobj.Urls, trackobj.PreviewUrl));
 
                                 //Добавить треки в Quue очередь или класс при публикации заливать, очищать при нажатии отмена
                                 existcounter++;
@@ -836,7 +836,7 @@ namespace vkaudioposter_Console
                                     {
                                         ownID = audio.OwnerId;
                                         mediaID = audio.Id;
-                                        SearchingList.Add(new SpotyVKTrack(fullTrackName, mediaID, ownID));
+                                        SearchingList.Add(new SpotyVKTrack(fullTrackName.Trim(), mediaID, ownID));
                                         break;
                                     }
                                     else continue;
@@ -859,7 +859,7 @@ namespace vkaudioposter_Console
                         }
                         catch (Exception ex) //Если любая ошибка, перейти к след.треку!
                         {
-                            SearchingList.Remove(new SpotyVKTrack(fullTrackName, mediaID, ownID));
+                            SearchingList.Remove(new SpotyVKTrack(fullTrackName.Trim(), mediaID, ownID));
                             Logging.ErrorLogging(ex);
                             continue;
                         }

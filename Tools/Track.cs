@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace vkaudioposter
 {
-    class Track
+    public class Track
     {
         private string Title;
         //private string FullId;//1235467_1234567

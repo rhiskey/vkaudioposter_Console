@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text;
 using vkaudioposter_Console.Tools;
 
 namespace vkaudioposter
@@ -55,8 +56,9 @@ namespace vkaudioposter
         /// <returns></returns>
         public static string ConcatSearchReq(string url1, string url2, string url3)
         {
-            string url = url1 + url2 + url3;
-            return (url);
+            StringBuilder sb = new StringBuilder("", 250);
+            sb.Append(url1); sb.Append(url2); sb.Append(url3);
+            return sb.ToString();
         }
 
         /// <summary>
