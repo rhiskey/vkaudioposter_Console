@@ -2,7 +2,7 @@
 
 namespace vkaudioposter_Console.Tools
 {
-    class Metrics
+    public class Metrics
     {
         public static int LevenshteinDistance(string string1, string string2)
         {

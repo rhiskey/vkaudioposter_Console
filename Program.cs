@@ -88,6 +88,8 @@ namespace vkaudioposter_Console
 
         private static List<FormattedPlaylist> allPlaylists;
         public static List<SpotyTrack> ChartList = new();
+
+        private static string VKLogin, VKPass;
         #endregion
 
         public HubConnection connection;
@@ -168,6 +170,8 @@ namespace vkaudioposter_Console
             groupid = (long)groupid3;
             ownid = -(long)groupid3;
 
+            VKLogin = cfg.VKLogin;
+            VKPass = cfg.VKPassword;
             signalrConsoleHub = DotNetEnv.Env.GetString("CONSOLE_HUB");
         }
 
@@ -665,7 +669,8 @@ namespace vkaudioposter_Console
 
                     api.Authorize(new ApiAuthParams
                     {
-                        AccessToken = userAccessToken
+                        Login = VKLogin,
+                        Password = VKPass
                     });
                 }
                 catch (Exception ex)
@@ -813,26 +818,28 @@ namespace vkaudioposter_Console
                                     var mainArtists = audio.MainArtists;
                                     string oneArtist = audio.Artist;
                                     string trackName = audio.Title;
+                                    string subTitle = audio.Subtitle;
+
                                     if (mainArtists.Count() > 1)
                                         foreach (var artist in mainArtists)
                                         {
                                             if (artist.Name != null)
                                             {
                                                 allArtists += " " + artist.Name;
-                                                fullTrackName = trackName + " " + allArtists;
+                                                fullTrackName = allArtists + " " + trackName + " " + subTitle;
                                             }
                                             else continue;
                                         }
                                     else
                                     {
                                         if (mainArtists != null || oneArtist != null)
-                                            fullTrackName = trackName + " " + oneArtist;
+                                            fullTrackName = oneArtist + " " + trackName + " " + subTitle;
                                         else continue;
                                     }
 
                                     //Сравнить название трека+исполнитель с тем что искали
                                     int diff = Tools.Metrics.LevenshteinDistance(current_track, fullTrackName); //Получение расстояния между строками исходной и результатов
-                                    if (diff < 4 && diff != -1)
+                                    if (diff != -1)
                                     {
                                         ownID = audio.OwnerId;
                                         mediaID = audio.Id;
