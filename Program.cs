@@ -738,7 +738,7 @@ namespace vkaudioposter_Console
                     {
                         //Если такого трека нет в файле, выполняем поиск в ВК 
                         trackNameAndAuthors = current_track;
-                        string url = JsonTools.ConcatSearchReq(url1, trackNameAndAuthors, url3);
+                        string url = JsonTools.ConcatSearchReq(url1, trackNameAndAuthors.Trim(), url3);
 
 
                         //---------------Old-------------------------
