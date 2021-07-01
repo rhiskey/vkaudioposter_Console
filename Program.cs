@@ -301,7 +301,7 @@ namespace vkaudioposter_Console
                 LastDatePosted = dateTuple.Item2;
 
                 P.connection.InvokeAsync("SendMessage",
-                  "Console", $"Last date: {LastDatePosted.ToString()}");
+                  "Console", $"Last date: {LastDatePosted}");
 
                 P.cleared = 0;
 

@@ -19,7 +19,7 @@ namespace vkaudioposter
         public static string SearchWeb(string url)
         {
             string json, response;
-            using (WebClient webClient = new WebClient())
+            using (WebClient webClient = new())
             {
                 webClient.QueryString.Add("format", "json");
                 try
@@ -56,7 +56,7 @@ namespace vkaudioposter
         /// <returns></returns>
         public static string ConcatSearchReq(string url1, string url2, string url3)
         {
-            StringBuilder sb = new StringBuilder("", 250);
+            StringBuilder sb = new("", 250);
             sb.Append(url1); sb.Append(url2); sb.Append(url3);
             return sb.ToString();
         }
