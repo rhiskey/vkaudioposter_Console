@@ -84,7 +84,7 @@ namespace vkaudioposter_Console
         private static readonly int trackscount = 100; //100
         private static DateTime LastDatePosted;
         private static string userAccessToken; //Скачать музыку если не apiяws
-        private static bool apiWS = true; //Использовать при поиске APIЯWS или VK API (бесплатно)
+        private static bool apiWS; //Использовать при поиске APIЯWS или VK API (бесплатно)
 
         private static List<FormattedPlaylist> allPlaylists;
         public static List<SpotyTrack> ChartList = new();
@@ -172,6 +172,7 @@ namespace vkaudioposter_Console
 
             VKLogin = cfg.VKLogin;
             VKPass = cfg.VKPassword;
+            apiWS = cfg.USEApiWS;
             signalrConsoleHub = DotNetEnv.Env.GetString("CONSOLE_HUB");
         }
 
@@ -764,6 +765,7 @@ namespace vkaudioposter_Console
 
                                 if (isExist == true)
                                 {
+                                    Console.WriteLine("Exist");
                                     continue;
                                 }
 
@@ -820,7 +822,14 @@ namespace vkaudioposter_Console
                                     string trackName = audio.Title;
                                     string subTitle = audio.Subtitle;
 
-                                    if (mainArtists.Count() > 1)
+                                    int mainArtistsCount = 0;
+                                    try { mainArtistsCount = mainArtists.Count(); }
+                                    catch (Exception ex) {
+#if DEBUG
+                                        Logging.ErrorLogging(ex);
+#endif
+                                    }
+                                    if (mainArtistsCount > 1)
                                         foreach (var artist in mainArtists)
                                         {
                                             if (artist.Name != null)
@@ -843,7 +852,9 @@ namespace vkaudioposter_Console
                                     {
                                         ownID = audio.OwnerId;
                                         mediaID = audio.Id;
-                                        SearchingList.Add(new SpotyVKTrack(fullTrackName.Trim(), mediaID, ownID));
+
+                                        SearchingList.Add(new SpotyVKTrack(fullTrackName.Trim(), mediaID, ownID, trackobj.Urls, trackobj.PreviewUrl));
+                                        //SearchingList.Add(new SpotyVKTrack(fullTrackName.Trim(), mediaID, ownID));
                                         break;
                                     }
                                     else continue;
