@@ -46,27 +46,7 @@ namespace vkaudioposter_Console.Tools
                 Console.WriteLine("===========End============= " + DateTime.Now);
             }
 
-            try
-            {
-                RollbarLocator.RollbarInstance
-                .Error(ex);
-
-                //var api = new VkApi();
-
-                //api.Authorize(new ApiAuthParams
-                //{
-                //    AccessToken = Program.kateMobileToken
-                //});
-
-                //api.Messages.SendAsync(new MessagesSendParams
-                //{
-                //    UserId = Program.adminID,
-                //    Message = ex.Message,
-                //    RandomId = DateTime.Now.Millisecond
-                //});
-
-            }
-            catch (Exception exVK) { ErrorLogging(exVK); }
+            RollbarLocator.RollbarInstance.Error(ex);
         }
 
         public static void ErrorLogging(string ex)
@@ -101,22 +81,7 @@ namespace vkaudioposter_Console.Tools
                 Console.WriteLine("===========End============= " + DateTime.Now);
             }
 
-            RollbarLocator.RollbarInstance
-                .Error(ex);
-
-            //var api = new VkApi();
-
-            //api.Authorize(new ApiAuthParams
-            //{
-            //    AccessToken = Program.kateMobileToken
-            //});
-
-            //api.Messages.SendAsync(new MessagesSendParams
-            //{
-            //    UserId = Program.adminID,
-            //    Message = ex,
-            //    RandomId = DateTime.Now.Millisecond
-            //});
+            RollbarLocator.RollbarInstance.Error(ex);
 
         }
         public static void ReadError()
