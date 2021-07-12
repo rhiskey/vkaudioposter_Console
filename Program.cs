@@ -860,6 +860,9 @@ namespace vkaudioposter_Console
                                     else continue;
                                 }
                             }
+                            Random r = new Random();
+                            int rInt = r.Next(2000, 5000); //2-5 sec
+                            Thread.Sleep(rInt);
 
                         }
                         catch (VkNet.Exception.ParameterMissingOrInvalidException ex)
