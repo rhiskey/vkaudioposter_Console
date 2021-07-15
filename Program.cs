@@ -413,7 +413,7 @@ namespace vkaudioposter_Console
                     try
                     {
                         Console.WriteLine($"playlist_id: {style.PlaylistId} ");
-                        connection.InvokeAsync("SendMessage", "Console", $"playlist_id: {style.PlaylistId} ");
+                        //connection.InvokeAsync("SendMessage", "Console", $"playlist_id: {style.PlaylistId} ");
                         Thread result = StartTheParserThread(trackscount, style, style.trueID, trackstop);
                         postMessage = StringWorkers.GetPostMessageFromStyle(style.PlaylistName);
                         do { Thread.Sleep(100); }
@@ -1018,6 +1018,7 @@ namespace vkaudioposter_Console
             catch (ArgumentException)
             {
                 Console.WriteLine("Value is not a DateTime");
+                connection.InvokeAsync("SendMessage", "Console", $"Value is not a DateTime");
             }
 
             if (compareValue < 0)
@@ -1083,7 +1084,7 @@ namespace vkaudioposter_Console
 
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Пост опубликован! {MessageToAttach}");
-                    connection.InvokeAsync("SendMessage", "Console", $"Пост опубликован! {MessageToAttach}");
+                    connection.InvokeAsync("SendMessage", "Console", $"Пост опубликован! {MessageToAttach}, {attachments.Count}");
 
                     ClearAll();
                     posted = true;
@@ -1174,7 +1175,7 @@ namespace vkaudioposter_Console
 
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Пост {MessageToAttach}\n, увеличила дату {LastDatePosted}, опубликован!");
-                        connection.InvokeAsync("SendMessage", "Console", $"Пост {MessageToAttach}\n, увеличила дату {LastDatePosted}, опубликован!");
+                        connection.InvokeAsync("SendMessage", "Console", $"Пост {MessageToAttach}\n, увеличила дату {LastDatePosted}, опубликован!\nattachments: {attachments.Count}");
                         ClearAll();
                         posted = true;
                     }
