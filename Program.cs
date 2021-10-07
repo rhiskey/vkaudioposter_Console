@@ -543,6 +543,7 @@ namespace vkaudioposter_Console
                         connection.InvokeAsync("SendMessage", "Console", $"Размещаем пост на стену");
 
                         var attsTuple = VkTools.AddPhotoToAttachFromUrl(photofilename, attachments, postMessage, LstBox_AddedTracks);
+        
                         attachments = attsTuple;
                         photofilename = "tempimage.png";
                         PosterOnWall(attachments, style, photourl, SearchingList);
