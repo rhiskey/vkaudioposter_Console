@@ -1,12 +1,3 @@
-[submodule "tests/PhotoStockTester"]
-	path = tests/PhotoStockTester
-	url = https://github.com/rhiskey/PhotoStockTester.git
-	branch = master
-[submodule "tests/PostPonedTest"]
-	path = tests/PostPonedTest
-	url = https://github.com/rhiskey/PostPonedTest.git
-	branch = master
-
 [submodule "vkaudioposter-ef"]
 	path = vkaudioposter-ef
 	url = https://github.com/rhiskey/vkaudioposter-ef
