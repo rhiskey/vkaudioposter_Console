@@ -56,7 +56,7 @@
 
   <ItemGroup>
     <PackageReference Include="DotNetEnv" Version="2.2.0" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.36" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
     <PackageReference Include="HttpToSocks5Proxy" Version="1.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
@@ -68,7 +68,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Rollbar" Version="4.0.3" />
-    <PackageReference Include="SpotifyAPI.Web" Version="6.2.1" />
+    <PackageReference Include="SpotifyAPI.Web" Version="6.2.2" />
     <PackageReference Include="VkNet" Version="1.66.0" />
     <PackageReference Include="VkNet.AudioBypassService" Version="1.7.1" />
     <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
@@ -83,9 +83,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Dlls\posted_photo.dll">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="Dockerfile">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
